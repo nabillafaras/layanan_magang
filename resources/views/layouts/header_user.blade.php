@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Kementerian Sosial RI')</title>
     
     <!-- Bootstrap CSS -->
@@ -12,7 +13,7 @@
     <style>
         body {
             font-family: 'Calibri', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f6f9;
         }
         
         .sidebar {
@@ -36,8 +37,23 @@
             background-color: rgba(255,255,255,0.2);
         }
         
+        .sidebar .dropdown-menu {
+            background-color: #8b0000;
+            border: none;
+        }
+        
+        .sidebar .dropdown-item {
+            color: white;
+        }
+        
+        .sidebar .dropdown-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
         .main-content {
-            padding: 20px;
+            min-height: 100vh;
+            background-color: #f4f6f9;
         }
         
         .navbar {
@@ -86,6 +102,15 @@
             color: #666;
             margin-bottom: 0;
         }
+        
+        .card {
+            box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .dropdown-toggle::after {
+            float: right;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -94,45 +119,45 @@
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 px-0 sidebar">
                 <div class="text-center py-4">
-                        <img src="{{ asset('images/ic_kemensos_1.png') }}" alt="Logo" height="60">
-                        <div class="user-profile">
-                    <h6 class="mb-0">{{ auth()->user()->nama_lengkap }}</h6>
-                    <small>{{ auth()->user()->nomor_pendaftaran }}</small>
+                    <img src="{{ asset('images/ic_kemensos_1.png') }}" alt="Logo" height="60">
+                    <div class="user-profile">
+                        <h6 class="mb-0">{{ auth()->user()->nama_lengkap }}</h6>
+                        <small>{{ auth()->user()->nomor_pendaftaran }}</small>
+                    </div>
                 </div>
-            </div>
                 
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('user') }}">
-                        <i class="fas fa-home me-2"></i>Dashboard
+                        <a class="nav-link {{ request()->routeIs('user') ? 'active' : '' }}" href="{{ route('user') }}">
+                            <i class="fas fa-home me-2"></i>Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#absensiCollapse" data-bs-toggle="collapse">
-                        <i class="fas fa-id-badge me-2"></i>Absensi
+                        <a class="nav-link dropdown-toggle" href="#absensiCollapse" data-bs-toggle="collapse">
+                            <i class="fas fa-id-badge me-2"></i>Absensi
                         </a>
                         <div class="collapse" id="absensiCollapse">
                             <ul class="nav flex-column ms-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('attendance') }}">Masuk</a>
+                                    <a class="nav-link {{ request()->routeIs('attendance') ? 'active' : '' }}" href="{{ route('attendance') }}">Masuk</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#xx">Izin</a>
+                                    <a class="nav-link {{ request()->routeIs('izin') ? 'active' : '' }}" href="{{ route('izin') }}">Izin</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#xx">Sakit</a>
+                                    <a class="nav-link {{ request()->routeIs('sakit') ? 'active' : '' }}" href="{{ route('sakit') }}">Sakit</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#absensiCollapse" data-bs-toggle="collapse">
-                        <i class="fas fa-file-alt me-2"></i>Laporan
+                        <a class="nav-link dropdown-toggle" href="#laporanCollapse" data-bs-toggle="collapse">
+                            <i class="fas fa-file-alt me-2"></i>Laporan
                         </a>
-                        <div class="collapse" id="absensiCollapse">
+                        <div class="collapse" id="laporanCollapse">
                             <ul class="nav flex-column ms-3">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#xx">Laporan Bulanan</a>
+                                <a class="nav-link {{ request()->routeIs('laporan.bulanan') ? 'active' : '' }}" href="{{ route('laporan.bulanan') }}">Laporan Bulanan</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#xx">Laporan Akhir</a>
@@ -144,9 +169,9 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 px-0">
+            <div class="col-md-9 col-lg-10 main-content px-0">
                 <!-- Top Navbar -->
-                <nav class="navbar navbar-expand-lg">
+                <nav class="navbar navbar-expand-lg mb-4">
                     <div class="container-fluid">
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                             <span class="navbar-toggler-icon"></span>
@@ -155,14 +180,22 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                    <i class="fas fa-user me-2"></i>{{ auth()->user()->nama_lengkap }}
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user me-2"></i>{{ auth()->user()->nama_lengkap }}
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        <li>
+                                            <a href="#" class="dropdown-item">
+                                                <i class="fas fa-id-card me-2"></i>Profile
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form action="{{ route('logout') }}" method="POST">
                                                 @csrf
-                                                <button type="submit" class="dropdown-item">Logout</button>
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                                </button>
                                             </form>
                                         </li>
                                     </ul>
@@ -172,8 +205,11 @@
                     </div>
                 </nav>
 
-                <!-- Content Section -->
-    @yield('content')
+    <!-- Content Section -->
+    @yield('content')    
+    <!-- Bootstrap & jQuery JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('additional_scripts')
 </body>
 </html>

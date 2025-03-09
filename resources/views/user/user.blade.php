@@ -47,29 +47,29 @@
                         <h2 class="mb-4">Dashboard</h2>
                         
                         <!-- Statistics Row -->
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <div class="stat-card">
-                                    <h3>Total Kehadiran</h3>
-                                    <p class="h2">15</p>
-                                    <small>Hari ini: 1</small>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="stat-card">
-                                    <h3>Total Izin</h3>
-                                    <p class="h2">2</p>
-                                    <small>Bulan ini</small>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="stat-card">
-                                    <h3>Total Sakit</h3>
-                                    <p class="h2">1</p>
-                                    <small>Bulan ini</small>
-                                </div>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h3>Total Kehadiran</h3>
+                                <p class="h2">{{ $totalKehadiran }}</p>
+                                <small>Hari ini: {{ $kehadiranHariIni }}</small>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h3>Total Izin</h3>
+                                <p class="h2">{{ $totalIzin }}</p>
+                                <small>Bulan ini</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h3>Total Sakit</h3>
+                                <p class="h2">{{ $totalSakit }}</p>
+                                <small>Bulan ini</small>
+                            </div>
+                        </div>
+                    </div>
                         
                         <!-- Quick Actions -->
                         <div class="row mb-4">
@@ -119,17 +119,49 @@
                                                     <tr>
                                                         <th>Tanggal</th>
                                                         <th>Jenis</th>
+                                                        <th>Waktu Masuk</th>
+                                                        <th>Waktu Pulang</th>
                                                         <th>Status</th>
-                                                        <th>Keterangan</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>{{ date('Y-m-d') }}</td>
-                                                        <td>Masuk</td>
-                                                        <td><span class="badge bg-success">Hadir</span></td>
-                                                        <td>Absensi tepat waktu</td>
-                                                    </tr>
+                                                    @forelse($aktivitasRiwayat as $aktivitas)
+                                                        <tr>
+                                                            <td>{{ $aktivitas->created_at->format('Y-m-d') }}</td>
+                                                            <td>{{ $aktivitas->type ?? 'Absensi' }}</td>
+                                                            <td>
+                                                                @if($aktivitas->status == 'hadir' || $aktivitas->status == 'terlambat')
+                                                                    {{ $aktivitas->check_in_time }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if($aktivitas->status == 'hadir' || $aktivitas->status == 'terlambat')
+                                                                    {{ $aktivitas->check_out_time }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if($aktivitas->status == 'hadir')
+                                                                    <span class="badge bg-success">Hadir</span>
+                                                                @elseif($aktivitas->status == 'izin')
+                                                                    <span class="badge bg-warning">Izin</span>
+                                                                @elseif($aktivitas->status == 'sakit')
+                                                                    <span class="badge bg-danger">Sakit</span>
+                                                                @elseif($aktivitas->status == 'terlambat')
+                                                                    <span class="badge bg-secondary">Terlambat</span>
+                                                                @else
+                                                                    <span class="badge bg-secondary">{{ $aktivitas->status }}</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="6" class="text-center">Tidak ada aktivitas</td>
+                                                        </tr>
+                                                    @endforelse
                                                 </tbody>
                                             </table>
                                         </div>
@@ -142,6 +174,6 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @endsection
+
+

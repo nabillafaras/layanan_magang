@@ -136,7 +136,7 @@
             <i class="fas fa-file-alt" aria-hidden="true"></i>
             <span>Persyaratan</span>
         </a>
-        <a href="#xx" class="menu-item {{ Route::currentRouteName() == 'peserta-magang' ? 'active' : '' }}" title="Peserta Magang">
+        <a href="{{ route('informasi_peserta') }}" class="menu-item {{ Route::currentRouteName() == 'informasi_peserta' ? 'active' : '' }}" title="Peserta Magang">
             <i class="fas fa-users" aria-hidden="true"></i>
             <span>Peserta Magang</span>
         </a>

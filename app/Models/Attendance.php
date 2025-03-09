@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
+    protected $table = 'attendances';
+    public $timestamps = true;
     protected $fillable = [
         'user_id', 'date', 
         'check_in_time', 
@@ -24,7 +26,7 @@ class Attendance extends Model
         'ket_izin', 
         'bukti_izin', 
         'ket_sakit', 
-        'bukti_sakit'
+        'bukti_sakit',
     ];
 
     public function pendaftaran()

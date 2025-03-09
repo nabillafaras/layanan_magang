@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
-    private const OFFICE_LATITUDE = -6.2488576;
-    private const OFFICE_LONGITUDE = 106.7843584;
+    private const OFFICE_LATITUDE =  -0.917504;
+    private const OFFICE_LONGITUDE = 100.388045;
     private const MAX_DISTANCE = 0.1; // 100 meter (0.1 km)
 
     public function index()
@@ -27,9 +27,12 @@ class AttendanceController extends Controller
     }
 
     // Gunakan id dari pendaftaran untuk mencari attendance
-    $attendanceHistory = Attendance::where('user_id', $pendaftaran->id)
-        ->orderBy('date', 'desc')
-        ->get();
+        $attendanceHistory = Attendance::where('user_id', $pendaftaran->id)
+            ->orderBy('date', 'desc')
+            ->get();
+        $attendanceHistory = Attendance::whereIn('status', ['hadir', 'terlambat'])
+                               ->orderBy('date', 'desc')
+                               ->get();
 
         $todayAttendance = Attendance::where('user_id', $pendaftaran->id)
             ->whereDate('date', today())
@@ -44,6 +47,7 @@ class AttendanceController extends Controller
     public function checkIn(Request $request)
     {
         $request->validate([
+            'real_time' => 'required|string',
             'location' => 'required|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
@@ -80,7 +84,7 @@ class AttendanceController extends Controller
             }
 
             $photoPath = $request->file('photo')->store('attendance-photos', 'public');
-
+            $clientTime = Carbon::parse($request->real_time);
             $attendance = Attendance::create([
                 'user_id' => $pendaftaran->id,
                 'date' => today(),

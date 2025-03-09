@@ -27,6 +27,7 @@
     }
 
     .left-section {
+        background-image: linear-gradient(rgba(139, 0, 0, 0.85), rgba(139, 0, 0, 0.85)), url('images/bg1.png');
         background-color: #8b0000;
         width: 50%;
         display: flex;

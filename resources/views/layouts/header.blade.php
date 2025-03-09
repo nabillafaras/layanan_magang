@@ -9,6 +9,15 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+        --primary-color: #8b0000;
+        --primary-hover: #a00000;
+        --secondary-color: #FFD700;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --bg-light: #f8f9fa;
+        --transition: all 0.3s ease;
+    }
         body {
             font-family: Calibri, sans-serif;
             padding-top: 70px;
@@ -29,7 +38,7 @@
         }
 
         .navbar.scrolled {
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
             color: black;
         }
@@ -76,6 +85,52 @@
             background-color: #a40000;
             color: white !important;
         }
+        /* Footer Improvements */
+    .footer {
+        background-color: #1a1a1a;
+        color: var(--text-light);
+        padding: 60px 0 30px;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .footer-content h4{
+        color:#FFD700;
+    }
+
+    .footer-contact h4 {
+        color: var(--secondary-color);
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .social-icons a {
+        color: var(--text-light);
+        font-size: 1.5rem;
+        transition: var(--transition);
+    }
+
+    .social-icons a:hover {
+        color: var(--secondary-color);
+        transform: translateY(-3px);
+    }
+
+    .map-container {
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 30px 0;
+    }
     </style>
     @yield('additional_css')
 </head>
@@ -107,7 +162,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="registrasiDropdown">
                             <li><a class="dropdown-item" href="{{ route('pendaftaran') }}">Pendaftaran</a></li>
-                            <li><a class="dropdown-item" href="#cekstatus">Cek Status</a></li>
+                            <li><a class="dropdown-item" href="{{ route('status.form') }}">Cek Status</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -121,8 +176,6 @@
 
     <!-- Content Section -->
     @yield('content')
-
-    
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

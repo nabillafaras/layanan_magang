@@ -35,7 +35,7 @@
     }
 
     .hero-content h1 {
-        font-size: 3.5rem;
+        font-size: clamp(2rem, 5vw, 3.5rem);
         color: var(--text-light);
         font-weight: 800;
         margin-bottom: 1.5rem;
@@ -43,7 +43,7 @@
     }
 
     .hero-content p {
-        font-size: 1.2rem;
+        font-size: clamp(1rem, 2vw, 1.2rem);
         line-height: 1.8;
         color: rgba(255, 255, 255, 0.9);
         margin-bottom: 2rem;
@@ -66,8 +66,8 @@
 
     /* Button Styles */
     .btn-hero {
-        padding: 15px 35px;
-        font-size: 1.1rem;
+        padding: clamp(10px, 2vw, 15px) clamp(20px, 3vw, 35px);
+        font-size: clamp(0.9rem, 1.5vw, 1.1rem);
         font-weight: 600;
         background-color: var(--secondary-color);
         color: var(--primary-color);
@@ -75,6 +75,7 @@
         transition: var(--transition);
         text-transform: uppercase;
         letter-spacing: 1px;
+        display: inline-block;
     }
 
     .btn-hero:hover {
@@ -118,53 +119,6 @@
         margin-bottom: 1.5rem;
     }
 
-    /* Footer Improvements */
-    .footer {
-        background-color: #1a1a1a;
-        color: var(--text-light);
-        padding: 60px 0 30px;
-    }
-
-    .footer-content {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 30px;
-        margin-bottom: 40px;
-    }
-
-    .footer-content h4{
-        color:#FFD700;
-    }
-
-    .footer-contact h4 {
-        color: var(--secondary-color);
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
-
-    .social-icons {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .social-icons a {
-        color: var(--text-light);
-        font-size: 1.5rem;
-        transition: var(--transition);
-    }
-
-    .social-icons a:hover {
-        color: var(--secondary-color);
-        transform: translateY(-3px);
-    }
-
-    .map-container {
-        border-radius: 15px;
-        overflow: hidden;
-        margin: 30px 0;
-    }
-
     /* Animations */
     @keyframes fadeInLeft {
         from {
@@ -189,20 +143,55 @@
     }
 
     /* Responsive Design */
+    @media (max-width: 1200px) {
+        .hero {
+            padding: 80px 5%;
+        }
+    }
+
     @media (max-width: 992px) {
         .hero {
             flex-direction: column;
             text-align: center;
-            padding: 80px 5%;
+            padding: 60px 5%;
+            gap: 40px;
         }
 
         .hero-content, .hero-image {
             max-width: 100%;
-            margin-bottom: 40px;
         }
 
+        .btn-hero {
+            margin: 0 auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            min-height: auto;
+            padding: 50px 20px;
+        }
+
+        .hero-image {
+            margin-top: 30px;
+        }
+
+        .service-card {
+            padding: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero {
+            padding: 40px 15px;
+        }
+        
         .hero-content h1 {
-            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-content p {
+            margin-bottom: 1.5rem;
         }
     }
 </style>
@@ -260,35 +249,7 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="text-center">
-                    <h4>Kementerian Sosial RI</h4>
-                    <p>Jl. Salemba Raya No.28, Jakarta Pusat<br>DKI Jakarta 10430, Indonesia</p>
-                </div>
-            </div>
-
-            <div class="map-container">
-                <iframe
-                    src="https://www.google.com/maps?q=-6.198851073402565,106.85229155217864&hl=es;z=14&output=embed"
-                    width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
-                </iframe>
-            </div>
-
-            <div class="social-icons">
-                <a href="https://www.tiktok.com/@kemensosri" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.facebook.com/KementerianSosialRI" target="_blank"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.instagram.com/kemensosri/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.youtube.com/channel/UCn9V9VY9SOJTd-kIqThwD1g" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://twitter.com/KemensosRI" target="_blank"><i class="fab fa-twitter"></i></a>
-            </div>
-
-            <p class="text-center mt-4">&copy; 2025 Kementerian Sosial RI. All Rights Reserved.</p>
-        </div>
-    </footer>
+    @include('layouts.footer')
 @endsection
 
 @section('additional_scripts')
@@ -303,30 +264,22 @@
         });
     });
 
-    // Animation on scroll
-    window.addEventListener('scroll', function() {
-        const elements = document.querySelectorAll('.info-box');
-        elements.forEach(element => {
-            const position = element.getBoundingClientRect();
-            if(position.top < window.innerHeight) {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }
-        });
+    // Ensure image is responsive
+    window.addEventListener('load', function() {
+        const heroImage = document.querySelector('.hero-image img');
+        if (heroImage) {
+            // Force recalculation of image size on load
+            heroImage.style.maxHeight = window.innerWidth < 768 ? '300px' : 'auto';
+        }
     });
-</script>
-@endsection
 
-@section('additional_scripts')
-<script>
-    // Add smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+    // Handle resize events
+    window.addEventListener('resize', function() {
+        const heroImage = document.querySelector('.hero-image img');
+        if (heroImage) {
+            // Adjust image size on viewport changes
+            heroImage.style.maxHeight = window.innerWidth < 768 ? '300px' : 'auto';
+        }
     });
 </script>
 @endsection

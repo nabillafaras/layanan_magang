@@ -30,6 +30,9 @@ class Pendaftaran extends Authenticatable
         'cv',
         'nomor_pendaftaran',
         'password',
+        'status',
+        'catatan',
+        'surat_balasan',
         'role',
     ];
 
