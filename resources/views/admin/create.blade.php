@@ -2,10 +2,16 @@
 @section('title', 'Dashboard Admin - Kementerian Sosial RI')
 @section('additional_css')
     <!-- Tambahkan CSS tambahan disini jika diperlukan -->
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    
 @endsection
 
 @section('content')
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Manajemen Admin</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Create</li>
+    </ol>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

@@ -8,31 +8,37 @@ use Illuminate\Support\Facades\Log;
 
 class AdminAuthController extends Controller
 {
-
-    // Handle login admin
     public function adminAuthenticate(Request $request)
     {
         $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
-
+        
         // Tambahkan logging untuk debug
-        Log::info('Admin login attempt:', ['username' => $credentials['username']]);
-
+        Log::info('Admin/Pimpinan login attempt:', ['username' => $credentials['username']]);
+        
         if (Auth::guard('admin')->attempt($credentials)) {
-            Log::info('Admin login successful');
+            $user = Auth::guard('admin')->user();
+            Log::info('Login successful for: ' . $user->role);
+            
             $request->session()->regenerate();
-            return redirect()->intended('/admin');
+            
+            // Validasi dan autentikasi
+            if (Auth::guard('admin')->user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif (Auth::guard('admin')->user()->role === 'pimpinan') {
+                return redirect()->route('pimpinan.dashboard');
+            }
         }
-
-        Log::info('Admin login failed');
+        
+        Log::info('Login failed');
         return back()->withErrors([
             'username' => 'Username atau password salah',
         ])->withInput($request->except('password'));
     }
 
-    // Handle logout untuk admin
+    // Handle logout untuk admin dan pimpinan
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();

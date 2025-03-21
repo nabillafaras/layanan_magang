@@ -27,7 +27,7 @@
     }
 
     .left-section {
-        background-image: linear-gradient(rgba(139, 0, 0, 0.85), rgba(139, 0, 0, 0.85)), url('images/bg1.png');
+        background-image: linear-gradient(rgba(139, 0, 0, 0.85), rgba(139, 0, 0, 0.85)), url('{{ asset('images/bg1.png') }}');
         background-color: #8b0000;
         width: 50%;
         display: flex;
@@ -137,6 +137,7 @@
 @endsection
 
 @section('content')
+@include('layouts.transisi')
 <body>
     <div class="main-container">
         <div class="left-section">
@@ -151,7 +152,7 @@
                 @csrf
                 <div style="width: 100%">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Masukkan Username Admin" required>
+                <input type="text" id="username" name="username" placeholder="Masukkan Username Admin" required style="font-size: 14px;">
             </div>
 
                 <div class="password-container" style="width: 100%; position: relative; margin-bottom: 15px;">

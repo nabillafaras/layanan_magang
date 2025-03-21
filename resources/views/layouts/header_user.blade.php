@@ -160,7 +160,7 @@
                                 <a class="nav-link {{ request()->routeIs('laporan.bulanan') ? 'active' : '' }}" href="{{ route('laporan.bulanan') }}">Laporan Bulanan</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#xx">Laporan Akhir</a>
+                                    <a class="nav-link {{ request()->routeIs('laporan.akhir') ? 'active' : '' }}" href="{{ route('laporan.akhir') }}">Laporan Akhir</a>
                                 </li>
                             </ul>
                         </div>

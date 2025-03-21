@@ -133,8 +133,8 @@ class IzinController extends Controller
             $attendance->bukti_izin = 'bukti_izin/' . $buktiName;
             
             // Tambahkan semua field yang wajib diisi
-            $attendance->check_in_location = 'Izin';
-            $attendance->check_out_location = 'Izin';
+            $attendance->check_in_location = '-';
+            $attendance->check_out_location = '-';
             $attendance->check_in_photo = 'default.jpg';
             $attendance->check_out_photo = 'default.jpg';
             $attendance->check_in_latitude = 0.0;
@@ -144,8 +144,8 @@ class IzinController extends Controller
             
             // Waktu absensi dibuat dengan nilai default
             $currentDateTime = Carbon::now();
-            $attendance->check_in_time = $currentDateTime->format('H:i:s');
-            $attendance->check_out_time = $currentDateTime->format('H:i:s');
+            $attendance->check_in_time = null;
+            $attendance->check_out_time = null;
             
             $attendance->created_at = $currentDateTime;
             $attendance->updated_at = $currentDateTime;

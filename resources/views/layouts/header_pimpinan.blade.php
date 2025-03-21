@@ -50,9 +50,6 @@
         .card {
             box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
         }
-        .card {
-            box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
-        }
         .user-profile {
             padding: 20px;
             text-align: center;
@@ -71,47 +68,22 @@
                         <img src="{{ asset('images/ic_kemensos_1.png') }}" alt="Logo" height="60">
                         <div class="user-profile">
                             <h6 class="mb-0">{{ Auth::guard('admin')->user()->nama_lengkap }}</h6>
-                            <small>Admin Dashboard</small>
+                            <small>Pimpinan Dashboard</small>
                         </div>
                     </div>
                     <div class="nav flex-column">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-home me-2"></i> Dashboard
                         </a>
-                        <a href="{{ route('admin.create') }}" class="nav-link {{ request()->routeIs('admin.create') ? 'active' : '' }}">
-                            <i class="fas fa-user-plus me-2"></i> Create Admin
+                        <a href="{{ route ('pimpinan.peserta.index') }}" class="nav-link  {{ request()->routeIs('pimpinan.peserta.index') ? 'active' : '' }}">
+                            <i class="fas fa-users me-2"></i> Data Peserta
                         </a>
-                        <a href="{{ route('admin.peserta') }}" class="nav-link {{ request()->routeIs('admin.peserta') ? 'active' : '' }}">
-                            <i class="fas fa-user me-2"></i> Peserta Pendaftar
+                        <a href="#" class="nav-link ">
+                            <i class="fas fa-clipboard-list me-2"></i> Data Absensi
                         </a>
-                        <a href="{{ route('admin.rekapitulasi-absensi') }}" class="nav-link {{ request()->routeIs('admin.rekapitulasi-absensi') ? 'active' : '' }}">
-                            <i class="fas fa-clipboard-list me-2"></i> Rekapitulasi Absensi
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-alt me-2"></i> Laporan
                         </a>
-                        <a href="{{ route('admin.rekapitulasi-laporan') }}" class="nav-link {{ request()->routeIs('admin.rekapitulasi-laporan') ? 'active' : '' }}">
-                            <i class="fas fa-file-alt me-2"></i> Rekapitulasi Laporan
-                        </a>
-                        <a class="nav-link dropdown-toggle" href="#direktoratCollapse" data-bs-toggle="collapse">
-                            <i class="fas fa-building me-2"></i> Direktorat
-                        </a>
-                        <div class="collapse" id="direktoratCollapse">
-                            <ul class="nav flex-column ms-3">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.direktorat.direktorat1') }}">Direktorat 1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.direktorat.direktorat2') }}">Direktorat 2</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.direktorat.direktorat3') }}">Direktorat 3</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.direktorat.direktorat4') }}">Direktorat 4</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.direktorat.direktorat5') }}">Direktorat 5</a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -131,19 +103,19 @@
                                         <i class="fas fa-user me-2"></i>{{ Auth::guard('admin')->user()->nama_lengkap }}
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
+                                        <li>
                                             <a href="#" class="dropdown-item">
                                                 <i class="fas fa-id-card me-2"></i>Profile
                                             </a>
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
-                                        <form action="{{ route('admin.logout') }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                            </button>
-                                        </form>
+                                            <form action="{{ route('pimpinan.logout') }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                                </button>
+                                            </form>
                                         </li>
                                     </ul>
                                 </li>
@@ -152,8 +124,12 @@
                     </div>
                 </nav>
 
-    <!-- Content Section -->
-    @yield('content')
+                <!-- Content Section -->
+                @yield('content')
+            </div>
+        </div>
+    </div>
+    
     <!-- Bootstrap & jQuery JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @yield('additional_scripts')

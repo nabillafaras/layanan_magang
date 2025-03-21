@@ -30,7 +30,8 @@ class PesertaController extends Controller
         if ($request->status === 'Ditolak') {
             $pendaftaran->catatan = $request->catatan;
             $pendaftaran->surat_balasan = null; // Hapus surat jika ada
-        } elseif ($request->status === 'Diterima') {
+        } 
+        elseif ($request->status === 'Diterima') {
             $pendaftaran->catatan = null; // Hapus catatan jika ada
             
             // Upload surat balasan jika ada

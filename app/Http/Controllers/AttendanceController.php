@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
-    private const OFFICE_LATITUDE =  -0.917504;
-    private const OFFICE_LONGITUDE = 100.388045;
+    private const OFFICE_LATITUDE =  -0.937165;
+    private const OFFICE_LONGITUDE = 100.378214;
     private const MAX_DISTANCE = 0.1; // 100 meter (0.1 km)
 
     public function index()
@@ -26,13 +26,11 @@ class AttendanceController extends Controller
         return abort(403, 'Anda belum terdaftar.');
     }
 
-    // Gunakan id dari pendaftaran untuk mencari attendance
+        // Gunakan id dari pendaftaran untuk mencari attendance
         $attendanceHistory = Attendance::where('user_id', $pendaftaran->id)
-            ->orderBy('date', 'desc')
-            ->get();
-        $attendanceHistory = Attendance::whereIn('status', ['hadir', 'terlambat'])
-                               ->orderBy('date', 'desc')
-                               ->get();
+        ->whereIn('status', ['hadir', 'terlambat'])
+        ->orderBy('date', 'desc')
+        ->get();
 
         $todayAttendance = Attendance::where('user_id', $pendaftaran->id)
             ->whereDate('date', today())
@@ -40,6 +38,7 @@ class AttendanceController extends Controller
 
         $hasCheckedIn = $todayAttendance && $todayAttendance->check_in_time;
         $hasCheckedOut = $todayAttendance && $todayAttendance->check_out_time;
+
 
         return view('user.attendance', compact('attendanceHistory', 'hasCheckedIn', 'hasCheckedOut'));
     }

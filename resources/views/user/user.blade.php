@@ -106,66 +106,58 @@
                         </div>
                         
                         <!-- Recent Activity -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title mb-0">Aktivitas Terakhir</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Tanggal</th>
-                                                        <th>Jenis</th>
-                                                        <th>Waktu Masuk</th>
-                                                        <th>Waktu Pulang</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @forelse($aktivitasRiwayat as $aktivitas)
-                                                        <tr>
-                                                            <td>{{ $aktivitas->created_at->format('Y-m-d') }}</td>
-                                                            <td>{{ $aktivitas->type ?? 'Absensi' }}</td>
-                                                            <td>
-                                                                @if($aktivitas->status == 'hadir' || $aktivitas->status == 'terlambat')
-                                                                    {{ $aktivitas->check_in_time }}
-                                                                @else
-                                                                    -
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                @if($aktivitas->status == 'hadir' || $aktivitas->status == 'terlambat')
-                                                                    {{ $aktivitas->check_out_time }}
-                                                                @else
-                                                                    -
-                                                                @endif
-                                                            </td>
-                                                            <td>
-                                                                @if($aktivitas->status == 'hadir')
-                                                                    <span class="badge bg-success">Hadir</span>
-                                                                @elseif($aktivitas->status == 'izin')
-                                                                    <span class="badge bg-warning">Izin</span>
-                                                                @elseif($aktivitas->status == 'sakit')
-                                                                    <span class="badge bg-danger">Sakit</span>
-                                                                @elseif($aktivitas->status == 'terlambat')
-                                                                    <span class="badge bg-secondary">Terlambat</span>
-                                                                @else
-                                                                    <span class="badge bg-secondary">{{ $aktivitas->status }}</span>
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="6" class="text-center">Tidak ada aktivitas</td>
-                                                        </tr>
-                                                    @endforelse
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Aktivitas Terakhir</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Jenis</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($aktivitasRiwayat as $aktivitas)
+                                                <tr>
+                                                    <td>{{ $aktivitas->created_at->format('Y-m-d') }}</td>
+                                                    <td>{{ $aktivitas->type }}</td>
+                                                    <td>
+                                                        @if($aktivitas->type == 'Absensi')
+                                                            @if($aktivitas->status == 'hadir')
+                                                                <span class="badge bg-success">Hadir</span>
+                                                            @elseif($aktivitas->status == 'izin')
+                                                                <span class="badge bg-warning">Izin</span>
+                                                            @elseif($aktivitas->status == 'sakit')
+                                                                <span class="badge bg-info">Sakit</span>
+                                                            @elseif($aktivitas->status == 'terlambat')
+                                                                <span class="badge bg-warning">Terlambat</span>
+                                                            @else
+                                                                <span class="badge bg-secondary">{{ $aktivitas->status }}</span>
+                                                            @endif
+                                                        @elseif($aktivitas->type == 'Laporan')
+                                                            @if($aktivitas->status == 'menunggu')
+                                                                <span class="badge bg-warning">Menunggu</span>
+                                                            @elseif($aktivitas->status == 'diterima')
+                                                                <span class="badge bg-success">Diterima</span>
+                                                            @elseif($aktivitas->status == 'ditolak')
+                                                                <span class="badge bg-danger">Ditolak</span>
+                                                            @else
+                                                                <span class="badge bg-secondary">{{ $aktivitas->status }}</span>
+                                                            @endif
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3" class="text-center">Tidak ada aktivitas</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -12,9 +12,18 @@ class CheckRole
     {
         // Cek guard admin
         if ($role === 'admin') {
-            if (!Auth::guard('admin')->check()) {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin') {
                 return redirect()->route('admin.login')
                     ->with('error', 'Please login as admin first');
+            }
+            return $next($request);
+        }
+        
+        // Cek guard admin dengan role pimpinan
+        if ($role === 'pimpinan') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'pimpinan') {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Please login as pimpinan first');
             }
             return $next($request);
         }

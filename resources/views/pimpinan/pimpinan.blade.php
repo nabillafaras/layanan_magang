@@ -1,6 +1,6 @@
-@extends('layouts.header_admin')
+@extends('layouts.header_pimpinan')
 
-@section('title', 'Dashboard Admin - Kementerian Sosial RI')
+@section('title', 'Dashboard Pimpinan - Kementerian Sosial RI')
 
 @section('additional_css')
 <style>
@@ -14,10 +14,10 @@
 @endsection
 @section('content')
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Dashboard Admin</h1>
+    <h1 class="mt-4">Dashboard Pimpinan</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Dashboard Admin</li>
+        <li class="breadcrumb-item"><a href="{{ route('pimpinan.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Dashboard Pimpinan</li>
     </ol>
                 <!-- Content -->
                 <div class="container-fluid px-4">
@@ -70,6 +70,7 @@
                                                 <tr>
                                                     <th>Tanggal</th>
                                                     <th>Nama</th>
+                                                    <th>Direktorat</th>
                                                     <th>Aktivitas</th>
                                                     <th>Status</th>
                                                 </tr>
@@ -77,10 +78,27 @@
                                             <tbody>
                                                 @forelse($recentActivities ?? [] as $activity)
                                                 <tr>
-                                                    <td>{{ $activity->tanggal }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($activity->tanggal)->format('d-m-Y H:i') }}</td>
                                                     <td>{{ $activity->nama }}</td>
+                                                    <td>{{ $activity->direktorat }}</td>
                                                     <td>{{ $activity->aktivitas }}</td>
-                                                    <td>{{ $activity->status }}</td>
+                                                    <td>
+                                                        @if($activity->status == 'hadir')
+                                                            <span class="badge bg-success">Hadir</span>
+                                                        @elseif($activity->status == 'izin')
+                                                            <span class="badge bg-warning">Izin</span>
+                                                        @elseif($activity->status == 'sakit')
+                                                            <span class="badge bg-info">Sakit</span>
+                                                        @elseif($activity->status == 'menunggu')
+                                                            <span class="badge bg-warning">Menunggu</span>
+                                                        @elseif($activity->status == 'diterima')
+                                                            <span class="badge bg-success">Diterima</span>
+                                                        @elseif($activity->status == 'ditolak')
+                                                            <span class="badge bg-danger">Ditolak</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">{{ $activity->status }}</span>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                                 @empty
                                                 <tr>

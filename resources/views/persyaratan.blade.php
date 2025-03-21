@@ -182,6 +182,7 @@
 @endsection
 
 @section('content')
+@include('layouts.transisi')
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">

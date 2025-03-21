@@ -306,6 +306,7 @@ td {
 @endsection
 
 @section('content')
+    @include('layouts.transisi')
     <!-- Include Side Menu -->
     @include('layouts.menu')
 

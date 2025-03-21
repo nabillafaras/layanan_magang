@@ -289,6 +289,7 @@
 @endsection
 
 @section('content')
+@include('layouts.transisi')
     <!-- Hero Section -->
     <section class="hero fade-enter-active">
         <div class="hero-content">

@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Pimpinans\PimpinanController;
+use App\Http\Controllers\Pimpinans\PesertaPimpinanController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CreateController;
 use App\Http\Controllers\PesertaController;
@@ -17,7 +19,10 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\Informasi_PesertaController;
 use App\Http\Controllers\IzinController;
 use App\Http\Controllers\SakitController;
-use App\Http\Controllers\Laporan_BulananController;
+use App\Http\Controllers\RekapAbsensiController;
+use App\Http\Controllers\LaporanBulananController;
+use App\Http\Controllers\LaporanAkhirController;
+use App\Http\Controllers\DirektoratController;
 use Illuminate\Support\Facades\Route;
 
 // Route publik
@@ -58,10 +63,15 @@ Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::get('/sakit', [SakitController::class, 'index'])->name('sakit');
     Route::post('/sakit/store', [SakitController::class, 'store'])->name('sakit.store');
     // Laporan Bulanan
-    Route::get('/laporan/bulanan', [App\Http\Controllers\LaporanBulananController::class, 'index'])->name('laporan.bulanan');
-    Route::post('/laporan/bulanan/upload', [App\Http\Controllers\LaporanBulananController::class, 'upload'])->name('laporan.bulanan.upload');
-    Route::get('/laporan/bulanan/download/{id}', [App\Http\Controllers\LaporanBulananController::class, 'download'])->name('laporan.bulanan.download');
-    Route::delete('/laporan/bulanan/delete/{id}', [App\Http\Controllers\LaporanBulananController::class, 'delete'])->name('laporan.bulanan.delete');
+    Route::get('/laporan/bulanan', [LaporanBulananController::class, 'index'])->name('laporan.bulanan');
+    Route::post('/laporan/bulanan/upload', [LaporanBulananController::class, 'upload'])->name('laporan.bulanan.upload');
+    Route::get('/laporan/bulanan/download/{id}', [LaporanBulananController::class, 'download'])->name('laporan.bulanan.download');
+    Route::delete('/laporan/bulanan/delete/{id}', [LaporanBulananController::class, 'delete'])->name('laporan.bulanan.delete');
+    // Laporan Akhir
+    Route::get('/laporan/akhir', [LaporanAkhirController::class, 'index'])->name('laporan.akhir');
+    Route::post('/laporan/akhir/upload', [LaporanAkhirController::class, 'upload'])->name('laporan.akhir.upload');
+    Route::get('/laporan/akhir/download/{id}', [LaporanAkhirController::class, 'download'])->name('laporan.akhir.download');
+    Route::delete('/laporan/akhir/delete/{id}', [LaporanAkhirController::class, 'delete'])->name('laporan.akhir.delete');
     
 });
 
@@ -74,10 +84,13 @@ Route::prefix('admin')->group(function () {
         Route::post('/login', [AdminAuthController::class, 'adminAuthenticate'])->name('admin.authenticate');
     });
     
+
     // Admin protected routes
     Route::middleware(['auth:admin', 'checkRole:admin'])->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+        // Di dalam grup route admin
+        
         
         // Admin dashboard untuk menu create admin
         Route::get('/create', [CreateController::class, 'create'])->name('admin.create');
@@ -86,5 +99,43 @@ Route::prefix('admin')->group(function () {
         // Peserta routes
         Route::get('/peserta', [PesertaController::class, 'index'])->name('admin.peserta');
         Route::put('/peserta/{id}', [PesertaController::class, 'update'])->name('admin.peserta.update');
+        
+        // route untuk rekap absensi
+        Route::get('/rekap-absensi', [RekapAbsensiController::class, 'index'])->name('admin.rekapitulasi-absensi');
+        Route::get('/export-absensi', [RekapAbsensiController::class, 'exportExcel'])->name('admin.export-absensi');
+    
+        // Rute untuk rekapitulasi laporan
+        Route::get('/admin/rekapitulasi-laporan', [App\Http\Controllers\RekapLaporanController::class, 'index'])->name('admin.rekapitulasi-laporan');
+        Route::get('/admin/export-laporan', [App\Http\Controllers\RekapLaporanController::class, 'exportExcel'])->name('admin.export-laporan');
+
+        //pengelolaan per direktorat
+        Route::get('/admin/direktorat/direktorat1', [DirektoratController::class, 'direktorat1'])->name('admin.direktorat.direktorat1');
+        Route::get('/admin/direktorat/direktorat2', [DirektoratController::class, 'direktorat2'])->name('admin.direktorat.direktorat2');
+        Route::get('/admin/direktorat/direktorat3', [DirektoratController::class, 'direktorat3'])->name('admin.direktorat.direktorat3');
+        Route::get('/admin/direktorat/direktorat4', [DirektoratController::class, 'direktorat4'])->name('admin.direktorat.direktorat4');
+        Route::get('/admin/direktorat/direktorat5', [DirektoratController::class, 'direktorat5'])->name('admin.direktorat.direktorat5');
+        
+        // Perbaikan pada route detail laporan
+        Route::get('/admin/detail/laporan/{id}', [DirektoratController::class, 'detailLaporan'])->name('admin.detail-laporan');
+                
+        // Perbaikan route untuk submit feedback
+        Route::post('/admin/submit-feedback/{id}', [DirektoratController::class, 'submitFeedback'])->name('admin.submit-feedback');
+        Route::post('/admin/laporan/{id}/update-status', [DirektoratController::class, 'updateStatus'])->name('admin.update-status');
+        Route::get('/admin/direktorat/{id}', [DirektoratController::class, 'showDirektorat'])->name('admin.direktorat');
+        Route::get('/admin/direktorat/{direktorat}/map', [DirektoratController::class, 'mapDirektorat'])->name('admin.direktorat.map');
+    
+    });
+    
+});
+
+// Routes untuk pimpinan (di luar grup admin)
+Route::prefix('pimpinan')->group(function () {
+    Route::middleware(['auth:admin', 'checkRole:pimpinan'])->group(function () {
+        Route::get('/', [PimpinanController::class, 'index'])->name('pimpinan.dashboard');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('pimpinan.logout');
+        // Route untuk data peserta
+        Route::get('/pimpinan/peserta', [PesertaPimpinanController::class, 'index'])->name('pimpinan.peserta.index');
+        Route::get('/pimpinan/peserta/{id}', [PesertaPimpinanController::class, 'show'])->name('pimpinan.peserta.show');
+        
     });
 });

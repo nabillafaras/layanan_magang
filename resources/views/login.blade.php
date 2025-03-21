@@ -137,6 +137,7 @@
 @endsection
 
 @section('content')
+@include('layouts.transisi')
 <body>
     <div class="main-container">
         <div class="left-section">
@@ -151,13 +152,13 @@
                 @csrf
                 <div style="width: 100%">
                     <label for="nomor_pendaftaran">Nomor Pendaftaran</label>
-                    <input type="text" id="nomor_pendaftaran" name="nomor_pendaftaran" placeholder="Masukkan Nomor Pendaftaran" required>
+                    <input type="text" id="nomor_pendaftaran" name="nomor_pendaftaran" placeholder="Masukkan Nomor Pendaftaran" required  style="font-size: 14px;">
                 </div>
 
                 <div class="password-container" style="width: 100%; position: relative; margin-bottom: 15px;">
-                    <label for="password">Password</label>
+                    <label for="password">Kode Akses</label>
                     <div style="position: relative;">
-                        <input type="password" id="password" name="password" placeholder="Masukkan password" 
+                        <input type="password" id="password" name="password" placeholder="Masukkan Kode Akses" 
                             required 
                             style="width: 100%; padding: 10px 40px 10px 15px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 14px; transition: border-color 0.3s;">
                         <i class="fa fa-eye" id="togglePassword" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666; font-size: 16px;"

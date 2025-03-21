@@ -1,11 +1,26 @@
 @extends('layouts.header_admin')
 @section('title', 'Dashboard Admin - Kementerian Sosial RI')
 @section('additional_css')
-    <!-- Tambahkan CSS tambahan disini jika diperlukan -->
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+<style>
+        body {
+            font-family: 'Calibri', sans-serif;
+        }
+        .card {
+            box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
+        }
+</style>
 @endsection
 
 @section('content')
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Manajemen Peserta Magang</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Peserta Pendaftar</li>
+    </ol>
+
+        
+
 <div class="container py-4">
     <div class="card">
         <div class="card-header bg-light">
@@ -18,6 +33,7 @@
                         <tr>
                             <th>No. Pendaftaran</th>
                             <th>Nama Lengkap</th>
+                            <th>Direktorat</th>
                             <th>Email</th>
                             <th>Institusi</th>
                             <th>Tanggal Daftar</th>
@@ -30,6 +46,7 @@
                         <tr>
                             <td>{{ $peserta->nomor_pendaftaran }}</td>
                             <td>{{ $peserta->nama_lengkap }}</td>
+                            <td>{{ $peserta->direktorat }}</td>
                             <td>{{ $peserta->email }}</td>
                             <td>{{ $peserta->asal_universitas }}</td>
                             <td>{{ $peserta->created_at->format('d-m-Y') }}</td>
@@ -70,6 +87,7 @@
                         <div class="col-md-6">
                             <p><strong>No. Pendaftaran:</strong> {{ $peserta->nomor_pendaftaran }}</p>
                             <p><strong>Nama Lengkap:</strong> {{ $peserta->nama_lengkap }}</p>
+                            <p><strong>Direktorat:</strong> {{ $peserta->direktorat }}</p>
                             <p><strong>Email:</strong> {{ $peserta->email }}</p>
                             <p><strong>No. Telepon:</strong> {{ $peserta->no_hp }}</p>
                             <p><strong>Institusi:</strong> {{ $peserta->asal_universitas }}</p>

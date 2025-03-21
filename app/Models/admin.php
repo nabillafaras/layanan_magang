@@ -36,4 +36,15 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    // Method helper untuk cek role
+    public function isPimpinan()
+    {
+        return $this->role === 'pimpinan';
+    }
+    
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 }

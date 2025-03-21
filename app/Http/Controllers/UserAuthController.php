@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Models\Pendaftaran;
 
 class UserAuthController extends Controller
 {
@@ -15,6 +16,18 @@ class UserAuthController extends Controller
             'nomor_pendaftaran' => 'required',
             'password' => 'required'
         ]);
+
+        // First check if the user exists with status "diterima"
+        $pendaftaran = Pendaftaran::where('nomor_pendaftaran', $credentials['nomor_pendaftaran'])
+                                  ->where('status', 'diterima')
+                                  ->first();
+
+         // If user doesn't exist with status "diterima", return error
+         if (!$pendaftaran) {
+            return back()->withErrors([
+                'nomor_pendaftaran' => 'Login gagal. Akun Anda belum disetujui atau nomor pendaftaran tidak valid.',
+            ]);
+        }
 
         // Cek kredensial untuk login sebagai user
         if (Auth::guard('web')->attempt([

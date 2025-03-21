@@ -40,6 +40,11 @@ class Pendaftaran extends Authenticatable
     {
         return $this->hasMany(Attendance::class, 'user_id', 'id');
     }
+    public function laporan()
+    {
+        return $this->hasMany(Laporan::class, 'user_id', 'id');
+    }
+    
     protected $guard = 'web';
     // Tentukan kolom yang digunakan untuk autentikasi
     public function getAuthIdentifierName()
