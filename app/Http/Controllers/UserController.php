@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendance; // Pastikan untuk mengimpor model Attendance
 use App\Models\Laporan;
+use App\Models\Pendaftaran;
 use Carbon\Carbon; // Untuk manipulasi tanggal
 
 class UserController extends Controller
@@ -57,7 +58,28 @@ class UserController extends Controller
                                         ->take(10)
                                         ->get();
     
+     // Tambahkan kode untuk mengambil data periode magang
+     $periodeData = Pendaftaran::where('id', $userId)
+     ->select('tanggal_mulai', 'tanggal_selesai')
+     ->first();
+
+    // Ubah format tanggal untuk tampilan
+    $tanggalMulai = null;
+    $tanggalSelesai = null;
+    $sisaHari = null;
+
+    if ($periodeData && $periodeData->tanggal_mulai && $periodeData->tanggal_selesai) {
+    $tanggalMulai = Carbon::parse($periodeData->tanggal_mulai)->format('d M Y');
+    $tanggalSelesai = Carbon::parse($periodeData->tanggal_selesai)->format('d M Y');
+
+    // Hitung sisa hari magang
+    $today = Carbon::parse($periodeData->tanggal_mulai);
+    $endDate = Carbon::parse($periodeData->tanggal_selesai);
+    $sisaHari = ($endDate->gt($today)) ? $today->diffInDays($endDate) : 0;
+    }
+
     return view('user.user', compact('user', 'totalKehadiran', 'kehadiranHariIni', 
-                                     'totalIzin', 'totalSakit', 'aktivitasRiwayat'));
-}
+    'totalIzin', 'totalSakit', 'aktivitasRiwayat',
+    'tanggalMulai', 'tanggalSelesai', 'sisaHari'));
+    }
 }

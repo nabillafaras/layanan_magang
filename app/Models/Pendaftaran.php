@@ -34,8 +34,18 @@ class Pendaftaran extends Authenticatable
         'catatan',
         'surat_balasan',
         'role',
+        'tanggal_mulai',
+        'tanggal_selesai'
     ];
 
+    protected $dates = [
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'created_at',
+        'updated_at'
+    ];
+
+    
     public function attendances()
     {
         return $this->hasMany(Attendance::class, 'user_id', 'id');

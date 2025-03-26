@@ -69,6 +69,8 @@ class PendaftaranController extends Controller
                 'surat_pengantar' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             ],
             3 => [
+                'tanggal_mulai' => 'required|date', // Validasi untuk tanggal mulai
+                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
                 'direktorat' => 'required|max:255',
                 'unit_kerja' => 'required|max:255',
                 'cv' => 'nullable|file|mimes:pdf,jpg,png|max:2048',

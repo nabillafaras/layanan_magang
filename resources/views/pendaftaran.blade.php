@@ -50,6 +50,16 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         }
         
+        .row {
+            display: flex;
+            justify-content: space-between;
+
+        }
+        .col-6 {
+            width: 48%;
+        }
+
+
         h3 {
             color: var(--primary-color);
             font-weight: 700;
@@ -356,12 +366,12 @@
                 <div class="circle bg-primary">1</div>
                 <div class="step-label">Data Diri</div>
             </div>
-            <div class="line"></div>
+            <div class="line" id="line-1"></div>
             <div class="step">
                 <div class="circle">2</div>
                 <div class="step-label">Akademik</div>
             </div>
-            <div class="line"></div>
+            <div class="line" id="line-2"></div>
             <div class="step">
                 <div class="circle">3</div>
                 <div class="step-label">Penempatan</div>
@@ -488,6 +498,21 @@
 
             <!-- Step 3: Penempatan -->
             <div id="step-3" class="form-step">
+                <div class="mb-3">
+                    <label class="form-label d-block">Periode Magang</label>
+                    <div class="row g-0">
+                        <div class="col-6">
+                            <label for="tanggal_mulai" class="form-label small text-muted">Tanggal Mulai</label>
+                            <input type="date" class="form-control rounded-0 rounded-start" id="tanggal_mulai" name="tanggal_mulai" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="tanggal_selesai" class="form-label small text-muted">Tanggal Selesai</label>
+                            <input type="date" class="form-control rounded-0 rounded-end border-start-0" id="tanggal_selesai" name="tanggal_selesai" required>
+                        </div>
+                    </div>
+                    <div class="form-feedback">Periode magang wajib diisi</div>
+                </div>
+
                 <div class="input-group">
                     <label for="direktorat" class="form-label">Direktorat</label>
                     <i class="fas fa-building input-icon"></i>
@@ -534,17 +559,38 @@
     <script>
         // Fungsi untuk mengubah status progres
         function updateProgress(currentStep, nextStep) {
-            document.getElementById(`circle-step-${currentStep}`).classList.remove('bg-primary');
-            document.getElementById(`circle-step-${nextStep}`).classList.add('bg-primary');
-
+            // Ambil semua lingkaran step
+            const circles = document.querySelectorAll('.circle');
+            
+            // Hapus class bg-primary dari lingkaran sebelumnya
+            circles[currentStep-1].classList.remove('bg-primary');
+            
+            // Tambahkan class bg-primary ke lingkaran berikutnya
+            circles[nextStep-1].classList.add('bg-primary');
+            
+            // Perbarui status aktif untuk step
             const steps = document.querySelectorAll('.step');
-            steps.forEach(step => step.classList.remove('active'));
-            steps[nextStep - 1].classList.add('active');
-
+            steps.forEach((step, index) => {
+                if (index + 1 === nextStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            // Perbarui warna garis antara lingkaran
+            const lines = document.querySelectorAll('.line');
+            
             if (nextStep > currentStep) {
-                document.getElementById(`line-step-${currentStep}`).classList.add('bg-primary');
+                // Jika bergerak maju, warnai garis sebelumnya
+                if (currentStep <= lines.length) {
+                    lines[currentStep-1].classList.add('bg-primary');
+                }
             } else {
-                document.getElementById(`line-step-${currentStep - 1}`).classList.remove('bg-primary');
+                // Jika bergerak mundur, hapus warna garis
+                if (currentStep-1 < lines.length) {
+                    lines[currentStep-1].classList.remove('bg-primary');
+                }
             }
         }
 

@@ -104,6 +104,17 @@
                                 @endif
                             </p>
                             <p><strong>Tanggal Daftar:</strong> {{ $peserta->created_at->format('d-m-Y') }}</p>
+
+                            <p><strong>Periode Magang:</strong> 
+                                @if($peserta->tanggal_mulai && $peserta->tanggal_selesai)
+                                    {{ \Carbon\Carbon::parse($peserta->tanggal_mulai)->format('d-m-Y') }} 
+                                    s/d 
+                                    {{ \Carbon\Carbon::parse($peserta->tanggal_selesai)->format('d-m-Y') }}
+                                @else
+                                    <span class="text-muted">Belum diatur</span>
+                                @endif
+                            </p>
+
                             <div class="document-link">
                                 <a href="{{ asset('storage/'.$peserta->cv) }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-file-pdf me-1"></i> CV </a>
