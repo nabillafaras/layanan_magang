@@ -48,7 +48,7 @@ class LaporanBulananController extends Controller
                         ->get();
         
         // Hitung bulan sejak diterima
-        $tanggalDiterima = Carbon::parse($user->tanggal_diterima);
+        $tanggalDiterima = Carbon::parse($user->tanggal_mulai);
         $bulanBerjalan = Carbon::now()->startOfMonth();
         $bulanSejakDiterima = [];
         
@@ -83,6 +83,25 @@ class LaporanBulananController extends Controller
             return abort(403, 'Anda belum terdaftar.');
         }
         
+        // Validasi periode magang
+        $today = Carbon::today();
+        $tanggalMulai = Carbon::parse($pendaftaran->tanggal_mulai);
+        $tanggalSelesai = Carbon::parse($pendaftaran->tanggal_selesai);
+
+        if ($today->lt($tanggalMulai)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Periode magang Anda belum dimulai. Magang akan dimulai pada ' . $tanggalMulai->format('d-m-Y') . '.'
+            ], 400);
+        }
+
+        if ($today->gt($tanggalSelesai)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Periode magang Anda telah berakhir pada ' . $tanggalSelesai->format('d-m-Y') . '.'
+            ], 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'file_laporan' => 'required|file|mimes:pdf,doc,docx|max:10240', // Maksimal 10MB

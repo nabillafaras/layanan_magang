@@ -4,97 +4,163 @@
 
 @section('additional_css')
 <style>
-    body {
-        font-family: 'Calibri', sans-serif;
-        background-color: #f8f9fa;
-    }
-
+    /* Dashboard Specific Styles */
     .dashboard-header {
         margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .dashboard-header h2 {
+        font-weight: 700;
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+    
+    .dashboard-header h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 60px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        border-radius: 2px;
     }
 
     .dashboard-card {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: transform 0.2s;
-        margin-bottom: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        margin-bottom: 25px;
         overflow: hidden;
+        border: none;
     }
     
     .dashboard-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     }
     
     .stat-card {
         background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        width: 120px;
+        height: 120px;
+        background: rgba(139, 0, 0, 0.05);
+        border-radius: 50%;
+        z-index: 0;
     }
     
     .stat-card h3 {
-        color: #8b0000;
-        margin-bottom: 5px;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        font-weight: 600;
         font-size: 1.2rem;
+        position: relative;
+        z-index: 1;
     }
     
-    .stat-card p {
-        color: #666;
-        margin-bottom: 0;
-    }
-
-    .stat-card .h2 {
-        font-weight: bold;
+    .stat-card p.h2 {
+        font-weight: 700;
         color: #333;
         margin-bottom: 5px;
+        font-size: 2.2rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .stat-card small {
+        font-size: 0.85rem;
+        position: relative;
+        z-index: 1;
     }
 
     .card-header {
-        background-color: #f1f1f1;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         border-bottom: 1px solid #e0e0e0;
-        padding: 15px 20px;
+        padding: 18px 25px;
     }
 
     .card-header h5 {
         margin: 0;
         font-weight: 600;
         color: #333;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-header h5 i {
+        margin-right: 10px;
+        color: var(--primary-color);
     }
 
     .icon-circle {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+    }
+    
+    .icon-circle:hover {
+        transform: scale(1.1);
     }
 
     .periode-magang-card {
-        border-left: 4px solid #FFC107;
+        border-left: 5px solid #FFC107;
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
     }
 
     .section-title {
         position: relative;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
+        padding-bottom: 12px;
+        margin-bottom: 25px;
         font-weight: 600;
+        color: var(--primary-color);
     }
 
-    .section-title:after {
+    .section-title::after {
         content: '';
         position: absolute;
         left: 0;
         bottom: 0;
         height: 3px;
-        width: 50px;
-        background-color: #8b0000;
+        width: 60px;
+        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        border-radius: 2px;
     }
 
     .action-card {
         height: 100%;
+        transition: all 0.3s;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
     }
 
     .action-card .card-body {
@@ -102,16 +168,29 @@
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
+        padding: 30px;
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    }
+    
+    .action-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .action-card:hover .icon-wrapper i {
+        transform: scale(1.2);
     }
 
     .badge {
-        padding: 6px 10px;
+        padding: 8px 12px;
         font-weight: 500;
+        border-radius: 30px;
+        font-size: 0.85rem;
     }
 
     .timeline-status-container {
         overflow-x: auto;
-        padding: 10px 0;
+        padding: 15px 0;
     }
 
     .timeline-status {
@@ -128,24 +207,32 @@
     }
 
     .node-circle {
-        width: 24px;
-        height: 24px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         background-color: #ccc;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+        transition: all 0.3s;
     }
 
     .timeline-node.active .node-circle {
         background-color: #4CAF50;
+        box-shadow: 0 0 0 5px rgba(76, 175, 80, 0.2);
     }
 
     .timeline-connector {
-        height: 2px;
+        height: 3px;
         background-color: #ccc;
-        width: 50px;
+        width: 60px;
         margin: 0 5px;
         align-self: center;
         margin-top: -16px;
+        transition: all 0.3s;
     }
 
     .timeline-node.active + .timeline-connector {
@@ -155,10 +242,11 @@
     .node-label {
         font-size: 14px;
         white-space: nowrap;
+        font-weight: 500;
     }
 
     .statistics-row {
-        margin-top: 30px;
+        margin-top: 40px;
     }
 
     .small-text {
@@ -166,212 +254,343 @@
         color: #666;
     }
 
-    .activity-table th, .activity-table td {
-        padding: 12px 15px;
+    .activity-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+    
+    .activity-table th {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: 600;
+        padding: 15px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .activity-table td {
+        padding: 15px;
         vertical-align: middle;
+        border-bottom: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .activity-table tr:hover td {
+        background-color: rgba(139, 0, 0, 0.02);
+    }
+    
+    .activity-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    /* Animation Classes */
+    .icon-wrapper {
+        margin-bottom: 20px;
+    }
+    
+    .icon-wrapper i {
+        font-size: 3rem;
+        transition: all 0.3s;
+    }
+    
+    .progress {
+        height: 12px;
+        border-radius: 6px;
+        overflow: hidden;
+        background-color: #e9ecef;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .progress-bar {
+        transition: width 1.5s ease;
+        background: linear-gradient(90deg, #FFC107, #FF9800);
+    }
+    
+    /* Pulse Animation for Buttons */
+    @keyframes pulse-button {
+        0% {
+            box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(139, 0, 0, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(139, 0, 0, 0);
+        }
+    }
+    
+    .btn-pulse {
+        animation: pulse-button 2s infinite;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+        
+        .stat-card p.h2 {
+            font-size: 1.8rem;
+        }
     }
 </style>
 @endsection
 
 @section('content')
 <!-- Page Content -->
-<div class="main-content">
-    <div class="container-fluid">
-        <div class="dashboard-header">
-            <h2 class="mb-4">Dashboard</h2>
-        </div>
-        
-        <div class="row">
-            <!-- Periode Magang Card - Full Width -->
-            <div class="col-12 mb-4">
-                <div class="card dashboard-card periode-magang-card">
-                    <div class="card-header">
-                        <h5><i class="fas fa-calendar-alt me-2"></i> Periode Magang</h5>
-                    </div>
-                    <div class="card-body">
-                        @if($tanggalMulai && $tanggalSelesai)
-                            <div class="row align-items-center">
-                                <div class="col-md-4">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-calendar-alt text-white"></i>
-                                        </div>
-                                        <div class="ms-3">
-                                            <h5 class="mb-1">Durasi Magang</h5>
-                                            <p class="text-muted mb-0">{{ $tanggalMulai }} s/d {{ $tanggalSelesai }}</p>
-                                        </div>
+<div class="container-fluid px-4">
+    <div class="dashboard-header fade-in">
+        <h2 class="mb-4">Dashboard</h2>
+        <ol class="breadcrumb mb-4 slide-in-right">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Selamat datang kembali, {{ auth()->user()->nama_lengkap }}!</li>
+        </ol>
+    </div>
+    
+    <!-- Periode Magang Card - Full Width -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card dashboard-card periode-magang-card animate__animated animate__fadeInUp">
+                <div class="card-header">
+                    <h5><i class="fas fa-calendar-alt"></i> Periode Magang</h5>
+                </div>
+                <div class="card-body">
+                    @if($tanggalMulai && $tanggalSelesai)
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-circle bg-warning">
+                                        <i class="fas fa-calendar-alt text-white"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h5 class="mb-1">Durasi Magang</h5>
+                                        <p class="text-muted mb-0">{{ $tanggalMulai }} s/d {{ $tanggalSelesai }}</p>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="progress mt-2" style="height: 10px;">
-                                        <div class="progress-bar bg-warning" role="progressbar" 
-                                            style="width: {{ $sisaHari > 0 ? (1 - ($sisaHari / Carbon\Carbon::parse($tanggalMulai)->diffInDays(Carbon\Carbon::parse($tanggalSelesai)))) * 100 : 100 }}%;" 
-                                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="progress mt-2 progress-animate" style="height: 12px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                        style="width: 0%;" 
+                                        data-width="{{ $sisaHari > 0 ? (1 - ($sisaHari / Carbon\Carbon::parse($tanggalMulai)->diffInDays(Carbon\Carbon::parse($tanggalSelesai)))) * 100 : 100 }}%">
                                     </div>
                                 </div>
-                                <div class="col-md-2 text-end">
-                                    <p class="text-danger mb-0">
-                                        <i class="fas fa-clock me-1"></i>
-                                        <strong>{{ $sisaHari }} hari</strong> lagi
-                                    </p>
-                                </div>
                             </div>
-                        @else
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i> Belum ada periode magang yang ditentukan.
+                            <div class="col-md-2 text-end">
+                                <p class="text-danger mb-0 animate__animated animate__pulse animate__infinite">
+                                    <i class="fas fa-clock me-1"></i>
+                                    <strong>{{ $sisaHari }} hari</strong> lagi
+                                </p>
                             </div>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> Belum ada periode magang yang ditentukan.
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Statistics Row -->
-        <div class="row statistics-row">
-            <div class="col-12">
-                <h4 class="section-title">Statistik Kehadiran</h4>
-            </div>
-            <div class="col-md-4">
-                <div class="stat-card">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <h3>Total Kehadiran</h3>
-                        <i class="fas fa-user-check text-success fa-2x"></i>
-                    </div>
-                    <p class="h2">{{ $totalKehadiran }}</p>
-                    <small class="text-muted">Hari ini: <span class="text-success">{{ $kehadiranHariIni }}</span></small>
+    <!-- Statistics Row -->
+    <div class="row statistics-row">
+        <div class="col-12">
+            <h4 class="section-title animate__animated animate__fadeIn">Statistik Kehadiran</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h3>Total Kehadiran</h3>
+                    <i class="fas fa-user-check text-success fa-2x"></i>
                 </div>
+                <p class="h2 counter">{{ $totalKehadiran }}</p>
+                <small class="text-muted">Hari ini: <span class="text-success">{{ $kehadiranHariIni }}</span></small>
             </div>
-            <div class="col-md-4">
-                <div class="stat-card">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <h3>Total Izin</h3>
-                        <i class="fas fa-file-alt text-warning fa-2x"></i>
-                    </div>
-                    <p class="h2">{{ $totalIzin }}</p>
-                    <small class="text-muted">Bulan ini</small>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h3>Total Izin</h3>
+                    <i class="fas fa-file-alt text-warning fa-2x"></i>
                 </div>
+                <p class="h2 counter">{{ $totalIzin }}</p>
+                <small class="text-muted">Bulan ini</small>
             </div>
-            <div class="col-md-4">
-                <div class="stat-card">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <h3>Total Sakit</h3>
-                        <i class="fas fa-procedures text-danger fa-2x"></i>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h3>Total Sakit</h3>
+                    <i class="fas fa-procedures text-danger fa-2x"></i>
+                </div>
+                <p class="h2 counter">{{ $totalSakit }}</p>
+                <small class="text-muted">Bulan ini</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="section-title animate__animated animate__fadeIn">Absensi Cepat</h4>
+        </div>
+        <div class="col-md-4">
+            <div class="card dashboard-card action-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-sign-in-alt text-primary"></i>
                     </div>
-                    <p class="h2">{{ $totalSakit }}</p>
-                    <small class="text-muted">Bulan ini</small>
+                    <h5 class="card-title mb-3">Absen Masuk</h5>
+                    <p class="card-text mb-4">Lakukan absensi masuk hari ini</p>
+                    <a href="{{ route('attendance') }}" class="btn btn-primary w-100 btn-pulse">Absen Masuk</a>
                 </div>
             </div>
         </div>
-        
-        <!-- Quick Actions -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <h4 class="section-title">Absensi Cepat</h4>
-            </div>
-            <div class="col-md-4">
-                <div class="card dashboard-card action-card">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-sign-in-alt fa-3x text-primary"></i>
-                        </div>
-                        <h5 class="card-title">Absen Masuk</h5>
-                        <p class="card-text mb-4">Lakukan absensi masuk hari ini</p>
-                        <a href="#xx" class="btn btn-primary w-100">Absen Masuk</a>
+        <div class="col-md-4">
+            <div class="card dashboard-card action-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-calendar-times text-warning"></i>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card dashboard-card action-card">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-calendar-times fa-3x text-warning"></i>
-                        </div>
-                        <h5 class="card-title">Izin</h5>
-                        <p class="card-text mb-4">Ajukan izin tidak masuk</p>
-                        <a href="#xx" class="btn btn-warning w-100">Ajukan Izin</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card dashboard-card action-card">
-                    <div class="card-body text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-heartbeat fa-3x text-danger"></i>
-                        </div>
-                        <h5 class="card-title">Sakit</h5>
-                        <p class="card-text mb-4">Laporkan ketidakhadiran karena sakit</p>
-                        <a href="#xx" class="btn btn-danger w-100">Lapor Sakit</a>
-                    </div>
+                    <h5 class="card-title mb-3">Izin</h5>
+                    <p class="card-text mb-4">Ajukan izin tidak masuk</p>
+                    <a href="{{ route('izin') }}" class="btn btn-warning w-100">Ajukan Izin</a>
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card dashboard-card action-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                <div class="card-body text-center">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-heartbeat text-danger"></i>
+                    </div>
+                    <h5 class="card-title mb-3">Sakit</h5>
+                    <p class="card-text mb-4">Laporkan ketidakhadiran karena sakit</p>
+                    <a href="{{ route('sakit') }}" class="btn btn-danger w-100">Lapor Sakit</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Recent Activity -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <h4 class="section-title">Aktivitas Terakhir</h4>
-                <div class="card dashboard-card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover activity-table">
-                                <thead>
-                                    <tr>
-                                        <th width="25%">Tanggal</th>
-                                        <th width="35%">Jenis</th>
-                                        <th width="40%">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($aktivitasRiwayat as $aktivitas)
-                                        <tr>
-                                            <td>{{ $aktivitas->created_at->format('d M Y, H:i') }}</td>
-                                            <td>
-                                                @if($aktivitas->type == 'Absensi')
-                                                    <i class="fas fa-clipboard-check me-2 text-primary"></i>
-                                                @elseif($aktivitas->type == 'Laporan')
-                                                    <i class="fas fa-file-alt me-2 text-info"></i>
-                                                @endif
-                                                {{ $aktivitas->type }}
-                                            </td>
-                                            <td>
-                                                @if($aktivitas->type == 'Absensi')
-                                                    @if($aktivitas->status == 'hadir')
-                                                        <span class="badge bg-success">Hadir</span>
-                                                    @elseif($aktivitas->status == 'izin')
-                                                        <span class="badge bg-warning">Izin</span>
-                                                    @elseif($aktivitas->status == 'sakit')
-                                                        <span class="badge bg-info">Sakit</span>
-                                                    @elseif($aktivitas->status == 'terlambat')
-                                                        <span class="badge bg-warning">Terlambat</span>
-                                                    @else
-                                                        <span class="badge bg-secondary">{{ $aktivitas->status }}</span>
-                                                    @endif
-                                                @elseif($aktivitas->type == 'Laporan')
-                                                    @if($aktivitas->status == 'menunggu')
-                                                        <span class="badge bg-warning">Menunggu</span>
-                                                    @elseif($aktivitas->status == 'diterima')
-                                                        <span class="badge bg-success">Diterima</span>
-                                                    @elseif($aktivitas->status == 'ditolak')
-                                                        <span class="badge bg-danger">Ditolak</span>
-                                                    @else
-                                                        <span class="badge bg-secondary">{{ $aktivitas->status }}</span>
-                                                    @endif
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center">Tidak ada aktivitas</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+    <!-- Recent Activity -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h4 class="section-title animate__animated animate__fadeIn">Aktivitas Terakhir</h4>
+        <div class="card dashboard-card animate__animated animate__fadeInUp">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table activity-table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Aktivitas</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($aktivitasRiwayat as $aktivitas)
+                                <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ $loop->index * 0.1 }}s">
+                                    <td>{{ $aktivitas->tanggal }}</td>
+                                    <td>
+                                        @if(strpos($aktivitas->aktivitas, 'Absensi') !== false)
+                                            <i class="fas fa-clipboard-check me-2 text-primary"></i>
+                                        @elseif(strpos($aktivitas->aktivitas, 'Laporan') !== false)
+                                            <i class="fas fa-file-alt me-2 text-info"></i>
+                                        @endif
+                                        {{ $aktivitas->aktivitas }}
+                                    </td>
+                                    <td>
+                                        @switch(strtolower($aktivitas->status))
+                                            @case('hadir')
+                                                <span class="badge bg-success">Hadir</span>
+                                                @break
+                                            @case('izin')
+                                                <span class="badge bg-warning">Izin</span>
+                                                @break
+                                            @case('sakit')
+                                                <span class="badge bg-info">Sakit</span>
+                                                @break
+                                            @case('terlambat')
+                                                <span class="badge bg-danger">Terlambat</span>
+                                                @break
+                                            @case('menunggu')
+                                                <span class="badge bg-warning">Menunggu</span>
+                                                @break
+                                            @case('acc')
+                                                <span class="badge bg-success">Acc</span>
+                                                @break
+                                            @case('ditolak')
+                                                <span class="badge bg-danger">Ditolak</span>
+                                                @break
+                                            @default
+                                                <span class="badge bg-secondary">{{ ucfirst($aktivitas->status) }}</span>
+                                        @endswitch
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center">Tidak ada aktivitas</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+</div>
+@endsection
+
+@section('additional_scripts')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate progress bar
+        setTimeout(function() {
+            const progressBars = document.querySelectorAll('.progress-animate .progress-bar');
+            progressBars.forEach(function(bar) {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width;
+            });
+        }, 500);
+        
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseInt(counter.innerText);
+            let count = 0;
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 30); // Update every 30ms
+            
+            const updateCount = () => {
+                if (count < target) {
+                    count += increment;
+                    counter.innerText = Math.ceil(count);
+                    setTimeout(updateCount, 30);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            
+            updateCount();
+        });
+        
+        // Hover effects for action cards
+        const actionCards = document.querySelectorAll('.action-card');
+        actionCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.querySelector('.icon-wrapper i').classList.add('animate__animated', 'animate__heartBeat');
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.querySelector('.icon-wrapper i').classList.remove('animate__animated', 'animate__heartBeat');
+            });
+        });
+    });
+</script>
 @endsection

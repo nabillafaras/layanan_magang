@@ -4,51 +4,364 @@
 
 @section('additional_css')
 <style>
-        body {
-            font-family: 'Calibri', sans-serif;
+    /* Dashboard Specific Styles */
+    .dashboard-header {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .dashboard-header h2 {
+        font-weight: 700;
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+    
+    .dashboard-header h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 60px;
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
+        border-radius: 2px;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #c13030;
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        color: #6c757d;
+    }
+    
+    .dashboard-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: none;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid #e0e0e0;
+        padding: 18px 25px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-header h5 i, .card-header i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: 600;
+        padding: 15px;
+        border-bottom: 2px solid #e0e0e0;
+        white-space: nowrap;
+    }
+    
+    .table td {
+        padding: 15px;
+        vertical-align: middle;
+        border-bottom: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .table tr:hover td:not([class*="bg-"]) {
+        background-color: rgba(139, 0, 0, 0.02);
+    }
+    
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .table-dark th {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: #5a0000;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+    }
+    
+    .btn {
+        font-weight: 600;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: none;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
+    }
+    
+    .btn:hover::after {
+        width: 100%;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), #5a0000);
+        color: white;
+    }
+    
+    .btn-primary::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+    }
+    
+    .btn-success::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .list-group-item {
+        border-radius: 8px;
+        margin-bottom: 5px;
+        border: 1px solid rgba(0,0,0,0.125);
+        transition: all 0.3s;
+    }
+    
+    .list-group-item:hover {
+        transform: translateX(5px);
+        background-color: rgba(139, 0, 0, 0.02);
+    }
+    
+    .badge {
+        padding: 8px 12px;
+        font-weight: 500;
+        border-radius: 30px;
+        font-size: 0.85rem;
+    }
+    
+    .bg-success {
+        background-color: #28a745 !important;
+    }
+    
+    .bg-warning {
+        background-color: #ffc107 !important;
+    }
+    
+    .bg-info {
+        background-color: #17a2b8 !important;
+    }
+    
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
+    
+    /* Animation Classes */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideInLeft {
+        from { transform: translateX(-50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideInRight {
+        from { transform: translateX(50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideInUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .slide-in-left {
+        animation: slideInLeft 0.5s ease-in-out;
+    }
+    
+    .slide-in-right {
+        animation: slideInRight 0.5s ease-in-out;
+    }
+    
+    .slide-in-up {
+        animation: slideInUp 0.5s ease-in-out;
+    }
+    
+    .bounce-in {
+        animation: bounceIn 0.6s ease-in-out;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .table-responsive {
+            border-radius: 15px;
         }
-        .card {
-            box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
+        
+        .filter-form {
+            flex-direction: column;
         }
+        
+        .filter-form .col-auto {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+    }
+    
+    /* DataTables Custom Styling */
+    .dataTables_wrapper .dataTables_length, 
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 15px;
+    }
+    
+    .dataTables_wrapper .dataTables_length select, 
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 8px;
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 50px;
+        padding: 5px 12px;
+        margin: 0 3px;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: var(--primary-color);
+        color: white !important;
+        border: none;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: rgba(139, 0, 0, 0.1);
+        color: var(--primary-color) !important;
+        border: none;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Rekapitulasi Absensi Peserta Magang</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Rekapitulasi Absensi</li>
-    </ol>
+    <div class="dashboard-header fade-in">
+        <h2 class="mt-4">Rekapitulasi Absensi Peserta Magang</h2>
+        <ol class="breadcrumb mb-4 slide-in-right">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Rekapitulasi Absensi</li>
+        </ol>
+    </div>
 
-    <div class="card mb-4">
+    <div class="dashboard-card slide-in-up" style="animation-delay: 0.1s">
         <div class="card-header">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <i class="fas fa-calendar-check me-1"></i>
-                    Data Absensi Peserta Magang
+                    <h5><i class="fas fa-calendar-check"></i> Data Absensi Peserta Magang</h5>
                 </div>
                 <div class="col-md-6 text-end">
-                    <form action="{{ route('admin.rekapitulasi-absensi') }}" method="GET" class="row g-3 justify-content-end">
+                    <form action="{{ route('admin.rekapitulasi-absensi') }}" method="GET" class="row g-3 justify-content-end filter-form">
                         <div class="col-auto">
-                            <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-calendar"></i></span>
+                                <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <select class="form-select" name="direktorat" id="direktorat">
-                                <option value="">Semua Direktorat</option>
-                                <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
-                                <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
-                                <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
-                                <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
-                                <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-building"></i></span>
+                                <select class="form-select" name="direktorat" id="direktorat">
+                                    <option value="">Semua Direktorat</option>
+                                    <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
+                                    <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
+                                    <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
+                                    <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
+                                    <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i> Filter
+                            </button>
                         </div>
                         <div class="col-auto">
                             <a href="{{ route('admin.export-absensi') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success">
-                                <i class="fas fa-file-excel me-1"></i> Export Excel
+                                <i class="fas fa-file-excel me-2"></i> Export Excel
                             </a>
                         </div>
                     </form>
@@ -57,7 +370,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="absensiTable">
+                <table class="table table-bordered" id="absensiTable">
                     <thead class="table-dark">
                         <tr>
                             <th rowspan="2" class="text-center align-middle">No</th>
@@ -79,9 +392,16 @@
                     </thead>
                     <tbody>
                         @forelse ($pesertaAbsensi as $index => $peserta)
-                        <tr>
+                        <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
                             <td class="text-center">{{ $index + 1 }}</td>
-                            <td>{{ $peserta->nama_lengkap }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user text-primary"></i>
+                                    </div>
+                                    <span>{{ $peserta->nama_lengkap }}</span>
+                                </div>
+                            </td>
                             <td>{{ $peserta->direktorat }}</td>
                             <td>{{ $peserta->asal_universitas }}</td>
 
@@ -105,10 +425,10 @@
                                 <td class="text-center {{ $colorClass }}">{{ $status }}</td>
                             @endfor
 
-                            <td class="text-center">{{ $peserta->attendances->where('status', 'H')->count() }}</td>
-                            <td class="text-center">{{ $peserta->attendances->where('status', 'S')->count() }}</td>
-                            <td class="text-center">{{ $peserta->attendances->where('status', 'I')->count() }}</td>
-                            <td class="text-center">{{ $peserta->attendances->where('status', 'A')->count() }}</td>
+                            <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'H')->count() }}</td>
+                            <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'S')->count() }}</td>
+                            <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'I')->count() }}</td>
+                            <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'A')->count() }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -123,10 +443,9 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="card mb-4">
+            <div class="dashboard-card bounce-in" style="animation-delay: 0.3s">
                 <div class="card-header">
-                    <i class="fas fa-chart-pie me-1"></i>
-                    Statistik Absensi Peserta Magang
+                    <h5><i class="fas fa-chart-pie"></i> Statistik Absensi Peserta Magang</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="absensiChart" width="100%" height="50"></canvas>
@@ -134,35 +453,49 @@
             </div>
         </div>
         <div class="col-md-6">
-        <div class="card">
-    <div class="card-header">
-        <h5><i class="fas fa-info-circle"></i> Keterangan</h5>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Hadir (H)
-                        <span class="badge bg-success rounded-pill">{{ $totalHadir ?? 0 }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Sakit (S)
-                        <span class="badge bg-warning rounded-pill">{{ $totalSakit ?? 0 }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Izin (I)
-                        <span class="badge bg-info rounded-pill">{{ $totalIzin ?? 0 }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Alpha (A)
-                        <span class="badge bg-danger rounded-pill">{{ $totalAlpha ?? 0 }}</span>
-                    </li>
-                </ul>
+            <div class="dashboard-card bounce-in" style="animation-delay: 0.4s">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> Keterangan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.1s">
+                                    <div>
+                                        <i class="fas fa-check-circle text-success me-2"></i> Hadir (H)
+                                    </div>
+                                    <span class="badge bg-success rounded-pill">{{ $totalHadir ?? 0 }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.2s">
+                                    <div>
+                                        <i class="fas fa-procedures text-warning me-2"></i> Sakit (S)
+                                    </div>
+                                    <span class="badge bg-warning rounded-pill">{{ $totalSakit ?? 0 }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.3s">
+                                    <div>
+                                        <i class="fas fa-calendar-minus text-info me-2"></i> Izin (I)
+                                    </div>
+                                    <span class="badge bg-info rounded-pill">{{ $totalIzin ?? 0 }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.4s">
+                                    <div>
+                                        <i class="fas fa-times-circle text-danger me-2"></i> Alpha (A)
+                                    </div>
+                                    <span class="badge bg-danger rounded-pill">{{ $totalAlpha ?? 0 }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.5s">
+                                    <div class="fw-bold">
+                                        <i class="fas fa-users text-primary me-2"></i> Total Kehadiran
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">{{ ($totalHadir ?? 0) + ($totalSakit ?? 0) + ($totalIzin ?? 0) + ($totalAlpha ?? 0) }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
         </div>
     </div>
 </div>
@@ -176,17 +509,34 @@
 
 <script>
     $(document).ready(function() {
+        // Inisialisasi DataTable dengan animasi
         $('#absensiTable').DataTable({
             "scrollX": true,
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json"
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data yang tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total data)",
+                "search": "Cari:",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                }
+            },
+            "pageLength": 10,
+            "responsive": true,
+            "drawCallback": function() {
+                $('.dataTables_paginate .paginate_button').addClass('fade-in');
             }
         });
 
-        // Chart Data
+        // Chart Data dengan animasi
         var ctx = document.getElementById('absensiChart');
         var myPieChart = new Chart(ctx, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['Hadir', 'Sakit', 'Izin', 'Alpha'],
                 datasets: [{
@@ -202,6 +552,7 @@
                         '#17a2b8',  // info
                         '#dc3545'   // danger
                     ],
+                    borderWidth: 0
                 }],
             },
             options: {
@@ -222,8 +573,27 @@
                             }
                         }
                     }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 2000,
+                    easing: 'easeOutQuart'
                 }
             }
+        });
+        
+        // Tambahkan efek hover pada baris tabel
+        const tableRows = document.querySelectorAll('#absensiTable tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
         });
     });
 </script>

@@ -59,6 +59,29 @@ class SakitController extends Controller
 
     public function store(Request $request)
     {
+
+        // Mendapatkan data pendaftaran user
+        $pendaftaran = $this->getPendaftaran();
+        
+        // Validasi periode magang
+        $today = Carbon::today();
+        $tanggalMulai = Carbon::parse($pendaftaran->tanggal_mulai);
+        $tanggalSelesai = Carbon::parse($pendaftaran->tanggal_selesai);
+
+        if ($today->lt($tanggalMulai)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Periode magang Anda belum dimulai. Magang akan dimulai pada ' . $tanggalMulai->format('d-m-Y') . '.'
+            ], 400);
+        }
+
+        if ($today->gt($tanggalSelesai)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Periode magang Anda telah berakhir pada ' . $tanggalSelesai->format('d-m-Y') . '.'
+            ], 400);
+        }
+
         try {
             // Validasi input
             $validator = Validator::make($request->all(), [

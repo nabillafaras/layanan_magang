@@ -3,6 +3,10 @@
 @section('title', 'Cek Status Pendaftaran - Kementerian Sosial RI')
 
 @section('additional_css')
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
     :root {
         --primary-color: #8b0000;
@@ -18,22 +22,7 @@
         font-family: 'Calibri', sans-serif;
         overflow-x: hidden;
         color: var(--text-dark);
-    }
-    
-    /* Page Transition Animation */
-    .fade-enter-active {
-        animation: fadeIn 0.5s ease-in;
-    }
-    
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        background-color: #ffffff;
     }
     
     /* Hero Section */
@@ -60,147 +49,250 @@
         z-index: 0;
     }
     
-    .hero-content {
-        position: relative;
-        z-index: 2;
-        max-width: 600px;
-        animation: slideInLeft 1s ease-out;
-    }
-    
     .card {
         position: relative;
         z-index: 2;
         border: none;
-        border-radius: 10px;
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        background: #ffffff;
+        transform: translateY(0);
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
     }
     
     .card-header {
-        background-color: var(--primary-color) !important;
+        background: linear-gradient(135deg, var(--primary-color), #5a0000) !important;
         color: var(--text-light);
-        border-bottom: none;
-        padding: 1.2rem 1.5rem;
+        border-bottom: 5px solid var(--secondary-color);
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        transform: rotate(30deg);
+        pointer-events: none;
+    }
+    
+    .card-header h4 {
+        font-weight: 700;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-header h4 i {
+        margin-right: 10px;
+        font-size: 1.5rem;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
     
     .card-body {
         position: relative;
         z-index: 2;
-        padding: 2rem;
+        padding: 2.5rem;
+        background-color: #ffffff;
     }
     
-    .btn-primary {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-        color: var(--text-light);
-        transition: var(--transition);
-    }
-    
-    .btn-primary:hover, .btn-primary:focus {
-        background-color: var(--primary-hover);
-        border-color: var(--primary-hover);
+    .form-control {
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        border: 1px solid rgba(0,0,0,0.1);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
     }
     
     .form-control:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+        background-color: #ffffff;
     }
     
     .form-label {
         font-weight: 600;
         color: var(--text-dark);
-    }
-    
-    /* Badges untuk hasil status */
-    .badge.bg-warning {
-        background-color: #FFD700 !important;
-        color: var(--text-dark);
-    }
-    
-    .badge.bg-success {
-        background-color: #28a745 !important;
-    }
-    
-    .badge.bg-danger {
-        background-color: var(--primary-color) !important;
-    }
-    
-    /* Alert styling */
-    .alert {
-        border-radius: 8px;
-        padding: 1.25rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .alert-success {
-        background-color: #d4edda;
-        border-color: #c3e6cb;
-        color: #155724;
-    }
-    
-    .alert-warning {
-        background-color: #fff3cd;
-        border-color: #ffeeba;
-        color: #856404;
-    }
-    
-    .alert-danger {
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        color: #721c24;
+        margin-bottom: 0.5rem;
     }
     
     .btn {
-        padding: 0.6rem 1.5rem;
-        border-radius: 5px;
         font-weight: 600;
-        transition: var(--transition);
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
-    .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
+    .btn::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
     }
     
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
+    .btn:hover::after {
+        width: 100%;
+    }
+    
+    .btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+    
+    .btn i {
+        margin-right: 10px;
+        transition: transform 0.3s ease;
+    }
+    
+    .btn:hover i {
+        transform: translateY(-3px);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), #5a0000);
+        color: var(--text-light);
+    }
+    
+    .btn-primary::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .alert {
+        border-radius: 15px;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        border-left: 5px solid;
+        animation: fadeInUp 0.5s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .alert-danger {
+        background-color: rgba(248, 215, 218, 0.8);
+        border-color: var(--primary-color);
+        color: #721c24;
+    }
+    
+    /* Animasi input focus */
+    .form-floating {
+        position: relative;
+    }
+    
+    .input-animation {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .input-animation::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: width 0.4s ease;
+    }
+    
+    .input-animation:focus-within::after {
+        width: 100%;
+    }
+    
+    /* Responsif */
+    @media (max-width: 768px) {
+        .hero {
+            padding: 80px 5%;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
     }
 </style>
 @endsection
 
 @section('content')
 @include('layouts.transisi')
+
 <div class="hero">
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">Cek Status Pendaftaran</h4>
+                <div class="card shadow-sm" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-search"></i> Cek Status Pendaftaran</h4>
                     </div>
                     <div class="card-body">
                         @if(session('error'))
                             <div class="alert alert-danger">
-                                {{ session('error') }}
+                                <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
                             </div>
                         @endif
                         
-                        <p class="mb-4">Masukkan nomor pendaftaran Anda untuk memeriksa status pendaftaran magang.</p>
+                        <p class="mb-4" data-aos="fade-up" data-aos-delay="100">Masukkan nomor pendaftaran Anda untuk memeriksa status pendaftaran magang.</p>
                         
-                        <form action="{{ route('status.check') }}" method="POST">
+                        <form action="{{ route('status.check') }}" method="POST" id="checkStatusForm">
                             @csrf
-                            <div class="form-group mb-4">
+                            <div class="form-group mb-4" data-aos="fade-up" data-aos-delay="200">
                                 <label for="nomor_pendaftaran" class="form-label">Nomor Pendaftaran</label>
-                                <input type="text" class="form-control @error('nomor_pendaftaran') is-invalid @enderror" 
-                                     id="nomor_pendaftaran" name="nomor_pendaftaran" placeholder="Contoh: REG-2025-00123" required>
+                                <div class="input-animation">
+                                    <input type="text" class="form-control @error('nomor_pendaftaran') is-invalid @enderror" 
+                                         id="nomor_pendaftaran" name="nomor_pendaftaran" placeholder="Contoh: REG-2025-00123" required>
+                                </div>
                                 @error('nomor_pendaftaran')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Cek Status</button>
+                            <div class="d-grid" data-aos="fade-up" data-aos-delay="300">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Cek Status
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -209,4 +301,13 @@
         </div>
     </div>
 </div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Inisialisasi AOS Animation
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+</script>
 @endsection

@@ -44,7 +44,7 @@ class CreateController extends Controller
         ]);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('admin.index')
+        return redirect()->route('admin.create')
             ->with('success', 'Admin baru berhasil ditambahkan!');
     }
 }

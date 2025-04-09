@@ -21,6 +21,8 @@ class Attendance extends Model
         'check_in_longitude',
         'check_out_latitude', 
         'check_out_longitude',
+        'check_in_office',
+        'check_out_office',
         'status', 
         'notes', 
         'ket_izin', 

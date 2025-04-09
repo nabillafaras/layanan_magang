@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class PendaftaranController extends Controller
 {
@@ -18,8 +19,8 @@ class PendaftaranController extends Controller
 
     private function generateRandomPassword()
     {
-        // Generate a random password with 8 characters including letters and numbers
-        return Str::random(8);
+        // Generate a stronger random password with 10 characters including letters, numbers and symbols
+        return Str::random(10);
     }
 
     private function generateRegistrationNumber()
@@ -99,8 +100,15 @@ class PendaftaranController extends Controller
                 
                 // Generate and store random password
                 $plainPassword = $this->generateRandomPassword();
-                session(['temp_password' => $plainPassword]);
+                
+                // Store both hashed (for authentication) and encrypted (for display) versions
                 $pendaftaran->password = Hash::make($plainPassword);
+                $pendaftaran->plain_password = Crypt::encryptString($plainPassword);
+                
+                // Set default status
+                if (!$pendaftaran->status) {
+                    $pendaftaran->status = 'Diproses';
+                }
                 
                 $pendaftaran->save();
 
@@ -126,4 +134,5 @@ class PendaftaranController extends Controller
             return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat menyimpan data.'], 400);
         }
     }
+    
 }

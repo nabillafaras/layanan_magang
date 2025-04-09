@@ -22,6 +22,7 @@ use App\Http\Controllers\SakitController;
 use App\Http\Controllers\RekapAbsensiController;
 use App\Http\Controllers\LaporanBulananController;
 use App\Http\Controllers\LaporanAkhirController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DirektoratController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,9 @@ Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])->name('attendance.check-in');
     Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])->name('attendance.check-out');
     Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
+    Route::get('/attendance/check-gps', [AttendanceController::class, 'checkGpsStatus'])->name('attendance.check-gps');
+Route::post('/attendance/request-gps-access', [AttendanceController::class, 'requestGpsAccess'])->name('attendance.request-gps-access');
+Route::get('/attendance/location-confirmation', [AttendanceController::class, 'showLocationConfirmation'])->name('attendance.location-confirmation');
     // Routes untuk fitur izin
     Route::get('/izin', [IzinController::class, 'index'])->name('izin');
     Route::post('/izin/submit', [IzinController::class, 'submit'])->name('izin.submit');
@@ -73,6 +77,11 @@ Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::get('/laporan/akhir/download/{id}', [LaporanAkhirController::class, 'download'])->name('laporan.akhir.download');
     Route::delete('/laporan/akhir/delete/{id}', [LaporanAkhirController::class, 'delete'])->name('laporan.akhir.delete');
     
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/change-password', [App\Http\Controllers\ProfileController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update.password');
+
 });
 
 

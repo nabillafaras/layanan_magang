@@ -6,9 +6,6 @@
 <div class="container-fluid px-4">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mt-4">Detail Laporan</h1>
-        <a href="{{ url()->previous() }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left me-1"></i> Kembali
-        </a>
     </div>
     <ol class="breadcrumb mb-4">
         @if(session('previous_direktorat'))

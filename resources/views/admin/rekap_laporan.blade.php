@@ -4,106 +4,396 @@
 
 @section('additional_css')
 <style>
-    body {
-        font-family: 'Calibri', sans-serif;
+    /* Dashboard Specific Styles */
+    .dashboard-header {
+        margin-bottom: 30px;
+        position: relative;
     }
-    .card {
-        box-shadow: 0 0 1px rgba(0,0,0,0.125), 0 1px 3px rgba(0,0,0,0.2);
+    
+    .dashboard-header h2 {
+        font-weight: 700;
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
     }
-    .badge.text-bg-warning {
-        background-color: #ffc107 !important;
-        color: #212529 !important;
+    
+    .dashboard-header h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 60px;
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
+        border-radius: 2px;
     }
-    .badge.text-bg-success {
+
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #c13030;
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        color: #6c757d;
+    }
+    
+    .dashboard-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: none;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid #e0e0e0;
+        padding: 18px 25px;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-header h5 i, .card-header i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .card-header.bg-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #6a0000 100%) !important;
+        border-bottom: none;
+    }
+    
+    .table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: 600;
+        padding: 15px;
+        border-bottom: 2px solid #e0e0e0;
+        white-space: nowrap;
+    }
+    
+    .table td {
+        padding: 15px;
+        vertical-align: middle;
+        border-bottom: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .table tr:hover td {
+        background-color: rgba(139, 0, 0, 0.02);
+    }
+    
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .table-dark th {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: #5a0000;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0  .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+    }
+    
+    .btn {
+        font-weight: 600;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: none;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
+    }
+    
+    .btn:hover::after {
+        width: 100%;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), #5a0000);
+        color: white;
+    }
+    
+    .btn-primary::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: white;
+    }
+    
+    .btn-success::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn-info {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+    }
+    
+    .btn-info::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .list-group-item {
+        border-radius: 8px;
+        margin-bottom: 5px;
+        border: 1px solid rgba(0,0,0,0.125);
+        transition: all 0.3s;
+    }
+    
+    .list-group-item:hover {
+        transform: translateX(5px);
+        background-color: rgba(139, 0, 0, 0.02);
+    }
+    
+    .badge {
+        padding: 8px 12px;
+        font-weight: 500;
+        border-radius: 30px;
+        font-size: 0.85rem;
+    }
+    
+    /* Badge Colors */
+    .bg-success, .text-bg-success {
         background-color: #28a745 !important;
         color: white !important;
     }
-    .badge.text-bg-danger {
+    
+    .bg-warning, .text-bg-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+    
+    .bg-danger, .text-bg-danger {
         background-color: #dc3545 !important;
         color: white !important;
     }
-    .badge.text-bg-secondary {
+    
+    .bg-secondary, .text-bg-secondary {
         background-color: #6c757d !important;
         color: white !important;
     }
     
-    /* Fallback untuk Bootstrap 4.x jika diperlukan */
-    .badge-warning {
-        background-color: #ffc107 !important;
-        color: #212529 !important;
-    }
-    .badge-success {
-        background-color: #28a745 !important;
+    .bg-primary, .text-bg-primary {
+        background-color: var(--primary-color) !important;
         color: white !important;
     }
-    .badge-danger {
-        background-color: #dc3545 !important;
+    
+    .bg-info, .text-bg-info {
+        background-color: #17a2b8 !important;
         color: white !important;
     }
-    .badge-secondary {
-        background-color: #6c757d !important;
-        color: white !important;
+    
+    /* Animation Classes */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
-    .badge.bg-secondary {
-        background-color: #6c757d !important;
-        color: white !important;
+    
+    @keyframes slideInLeft {
+        from { transform: translateX(-50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
     }
-    .badge.bg-warning {
-        background-color: #ffc107 !important;
-        color: #212529 !important;
+    
+    @keyframes slideInRight {
+        from { transform: translateX(50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
     }
-    .badge.bg-success {
-        background-color: #28a745 !important;
-        color: white !important;
+    
+    @keyframes slideInUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
-    .badge.bg-danger {
-        background-color: #dc3545 !important;
-        color: white !important;
+    
+    @keyframes bounceIn {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
     }
-    .badge.bg-primary {
-        background-color: #0d6efd !important;
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .slide-in-left {
+        animation: slideInLeft 0.5s ease-in-out;
+    }
+    
+    .slide-in-right {
+        animation: slideInRight 0.5s ease-in-out;
+    }
+    
+    .slide-in-up {
+        animation: slideInUp 0.5s ease-in-out;
+    }
+    
+    .bounce-in {
+        animation: bounceIn 0.6s ease-in-out;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .table-responsive {
+            border-radius: 15px;
+        }
+        
+        .filter-form {
+            flex-direction: column;
+        }
+        
+        .filter-form .col-auto {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+    }
+    
+    /* DataTables Custom Styling */
+    .dataTables_wrapper .dataTables_length, 
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 15px;
+    }
+    
+    .dataTables_wrapper .dataTables_length select, 
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 8px;
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 50px;
+        padding: 5px 12px;
+        margin: 0 3px;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: var(--primary-color);
         color: white !important;
+        border: none;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: rgba(139, 0, 0, 0.1);
+        color: var(--primary-color) !important;
+        border: none;
     }
 </style>
 @endsection
 
 @section('content')
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Rekapitulasi Laporan Peserta Magang</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Rekapitulasi Laporan</li>
-    </ol>
+    <div class="dashboard-header fade-in">
+        <h2 class="mt-4">Rekapitulasi Laporan Peserta Magang</h2>
+        <ol class="breadcrumb mb-4 slide-in-right">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Rekapitulasi Laporan</li>
+        </ol>
+    </div>
 
     <!-- Filter Section -->
-    <div class="card mb-4">
+    <div class="dashboard-card slide-in-up" style="animation-delay: 0.1s">
         <div class="card-header">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <i class="fas fa-file-alt me-1"></i>
-                    Filter Data Laporan
+                    <h5><i class="fas fa-filter"></i> Filter Data Laporan</h5>
                 </div>
                 <div class="col-md-6 text-end">
-                    <form action="{{ route('admin.rekapitulasi-laporan') }}" method="GET" class="row g-3 justify-content-end">
+                    <form action="{{ route('admin.rekapitulasi-laporan') }}" method="GET" class="row g-3 justify-content-end filter-form">
                         <div class="col-auto">
-                            <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-calendar"></i></span>
+                                <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <select class="form-select" name="direktorat" id="direktorat">
-                                <option value="">Semua Direktorat</option>
-                                <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
-                                <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
-                                <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
-                                <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
-                                <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-building"></i></span>
+                                <select class="form-select" name="direktorat" id="direktorat">
+                                    <option value="">Semua Direktorat</option>
+                                    <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
+                                    <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
+                                    <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
+                                    <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
+                                    <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i> Filter
+                            </button>
                         </div>
                         <div class="col-auto">
                             <a href="{{ route('admin.export-laporan') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success">
-                                <i class="fas fa-file-excel me-1"></i> Export Excel
+                                <i class="fas fa-file-excel me-2"></i> Export Excel
                             </a>
                         </div>
                     </form>
@@ -113,151 +403,162 @@
     </div>
 
     <!-- Laporan Bulanan Section -->
-<div class="card mb-4">
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <i class="fas fa-calendar-alt me-1"></i>
-                Rekapitulasi Laporan Bulanan - {{ $bulanNama ?? 'Semua Periode' }}
+    <div class="dashboard-card bounce-in" style="animation-delay: 0.2s">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5><i class="fas fa-calendar-alt"></i> Rekapitulasi Laporan Bulanan - {{ $bulanNama ?? 'Semua Periode' }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="laporanBulananTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Nama Lengkap</th>
+                            <th class="text-center">Direktorat</th>
+                            <th class="text-center">Asal Instansi</th>
+                            <th class="text-center">Judul Laporan</th>
+                            <th class="text-center">File</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Feedback</th>
+                            <th class="text-center">Tanggal Upload</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($peserta as $index => $p)
+                        <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user text-primary"></i>
+                                    </div>
+                                    <span>{{ $p->nama_lengkap }}</span>
+                                </div>
+                            </td>
+                            <td>{{ $p->direktorat }}</td>
+                            <td>{{ $p->asal_universitas }}</td>
+                            
+                            @if ($p->laporan_bulanan)
+                            <td>{{ $p->laporan_bulanan->judul }}</td>
+                            <td class="text-center">
+                                <a href="{{ asset('storage/'.$p->laporan_bulanan->file_path) }}" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fas fa-file-download me-1"></i> Unduh
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                @if ($p->laporan_bulanan->status == 'Menunggu')
+                                    <span class="badge bg-warning">{{ $p->laporan_bulanan->status }}</span>
+                                @elseif ($p->laporan_bulanan->status == 'Acc')
+                                    <span class="badge bg-success">{{ $p->laporan_bulanan->status }}</span>
+                                @elseif ($p->laporan_bulanan->status == 'Ditolak')
+                                    <span class="badge bg-danger">{{ $p->laporan_bulanan->status }}</span>
+                                @endif
+                            </td>
+                            <td>{{ $p->laporan_bulanan->feedback ?? '-' }}</td>
+                            <td class="text-center">{{ $p->laporan_bulanan->created_at->format('d/m/Y H:i') }}</td>
+                            @else
+                            <td colspan="5" class="text-center">
+                                <span class="badge bg-secondary">Belum Upload Laporan</span>
+                            </td>
+                            @endif
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="9" class="text-center">Tidak ada data laporan bulanan peserta magang yang tersedia.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered" id="laporanBulananTable">
-                <thead class="table-dark">
-                    <tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">Nama Lengkap</th>
-                        <th class="text-center">Direktorat</th>
-                        <th class="text-center">Asal Instansi</th>
-                        <th class="text-center">Judul Laporan</th>
-                        <th class="text-center">File</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Feedback</th>
-                        <th class="text-center">Tanggal Upload</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($peserta as $index => $p)
-                    <tr>
-                        <td class="text-center">{{ $index + 1 }}</td>
-                        <td>{{ $p->nama_lengkap }}</td>
-                        <td>{{ $p->direktorat }}</td>
-                        <td>{{ $p->asal_universitas }}</td>
-                        
-                        @if ($p->laporan_bulanan)
-                        <td>{{ $p->laporan_bulanan->judul }}</td>
-                        <td class="text-center">
-                            <a href="{{ asset('storage/'.$p->laporan_bulanan->file_path) }}" target="_blank" class="btn btn-sm btn-info">
-                                <i class="fas fa-file-download"></i> Unduh
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            @if ($p->laporan_bulanan->status == 'Menunggu')
-                                <span class="badge text-bg-warning">{{ $p->laporan_bulanan->status }}</span>
-                            @elseif ($p->laporan_bulanan->status == 'Acc')
-                                <span class="badge text-bg-success">{{ $p->laporan_bulanan->status }}</span>
-                            @elseif ($p->laporan_bulanan->status == 'Ditolak')
-                                <span class="badge text-bg-danger">{{ $p->laporan_bulanan->status }}</span>
-                            @endif
-                        </td>
-                        <td>{{ $p->laporan_bulanan->feedback ?? '-' }}</td>
-                        <td class="text-center">{{ $p->laporan_bulanan->created_at->format('d/m/Y H:i') }}</td>
-                        @else
-                        <td colspan="5" class="text-center">
-                            <span class="badge text-bg-secondary">Belum Upload Laporan</span>
-                        </td>
-                        @endif
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="9" class="text-center">Tidak ada data laporan bulanan peserta magang yang tersedia.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 
-<!-- Laporan Akhir Section -->
-<div class="card mb-4">
-    <div class="card-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <i class="fas fa-file-signature me-1"></i>
-                Rekapitulasi Laporan Akhir
+    <!-- Laporan Akhir Section -->
+    <div class="dashboard-card bounce-in" style="animation-delay: 0.3s">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5><i class="fas fa-file-signature"></i> Rekapitulasi Laporan Akhir</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="laporanAkhirTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Nama Lengkap</th>
+                            <th class="text-center">Direktorat</th>
+                            <th class="text-center">Asal Instansi</th>
+                            <th class="text-center">Judul Laporan</th>
+                            <th class="text-center">File</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Feedback</th>
+                            <th class="text-center">Tanggal Upload</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($peserta as $index => $p)
+                        <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user text-primary"></i>
+                                    </div>
+                                    <span>{{ $p->nama_lengkap }}</span>
+                                </div>
+                            </td>
+                            <td>{{ $p->direktorat }}</td>
+                            <td>{{ $p->asal_universitas }}</td>
+                            
+                            @if ($p->laporan_akhir)
+                            <td>{{ $p->laporan_akhir->judul }}</td>
+                            <td class="text-center">
+                                <a href="{{ asset('storage/'.$p->laporan_akhir->file_path) }}" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fas fa-file-download me-1"></i> Unduh
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                @if ($p->laporan_akhir->status == 'Menunggu')
+                                    <span class="badge bg-warning">{{ $p->laporan_akhir->status }}</span>
+                                @elseif ($p->laporan_akhir->status == 'Acc')
+                                    <span class="badge bg-success">{{ $p->laporan_akhir->status }}</span>
+                                @elseif ($p->laporan_akhir->status == 'Ditolak')
+                                    <span class="badge bg-danger">{{ $p->laporan_akhir->status }}</span>
+                                @endif
+                            </td>
+                            <td>{{ $p->laporan_akhir->feedback ?? '-' }}</td>
+                            <td class="text-center">{{ $p->laporan_akhir->created_at->format('d/m/Y H:i') }}</td>
+                            @else
+                            <td colspan="5" class="text-center">
+                                <span class="badge bg-secondary">Belum Upload Laporan</span>
+                            </td>
+                            @endif
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="9" class="text-center">Tidak ada data laporan akhir peserta magang yang tersedia.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered" id="laporanAkhirTable">
-                <thead class="table-dark">
-                    <tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">Nama Lengkap</th>
-                        <th class="text-center">Direktorat</th>
-                        <th class="text-center">Asal Instansi</th>
-                        <th class="text-center">Judul Laporan</th>
-                        <th class="text-center">File</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Feedback</th>
-                        <th class="text-center">Tanggal Upload</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($peserta as $index => $p)
-                    <tr>
-                        <td class="text-center">{{ $index + 1 }}</td>
-                        <td>{{ $p->nama_lengkap }}</td>
-                        <td>{{ $p->direktorat }}</td>
-                        <td>{{ $p->asal_universitas }}</td>
-                        
-                        @if ($p->laporan_akhir)
-                        <td>{{ $p->laporan_akhir->judul }}</td>
-                        <td class="text-center">
-                        <a href="{{ asset('storage/'.$p->laporan_akhir->file_path) }}" target="_blank" class="btn btn-sm btn-info">
-                                <i class="fas fa-file-download"></i> Unduh
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            @if ($p->laporan_akhir->status == 'Menunggu')
-                                <span class="badge text-bg-warning">{{ $p->laporan_akhir->status }}</span>
-                            @elseif ($p->laporan_akhir->status == 'Acc')
-                                <span class="badge text-bg-success">{{ $p->laporan_akhir->status }}</span>
-                            @elseif ($p->laporan_akhir->status == 'Ditolak')
-                                <span class="badge text-bg-danger">{{ $p->laporan_akhir->status }}</span>
-                            @endif
-                        </td>
-                        <td>{{ $p->laporan_akhir->feedback ?? '-' }}</td>
-                        <td class="text-center">{{ $p->laporan_akhir->created_at->format('d/m/Y H:i') }}</td>
-                        @else
-                        <td colspan="5" class="text-center">
-                            <span class="badge text-bg-secondary">Belum Upload Laporan</span>
-                        </td>
-                        @endif
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="9" class="text-center">Tidak ada data laporan akhir peserta magang yang tersedia.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 
     <!-- Statistik Laporan -->
     <div class="row">
         <!-- Statistik Laporan Bulanan -->
         <div class="col-md-6">
-            <div class="card mb-4">
+            <div class="dashboard-card slide-in-left" style="animation-delay: 0.4s">
                 <div class="card-header">
-                    <i class="fas fa-chart-pie me-1"></i>
-                    Statistik Laporan Bulanan
+                    <h5><i class="fas fa-chart-pie"></i> Statistik Laporan Bulanan</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="laporanBulananChart" width="100%" height="50"></canvas>
@@ -267,10 +568,9 @@
         
         <!-- Statistik Laporan Akhir -->
         <div class="col-md-6">
-            <div class="card mb-4">
+            <div class="dashboard-card slide-in-right" style="animation-delay: 0.4s">
                 <div class="card-header">
-                    <i class="fas fa-chart-pie me-1"></i>
-                    Statistik Laporan Akhir
+                    <h5><i class="fas fa-chart-pie"></i> Statistik Laporan Akhir</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="laporanAkhirChart" width="100%" height="50"></canvas>
@@ -281,74 +581,92 @@
 
     <!-- Keterangan -->
     <div class="row mt-4">
-    <!-- Keterangan Laporan Bulanan -->
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <i class="fas fa-info-circle me-1"></i>
-                Status Laporan Bulanan - {{ $bulanNama }}
+        <!-- Keterangan Laporan Bulanan -->
+        <div class="col-md-6">
+            <div class="dashboard-card slide-in-up" style="animation-delay: 0.5s">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-info-circle"></i> Status Laporan Bulanan - {{ $bulanNama }}</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.1s">
+                            <div>
+                                <i class="fas fa-times-circle text-secondary me-2"></i> Belum Upload
+                            </div>
+                            <span class="badge bg-secondary rounded-pill">{{ $totalBulananBelum }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.2s">
+                            <div>
+                                <i class="fas fa-clock text-warning me-2"></i> Menunggu Konfirmasi
+                            </div>
+                            <span class="badge bg-warning rounded-pill">{{ $totalBulananMenunggu }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.3s">
+                            <div>
+                                <i class="fas fa-check-circle text-success me-2"></i> Acc
+                            </div>
+                            <span class="badge bg-success rounded-pill">{{ $totalBulananAcc }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.4s">
+                            <div>
+                                <i class="fas fa-times-circle text-danger me-2"></i> Ditolak
+                            </div>
+                            <span class="badge bg-danger rounded-pill">{{ $totalBulananDitolak }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.5s">
+                            <div class="fw-bold">
+                                <i class="fas fa-users text-primary me-2"></i> Total Peserta
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ $totalPeserta }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Belum Upload
-                        <span class="badge bg-secondary rounded-pill">{{ $totalBulananBelum }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Menunggu Konfirmasi
-                        <span class="badge bg-warning text-dark rounded-pill">{{ $totalBulananMenunggu }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Acc
-                        <span class="badge bg-success rounded-pill">{{ $totalBulananAcc }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Ditolak
-                        <span class="badge bg-danger rounded-pill">{{ $totalBulananDitolak }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                        Total Peserta
-                        <span class="badge bg-primary rounded-pill">{{ $totalPeserta }}</span>
-                    </li>
-                </ul>
+        </div>
+        
+        <!-- Keterangan Laporan Akhir -->
+        <div class="col-md-6">
+            <div class="dashboard-card slide-in-up" style="animation-delay: 0.6s">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-info-circle"></i> Status Laporan Akhir</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.1s">
+                            <div>
+                                <i class="fas fa-times-circle text-secondary me-2"></i> Belum Upload
+                            </div>
+                            <span class="badge bg-secondary rounded-pill">{{ $totalAkhirBelum }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.2s">
+                            <div>
+                                <i class="fas fa-clock text-warning me-2"></i> Menunggu Konfirmasi
+                            </div>
+                            <span class="badge bg-warning rounded-pill">{{ $totalAkhirMenunggu }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.3s">
+                            <div>
+                                <i class="fas fa-check-circle text-success me-2"></i> Acc
+                            </div>
+                            <span class="badge bg-success rounded-pill">{{ $totalAkhirAcc }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.4s">
+                            <div>
+                                <i class="fas fa-times-circle text-danger me-2"></i> Ditolak
+                            </div>
+                            <span class="badge bg-danger rounded-pill">{{ $totalAkhirDitolak }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.5s">
+                            <div class="fw-bold">
+                                <i class="fas fa-users text-primary me-2"></i> Total Peserta
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ $totalPeserta }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- Keterangan Laporan Akhir -->
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <i class="fas fa-info-circle me-1"></i>
-                Status Laporan Akhir
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Belum Upload
-                        <span class="badge bg-secondary rounded-pill">{{ $totalAkhirBelum }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Menunggu Konfirmasi
-                        <span class="badge bg-warning text-dark rounded-pill">{{ $totalAkhirMenunggu }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Acc
-                        <span class="badge bg-success rounded-pill">{{ $totalAkhirAcc }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Ditolak
-                        <span class="badge bg-danger rounded-pill">{{ $totalAkhirDitolak }}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center fw-bold">
-                        Total Peserta
-                        <span class="badge bg-primary rounded-pill">{{ $totalPeserta }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 @endsection
 
@@ -360,25 +678,57 @@
 
 <script>
     $(document).ready(function() {
-        // Inisialisasi DataTables untuk kedua tabel
+        // Inisialisasi DataTables untuk kedua tabel dengan animasi
         $('#laporanBulananTable').DataTable({
             "scrollX": true,
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json"
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data yang tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total data)",
+                "search": "Cari:",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                }
+            },
+            "pageLength": 10,
+            "responsive": true,
+            "drawCallback": function() {
+                $('.dataTables_paginate .paginate_button').addClass('fade-in');
             }
         });
         
         $('#laporanAkhirTable').DataTable({
             "scrollX": true,
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json"
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data yang tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total data)",
+                "search": "Cari:",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                }
+            },
+            "pageLength": 10,
+            "responsive": true,
+            "drawCallback": function() {
+                $('.dataTables_paginate .paginate_button').addClass('fade-in');
             }
         });
 
-        // Pie Chart untuk Laporan Bulanan
+        // Pie Chart untuk Laporan Bulanan dengan animasi
         var ctxBulanan = document.getElementById('laporanBulananChart');
         var bulananChart = new Chart(ctxBulanan, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['Belum Upload', 'Menunggu', 'Acc', 'Ditolak'],
                 datasets: [{
@@ -394,6 +744,7 @@
                         '#28a745',  // Diterima (hijau)
                         '#dc3545'   // Ditolak (merah)
                     ],
+                    borderWidth: 0
                 }],
             },
             options: {
@@ -414,14 +765,20 @@
                             }
                         }
                     }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 2000,
+                    easing: 'easeOutQuart'
                 }
             }
         });
         
-        // Pie Chart untuk Laporan Akhir
+        // Pie Chart untuk Laporan Akhir dengan animasi
         var ctxAkhir = document.getElementById('laporanAkhirChart');
         var akhirChart = new Chart(ctxAkhir, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['Belum Upload', 'Menunggu', 'Acc', 'Ditolak'],
                 datasets: [{
@@ -437,6 +794,7 @@
                         '#28a745',  // Diterima (hijau)
                         '#dc3545'   // Ditolak (merah)
                     ],
+                    borderWidth: 0
                 }],
             },
             options: {
@@ -457,8 +815,27 @@
                             }
                         }
                     }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 2000,
+                    easing: 'easeOutQuart'
                 }
             }
+        });
+        
+        // Tambahkan efek hover pada baris tabel
+        const tableRows = document.querySelectorAll('#laporanBulananTable tbody tr, #laporanAkhirTable tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
         });
     });
 </script>

@@ -14,26 +14,6 @@
         --transition: all 0.3s ease;
     }
 
-    body {
-        font-family: 'Calibri', sans-serif;
-        overflow-x: hidden;
-    }
-
-    /* Page Transition Animation */
-    .fade-enter-active {
-        animation: fadeIn 0.5s ease-in;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
 
     /* Hero Section */
     .hero {
@@ -46,6 +26,7 @@
         display: flex;
         align-items: center;
         padding: 100px 10%;
+        overflow: hidden;
     }
 
     .hero::before {
@@ -58,27 +39,70 @@
         background: linear-gradient(135deg, rgba(139, 0, 0, 0.9) 0%, rgba(139, 0, 0, 0.7) 100%);
         z-index: 1;
     }
+    
+    /* Animated particles effect */
+    .hero::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB4PSIwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyIiBoZWlnaHQ9IjIiIGZpbGw9IiNGRkQ3MDAiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPjwvcGF0dGVybj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+');
+        opacity: 0.4;
+        z-index: 1;
+        animation: moveBackground 20s linear infinite;
+    }
+    
+    @keyframes moveBackground {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 100px 100px;
+        }
+    }
 
     .hero-content {
         position: relative;
         z-index: 2;
         max-width: 600px;
-        animation: slideInLeft 1s ease-out;
+        animation: slideInLeft 1.2s ease-out;
     }
 
     .hero-content h1 {
-        font-size: 3.5rem;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
         font-weight: 800;
         color: var(--text-light);
         margin-bottom: 1.5rem;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+        display: inline-block;
+    }
+    
+    .hero-content h1::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--secondary-color);
+        border-radius: 10px;
+        animation: expandWidth 1.5s ease-out forwards;
+    }
+    
+    @keyframes expandWidth {
+        from { width: 0; }
+        to { width: 80px; }
     }
 
     .hero-content p {
-        font-size: 1.2rem;
+        font-size: clamp(1.1rem, 2vw, 1.2rem);
         line-height: 1.8;
         color: var(--text-light);
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     }
 
     .hero-btn {
@@ -87,56 +111,111 @@
         background-color: var(--secondary-color);
         color: var(--primary-color);
         font-weight: 600;
-        border-radius: 30px;
+        border-radius: 50px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        transition: var(--transition);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .hero-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background-color: white;
+        transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+        z-index: -1;
     }
 
     .hero-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        background-color: var(--text-light);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        color: var(--primary-color);
+    }
+    
+    .hero-btn:hover::before {
+        width: 100%;
+    }
+    
+    .hero-btn i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+    
+    .hero-btn:hover i {
+        transform: translateX(5px);
     }
 
     /* Information Section */
     .information-section {
-        padding: 80px 0;
+        padding: 100px 0;
         background-color: var(--bg-light);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .information-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB4PSIwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyIiBoZWlnaHQ9IjIiIGZpbGw9IiM4YjAwMDAiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvcGF0dGVybj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+');
+        opacity: 0.5;
     }
 
     .section-title {
         text-align: center;
         margin-bottom: 60px;
-        animation: fadeIn 1s ease-out;
+        position: relative;
     }
 
     .section-title h2 {
-        font-size: 2.5rem;
+        font-size: clamp(2rem, 4vw, 2.5rem);
         color: var(--primary-color);
         font-weight: 700;
         margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
     }
 
-    .section-title::after {
+    .section-title h2::after {
         content: '';
-        display: block;
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
         width: 80px;
         height: 4px;
-        background-color: var(--secondary-color);
-        margin: 20px auto;
+        background-color: var(--primary-color);
+        border-radius: 10px;
+    }
+    
+    .section-title p {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 700px;
+        margin: 20px auto 0;
     }
 
-    
     .info-content {
         padding: 30px;
+        position: relative;
+        z-index: 1;
     }
 
     .info-content h4 {
         font-size: 1.8rem;
         color: var(--primary-color);
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        font-weight: 600;
     }
 
     .info-content p {
@@ -144,119 +223,326 @@
         line-height: 1.8;
         color: var(--text-dark);
     }
+    
+    /* Animated image container */
+    .img-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        transition: all 0.5s ease;
+    }
+    
+    .img-container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    
+    .img-container img {
+        transition: all 0.5s ease;
+    }
+    
+    .img-container:hover img {
+        transform: scale(1.05);
+    }
+    
+    .img-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transform: skewX(-25deg);
+        animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+        0% {
+            left: -100%;
+        }
+        20% {
+            left: 100%;
+        }
+        100% {
+            left: 100%;
+        }
+    }
 
     /* Struktur Organisasi Styling */
     .org-structure {
-        margin-top: 50px;
-        margin-bottom: 50px;
+        margin-top: 70px;
+        margin-bottom: 70px;
+        position: relative;
+        z-index: 1;
     }
     
     .direktorat-box {
         background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 40px;
         overflow: hidden;
-        transition: transform 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(0,0,0,0.05);
+        transform: translateY(0);
     }
     
     .direktorat-box:hover {
-        transform: translateY(-5px);
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        border-color: rgba(139,0,0,0.1);
     }
     
     .direktorat-header {
-        background: var(--primary-color);
+        background: linear-gradient(135deg, var(--primary-color) 0%, #a40000 100%);
         color: #fff;
-        padding: 20px;
+        padding: 25px;
         position: relative;
+        overflow: hidden;
+    }
+    
+    .direktorat-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        z-index: 0;
     }
     
     .direktorat-header h3 {
         margin: 0;
-        font-size: 1.5rem;
-        font-weight: 600;
+        font-size: 1.6rem;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
     }
     
     .direktorat-body {
-        padding: 25px;
+        padding: 30px;
     }
     
     .direktorat-body p {
-        margin-bottom: 20px;
-        line-height: 1.6;
+        margin-bottom: 25px;
+        line-height: 1.7;
+        color: #555;
+    }
+    
+    .direktorat-body p strong {
+        color: var(--primary-color);
+        font-weight: 600;
     }
     
     .unit-accordion {
-        margin-top: 20px;
+        margin-top: 25px;
     }
     
     .unit-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        margin-bottom: 15px;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 12px;
+        margin-bottom: 20px;
         overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    }
+    
+    .unit-card:hover {
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border-color: rgba(139,0,0,0.1);
     }
     
     .unit-header {
-        background-color: #f5f5f5;
-        padding: 15px 20px;
+        background-color: #f8f8f8;
+        padding: 18px 25px;
         cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-weight: 600;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
+        color: #444;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .unit-header::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 5px;
+        background: var(--primary-color);
+        opacity: 0;
+        transition: all 0.3s ease;
     }
     
     .unit-header:hover {
-        background-color: #e9e9e9;
+        background-color: #f0f0f0;
+        color: var(--primary-color);
+    }
+    
+    .unit-header:hover::before {
+        opacity: 1;
+    }
+    
+    .toggle-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(139,0,0,0.1);
+        color: var(--primary-color);
+        border-radius: 50%;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .unit-header:hover .toggle-icon {
+        background: var(--primary-color);
+        color: white;
+        transform: rotate(90deg);
     }
     
     .unit-body {
-        padding: 20px;
-        display: none;
-        border-top: 1px solid #e0e0e0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 0;
+        background: white;
     }
     
     .unit-body.show {
-        display: block;
+        padding: 25px;
+        max-height: 1000px;
+        border-top: 1px solid rgba(0,0,0,0.05);
     }
     
     .unit-body h5 {
         color: var(--primary-color);
-        margin-bottom: 15px;
-        font-size: 1.1rem;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
         font-weight: 600;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+    
+    .unit-body h5::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--secondary-color);
+        border-radius: 10px;
     }
     
     .tugas-list {
         padding-left: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     
     .tugas-list li {
-        margin-bottom: 8px;
-        line-height: 1.5;
+        margin-bottom: 12px;
+        line-height: 1.6;
+        position: relative;
+        padding-left: 10px;
+    }
+    
+    .tugas-list li::before {
+        content: '';
+        position: absolute;
+        left: -15px;
+        top: 10px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary-color);
     }
     
     .contact-info {
         background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 15px;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+        border-left: 4px solid var(--secondary-color);
+        transition: all 0.3s ease;
+    }
+    
+    .contact-info:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transform: translateX(5px);
     }
     
     .contact-info p {
-        margin: 5px 0;
+        margin: 8px 0;
         font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .contact-info p strong {
+        margin-right: 10px;
+        color: #555;
+        min-width: 70px;
+        display: inline-block;
+    }
+    
+    /* Animated Shapes */
+    .shape {
+        position: absolute;
+        z-index: 0;
+        opacity: 0.5;
+    }
+    
+    .shape-1 {
+        top: 10%;
+        left: 5%;
+        width: 50px;
+        height: 50px;
+        background: var(--secondary-color);
+        border-radius: 50%;
+        animation: floatAnimation 8s infinite alternate;
+    }
+    
+    .shape-2 {
+        bottom: 20%;
+        right: 10%;
+        width: 80px;
+        height: 80px;
+        background: var(--primary-color);
+        border-radius: 10px;
+        transform: rotate(45deg);
+        animation: floatAnimation 12s infinite alternate-reverse;
+    }
+    
+    @keyframes floatAnimation {
+        0% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        50% {
+            transform: translate(20px, 20px) rotate(10deg);
+        }
+        100% {
+            transform: translate(-20px, 10px) rotate(-10deg);
+        }
     }
 
-    
     /* Animations */
     @keyframes slideInLeft {
         from {
             opacity: 0;
-            transform: translateX(-100px);
+            transform: translateX(-70px);
         }
         to {
             opacity: 1;
@@ -267,22 +553,104 @@
     @keyframes fadeInUp {
         from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(50px);
         }
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
 
     /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero {
+            padding: 80px 5%;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 100%;
+        }
+        
+        .hero-content h1::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .direktorat-header h3 {
+            font-size: 1.4rem;
+        }
+    }
+
     @media (max-width: 768px) {
         .hero-content h1 {
             font-size: 2.5rem;
         }
+        
+        .hero-btn {
+            padding: 12px 30px;
+        }
+        
+        .information-section {
+            padding: 70px 0;
+        }
+        
+        .direktorat-box {
+            margin-bottom: 30px;
+        }
+        
+        .direktorat-header {
+            padding: 20px;
+        }
+        
+        .direktorat-body {
+            padding: 25px;
+        }
+        
+        .unit-header {
+            padding: 15px 20px;
+        }
+    }
 
-        .info-box {
-            margin: 20px;
+    @media (max-width: 576px) {
+        .hero {
+            min-height: auto;
+            padding: 60px 20px;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.2rem;
+        }
+        
+        .hero-content p {
+            font-size: 1rem;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+        
+        .direktorat-header h3 {
+            font-size: 1.3rem;
+        }
+        
+        .unit-body.show {
+            padding: 20px;
         }
     }
 </style>
@@ -291,27 +659,33 @@
 @section('content')
 @include('layouts.transisi')
     <!-- Hero Section -->
-    <section class="hero fade-enter-active">
-        <div class="hero-content">
+    <section class="hero">
+        <!-- Animated Shapes -->
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        
+        <div class="hero-content" data-aos="fade-right" data-aos-delay="200">
             <h1>Informasi Layanan</h1>
             <p>Temukan berbagai informasi layanan dan program dari Kementerian Sosial Republik Indonesia untuk membantu meningkatkan kesejahteraan masyarakat Indonesia.</p>
-            <a href="#informasi" class="hero-btn">Jelajahi Informasi</a>
+            <a href="#informasi" class="hero-btn">Jelajahi Informasi <i class="fas fa-arrow-right"></i></a>
         </div>
     </section>
 
     <!-- Information Section -->
     <section id="informasi" class="information-section">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title" data-aos="fade-up">
                 <h2>Informasi Penting</h2>
                 <p>Pelajari lebih lanjut tentang Kementerian Sosial RI</p>
             </div>
 
             <div class="row">
                 <div class="col-lg-12 mb-5">
-                    <h2>Struktur Organisasi</h2>
-                    <img src="images/informasi.png" alt="Struktur Organisasi" class="img-fluid">
-                    <div class="info-content">
+                    <h2 data-aos="fade-up">Struktur Organisasi</h2>
+                    <div class="img-container" data-aos="fade-up" data-aos-delay="100">
+                        <img src="images/informasi.png" alt="Struktur Organisasi" class="img-fluid">
+                    </div>
+                    <div class="info-content" data-aos="fade-up" data-aos-delay="200">
                         <h4>Struktur Organisasi Kementerian Sosial RI (Perpres No 110 Tahun 2021)</h4>
                         <p>Mengenal lebih dekat struktur organisasi Kementerian Sosial RI dan peran setiap bagian dalam melayani masyarakat Indonesia.</p>
                     </div>
@@ -319,7 +693,7 @@
                     <!-- Struktur Organisasi Detail -->
                     <div class="org-structure">
                         <!-- Direktorat Jenderal Perlindungan dan Jaminan Sosial -->
-                        <div class="direktorat-box">
+                        <div class="direktorat-box" data-aos="fade-up" data-aos-delay="100">
                             <div class="direktorat-header">
                                 <h3>Direktorat Jenderal Perlindungan dan Jaminan Sosial</h3>
                             </div>
@@ -388,7 +762,7 @@
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung B Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
                                                 <p><strong>Telepon:</strong> (021) 3103591 ext. 248</p>
-                                                <p><strong>Email:</strong> jaminan.keluarga@kemsos.go.id</p>
+                                                <p><strong>Email:</strong>Email:</strong> jaminan.keluarga@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
@@ -397,7 +771,7 @@
                         </div>
                         
                         <!-- Direktorat Jenderal Rehabilitasi Sosial -->
-                        <div class="direktorat-box">
+                        <div class="direktorat-box" data-aos="fade-up" data-aos-delay="200">
                             <div class="direktorat-header">
                                 <h3>Direktorat Jenderal Rehabilitasi Sosial</h3>
                             </div>
@@ -475,7 +849,7 @@
                         </div>
                         
                         <!-- Direktorat Jenderal Pemberdayaan Sosial -->
-                        <div class="direktorat-box">
+                        <div class="direktorat-box" data-aos="fade-up" data-aos-delay="300">
                             <div class="direktorat-header">
                                 <h3>Direktorat Jenderal Pemberdayaan Sosial</h3>
                             </div>
@@ -553,7 +927,7 @@
                         </div>
                         
                         <!-- Direktorat Jenderal Penanganan Fakir Miskin -->
-                        <div class="direktorat-box">
+                        <div class="direktorat-box" data-aos="fade-up" data-aos-delay="400">
                             <div class="direktorat-header">
                                 <h3>Direktorat Jenderal Penanganan Fakir Miskin</h3>
                             </div>
@@ -575,8 +949,7 @@
                                                 <li>Melakukan pemantauan dan evaluasi program pengentasan kemiskinan di wilayah Sumatera</li>
                                                 <li>Mengembangkan model penanganan fakir miskin yang adaptif dengan kondisi wilayah</li>
                                             </ul>
-                                            <div>
-						<div class="contact-info">
+                                            <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung E Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
                                                 <p><strong>Telepon:</strong> (021) 3103591 ext. 512</p>
                                                 <p><strong>Email:</strong> penanganan.wilayah1@kemsos.go.id</p>
@@ -632,7 +1005,7 @@
                         </div>
                         
                         <!-- Sekretariat Jenderal -->
-                        <div class="direktorat-box">
+                        <div class="direktorat-box" data-aos="fade-up" data-aos-delay="500">
                             <div class="direktorat-header">
                                 <h3>Sekretariat Jenderal</h3>
                             </div>
@@ -699,6 +1072,14 @@
     <!-- JavaScript untuk accordion -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animation library
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                mirror: false
+            });
+            
             const unitHeaders = document.querySelectorAll('.unit-header');
             
             unitHeaders.forEach(header => {
@@ -711,17 +1092,29 @@
                         if (openBody !== body) {
                             openBody.classList.remove('show');
                             openBody.previousElementSibling.querySelector('.toggle-icon').textContent = '+';
+                            openBody.previousElementSibling.querySelector('.toggle-icon').style.transform = 'rotate(0deg)';
                         }
                     });
                     
-                    // Toggle current body
+                    // Toggle current body with animation
                     if (isOpen) {
                         body.classList.remove('show');
                         this.querySelector('.toggle-icon').textContent = '+';
+                        this.querySelector('.toggle-icon').style.transform = 'rotate(0deg)';
                     } else {
                         body.classList.add('show');
                         this.querySelector('.toggle-icon').textContent = '-';
+                        this.querySelector('.toggle-icon').style.transform = 'rotate(90deg)';
                     }
+                });
+                
+                // Add hover animation
+                header.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(5px)';
+                });
+                
+                header.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
                 });
             });
             
@@ -734,6 +1127,16 @@
                         behavior: 'smooth'
                     });
                 });
+            });
+            
+            // Add parallax effect to hero section
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                const heroContent = document.querySelector('.hero-content');
+                
+                if (heroContent && window.innerWidth > 992) {
+                    heroContent.style.transform = `translateY(${scrollPosition * 0.1}px)`;
+                }
             });
         });
     </script>

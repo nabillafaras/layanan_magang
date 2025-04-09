@@ -3,6 +3,10 @@
 @section('title', 'Hasil Cek Status - Kementerian Sosial RI')
 
 @section('additional_css')
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
     :root {
         --primary-color: #8b0000;
@@ -18,22 +22,7 @@
         font-family: 'Calibri', sans-serif;
         overflow-x: hidden;
         color: var(--text-dark);
-    }
-    
-    /* Page Transition Animation */
-    .fade-enter-active {
-        animation: fadeIn 0.5s ease-in;
-    }
-    
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        background-color: #ffffff;
     }
     
     /* Hero Section */
@@ -60,29 +49,74 @@
         z-index: 0;
     }
     
-    .hero-content {
+    .card {
         position: relative;
         z-index: 2;
-        max-width: 600px;
-        animation: slideInLeft 1s ease-out;
-    }
-
-    .card {
         border: none;
-        border-radius: 10px;
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        background: #ffffff;
+        transform: translateY(0);
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
     }
     
     .card-header {
-        background-color: var(--primary-color) !important;
+        background: linear-gradient(135deg, var(--primary-color), #5a0000) !important;
         color: var(--text-light);
-        border-bottom: none;
-        padding: 1.2rem 1.5rem;
+        border-bottom: 5px solid var(--secondary-color);
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        transform: rotate(30deg);
+        pointer-events: none;
+    }
+    
+    .card-header h4 {
+        font-weight: 700;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-header h4 i {
+        margin-right: 10px;
+        font-size: 1.5rem;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
     
     .card-body {
-        padding: 2rem;
+        position: relative;
+        z-index: 2;
+        padding: 2.5rem;
+        background-color: #ffffff;
     }
     
     .table-bordered {
@@ -91,190 +125,332 @@
     
     .table-bordered td, .table-bordered th {
         border-color: #dee2e6;
-        padding: 0.75rem 1rem;
+        padding: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .table-bordered tr {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .table-bordered tr::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0));
+        transition: width 0.4s ease;
+        z-index: -1;
+    }
+    
+    .table-bordered tr:hover::before {
+        width: 100%;
+    }
+    
+    .table-bordered tr:hover {
+        transform: translateX(5px);
     }
     
     .badge {
         font-size: 85%;
         font-weight: 600;
-        padding: 0.5em 0.8em;
-        border-radius: 5px;
+        padding: 0.6em 1em;
+        border-radius: 30px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
     }
     
     .badge.bg-warning {
-        background-color: var(--secondary-color) !important;
+        background: linear-gradient(135deg, var(--secondary-color), #ffc107) !important;
         color: var(--text-dark);
     }
     
     .badge.bg-success {
-        background-color: #28a745 !important;
+        background: linear-gradient(135deg, #28a745, #218838) !important;
     }
     
     .badge.bg-danger {
-        background-color: var(--primary-color) !important;
+        background: linear-gradient(135deg, var(--primary-color), #5a0000) !important;
     }
     
     .alert {
-        border-radius: 8px;
-        padding: 1.25rem;
+        border-radius: 15px;
+        padding: 1.5rem;
         margin-bottom: 1.5rem;
         border-left: 5px solid;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.5s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .alert::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+        pointer-events: none;
     }
     
     .alert-success {
-        background-color: #d4edda;
+        background-color: rgba(212, 237, 218, 0.8);
         border-color: #28a745;
         color: #155724;
     }
     
     .alert-warning {
-        background-color: #fff3cd;
+        background-color: rgba(255, 243, 205, 0.8);
         border-color: var(--secondary-color);
         color: #856404;
     }
     
     .alert-danger {
-        background-color: #f8d7da;
+        background-color: rgba(248, 215, 218, 0.8);
         border-color: var(--primary-color);
         color: #721c24;
     }
     
     .alert-heading {
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .alert-heading i {
+        margin-right: 10px;
+        font-size: 1.2rem;
     }
     
     .btn {
-        padding: 0.6rem 1.5rem;
-        border-radius: 5px;
         font-weight: 600;
-        transition: var(--transition);
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
+    }
+    
+    .btn:hover::after {
+        width: 100%;
+    }
+    
+    .btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+    
+    .btn i {
+        margin-right: 10px;
+        transition: transform 0.3s ease;
+    }
+    
+    .btn:hover i {
+        transform: translateY(-3px);
     }
     
     .btn-primary {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
+        background: linear-gradient(135deg, var(--primary-color), #5a0000);
         color: var(--text-light);
     }
     
-    .btn-primary:hover, .btn-primary:focus {
-        background-color: var(--primary-hover);
-        border-color: var(--primary-hover);
+    .btn-primary::after {
+        background-color: rgba(255, 255, 255, 0.2);
     }
     
     .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: var(--text-light);
     }
     
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
+    .btn-secondary::after {
+        background-color: rgba(255, 255, 255, 0.2);
     }
     
     .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: var(--text-light);
     }
     
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+    .btn-success::after {
+        background-color: rgba(255, 255, 255, 0.2);
     }
     
     .btn-sm {
-        padding: 0.4rem 1rem;
+        padding: 0.5rem 1.2rem;
         font-size: 0.875rem;
     }
     
-    .fas {
-        margin-right: 0.5rem;
+    /* Animasi untuk table rows */
+    .table-appear {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    </style>
+    
+    .table-appear.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Responsif */
+    @media (max-width: 768px) {
+        .hero {
+            padding: 80px 5%;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
 @endsection
 
 @section('content')
 @include('layouts.transisi')
+
 <div class="hero">
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Status Pendaftaran</h4>
-                </div>
-                <div class="card-body">
-                    <div class="mb-4">
-                        <h5>Informasi Pendaftaran</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td style="width: 40%"><strong>Nomor Pendaftaran</strong></td>
-                                    <td>{{ $pendaftaran->nomor_pendaftaran }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Nama Lengkap</strong></td>
-                                    <td>{{ $pendaftaran->nama_lengkap }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Institusi</strong></td>
-                                    <td>{{ $pendaftaran->asal_universitas }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Program Studi</strong></td>
-                                    <td>{{ $pendaftaran->prodi }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Status</strong></td>
-                                    <td>
-                                        <span class="badge {{ $pendaftaran->status == 'Diproses' ? 'bg-warning' : 
-                                            ($pendaftaran->status == 'Diterima' ? 'bg-success' : 'bg-danger') }}">
-                                            {{ $pendaftaran->status }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-clipboard-check"></i> Status Pendaftaran</h4>
                     </div>
-
-                    @if($pendaftaran->status == 'Diproses')
-                        <div class="alert alert-warning">
-                            <i class="fas fa-info-circle me-2"></i> Pendaftaran Anda sedang dalam proses. Mohon menunggu konfirmasi selanjutnya.
-                        </div>
-                    @elseif($pendaftaran->status == 'Ditolak')
-                        <div class="alert alert-danger">
-                            <h6 class="alert-heading">Pendaftaran Anda Ditolak</h6>
-                            <p class="mb-0"><strong>Catatan:</strong></p>
-                            <p>{{ $pendaftaran->catatan ?? 'Tidak ada catatan yang diberikan.' }}</p>
-                        </div>
-                    @elseif($pendaftaran->status == 'Diterima')
-                        <div class="alert alert-success">
-                            <h6 class="alert-heading">Selamat! Pendaftaran Anda Diterima</h6>
-                            <p>Silakan login menggunakan kredensial berikut:</p>
-                            <div class="row mb-2">
-                                <div class="col-md-4"><strong>Nomor Pendaftaran:</strong></div>
-                                <div class="col-md-8">{{ $pendaftaran->nomor_pendaftaran }}</div>
+                    <div class="card-body">
+                        <div class="mb-4" data-aos="fade-up" data-aos-delay="100">
+                            <h5 class="fw-bold mb-3">Informasi Pendaftaran</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tr class="table-appear">
+                                        <td style="width: 40%"><strong>Nomor Pendaftaran</strong></td>
+                                        <td>{{ $pendaftaran->nomor_pendaftaran }}</td>
+                                    </tr>
+                                    <tr class="table-appear">
+                                        <td><strong>Nama Lengkap</strong></td>
+                                        <td>{{ $pendaftaran->nama_lengkap }}</td>
+                                    </tr>
+                                    <tr class="table-appear">
+                                        <td><strong>Institusi</strong></td>
+                                        <td>{{ $pendaftaran->asal_universitas }}</td>
+                                    </tr>
+                                    <tr class="table-appear">
+                                        <td><strong>Program Studi</strong></td>
+                                        <td>{{ $pendaftaran->prodi }}</td>
+                                    </tr>
+                                    <tr class="table-appear">
+                                        <td><strong>Status</strong></td>
+                                        <td>
+                                            <span class="badge {{ $pendaftaran->status == 'Diproses' ? 'bg-warning' : 
+                                                ($pendaftaran->status == 'Diterima' ? 'bg-success' : 'bg-danger') }}">
+                                                {{ $pendaftaran->status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-4"><strong>Kode Akses:</strong></div>
-                                <div class="col-md-8">{{ session('temp_password') }}</div>
-                            </div>
-                            @if($pendaftaran->surat_balasan)
-                                <a href="{{ asset('storage/'.$pendaftaran->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
-                                    <i class="fas fa-file-pdf me-1"></i> Unduh Surat Balasan
-                                </a>
-                            @endif
                         </div>
-                    @endif
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ route('status.form') }}" class="btn btn-secondary">Kembali</a>
-                        <a href="{{ route('home') }}" class="btn btn-primary">Halaman Utama</a>
+                        @if($pendaftaran->status == 'Diproses')
+                            <div class="alert alert-warning" data-aos="fade-up" data-aos-delay="200">
+                                <h6 class="alert-heading"><i class="fas fa-info-circle"></i> Pendaftaran Sedang Diproses</h6>
+                                <p class="mb-0">Pendaftaran Anda sedang dalam proses. Mohon menunggu konfirmasi selanjutnya.</p>
+                            </div>
+                        @elseif($pendaftaran->status == 'Ditolak')
+                            <div class="alert alert-danger" data-aos="fade-up" data-aos-delay="200">
+                                <h6 class="alert-heading"><i class="fas fa-times-circle"></i> Pendaftaran Anda Ditolak</h6>
+                                <p class="mb-0"><strong>Catatan:</strong></p>
+                                <p>{{ $pendaftaran->catatan ?? 'Tidak ada catatan yang diberikan.' }}</p>
+                            </div>
+                        @elseif($pendaftaran->status == 'Diterima')
+                            <div class="alert alert-success" data-aos="fade-up" data-aos-delay="200">
+                                <h6 class="alert-heading"><i class="fas fa-check-circle"></i> Selamat! Pendaftaran Anda Diterima</h6>
+                                <p>Silakan login menggunakan kredensial berikut:</p>
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Nomor Pendaftaran:</strong></div>
+                                    <div class="col-md-8">{{ $pendaftaran->nomor_pendaftaran }}</div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4"><strong>Password:</strong></div>
+                                    <div class="col-md-8">{{ $pendaftaran->decrypted_password ?? $pendaftaran->password }}</div>
+                                </div>
+                                @if($pendaftaran->surat_balasan)
+                                    <a href="{{ asset('storage/'.$pendaftaran->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
+                                        <i class="fas fa-file-pdf"></i> Unduh Surat Balasan
+                                    </a>
+                                @endif
+                            </div>
+                        @endif
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end" data-aos="fade-up" data-aos-delay="300">
+                            <a href="{{ route('status.form') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Kembali
+                            </a>
+                            <a href="{{ route('home') }}" class="btn btn-primary">
+                                <i class="fas fa-home"></i> Halaman Utama
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
 </div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Inisialisasi AOS Animation
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+    
+    // Animasi untuk table rows
+    document.addEventListener('DOMContentLoaded', function() {
+        const tableRows = document.querySelectorAll('.table-appear');
+        tableRows.forEach((row, index) => {
+            setTimeout(() => {
+                row.classList.add('active');
+            }, 100 * (index + 1));
+        });
+    });
+</script>
 @endsection
