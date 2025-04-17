@@ -11,6 +11,18 @@ use App\Models\Laporan;
 class DirektoratController extends Controller
 {
 
+    public function __construct()
+    {
+        // Middleware untuk memastikan hanya admin yang bisa mengakses
+        $this->middleware('auth:admin');
+        $this->middleware(function ($request, $next) {
+        if (auth('admin')->user()->role !== 'admin') {
+            abort(403, 'Unauthorized');
+        }
+        return $next($request);
+    });
+    }
+
     public function mapDirektorat($direktorat)
 {
     // Kode untuk menampilkan peta direktorat

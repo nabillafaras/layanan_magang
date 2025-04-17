@@ -13,6 +13,18 @@ use Illuminate\Http\Request;
 
 class PimpinanController extends Controller
 {
+
+    public function __construct()
+{
+    // Menggunakan guard admin tapi memeriksa role pimpinan
+    $this->middleware('auth:admin');
+    $this->middleware(function ($request, $next) {
+        if (auth('admin')->user()->role !== 'pimpinan') {
+            abort(403, 'Unauthorized');
+        }
+        return $next($request);
+    });
+}
     public function index()
     {
         // Hitung total peserta magang yang diterima

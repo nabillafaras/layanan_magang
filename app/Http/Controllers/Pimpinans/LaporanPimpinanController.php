@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pimpinans;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,19 +11,19 @@ use Carbon\Carbon;
 use App\Exports\RekapLaporanExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class RekapLaporanController extends Controller
+class LaporanPimpinanController extends Controller
 {
 
     public function __construct()
     {
-        // Middleware untuk memastikan hanya admin yang bisa mengakses
+        // Menggunakan guard admin tapi memeriksa role pimpinan
         $this->middleware('auth:admin');
         $this->middleware(function ($request, $next) {
-        if (auth('admin')->user()->role !== 'admin') {
-            abort(403, 'Unauthorized');
-        }
-        return $next($request);
-    });
+            if (auth('admin')->user()->role !== 'pimpinan') {
+                abort(403, 'Unauthorized');
+            }
+            return $next($request);
+        });
     }
     public function index(Request $request)
     {
@@ -119,7 +119,7 @@ class RekapLaporanController extends Controller
         // Debug - untuk memastikan data tersedia
         // dd($data);
 
-        return view('admin.rekap_laporan', $data);
+        return view('pimpinan.laporan_pimpinan', $data);
     }
 
     // Fungsi export Excel jika diperlukan

@@ -25,8 +25,34 @@
         bottom: 0;
         height: 4px;
         width: 60px;
-        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
         border-radius: 2px;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #c13030;
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        color: #6c757d;
     }
 
     .dashboard-card {
@@ -73,17 +99,17 @@
     }
     
     .stat-card h3 {
-        color: var(--primary-color);
+        color: #6c757d;
         margin-bottom: 10px;
         font-weight: 600;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         position: relative;
         z-index: 1;
     }
     
     .stat-card p.h2 {
         font-weight: 700;
-        color: #333;
+        color: var(--primary-color);
         margin-bottom: 5px;
         font-size: 2.2rem;
         position: relative;
@@ -94,6 +120,15 @@
         font-size: 0.85rem;
         position: relative;
         z-index: 1;
+    }
+    
+    .stat-card .icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2.5rem;
+        color: rgba(139, 0, 0, 0.1);
+        z-index: 0;
     }
 
     .card-header {
@@ -151,7 +186,7 @@
         bottom: 0;
         height: 3px;
         width: 60px;
-        background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
         border-radius: 2px;
     }
 
@@ -284,6 +319,52 @@
     }
     
     /* Animation Classes */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideInLeft {
+        from { transform: translateX(-50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideInRight {
+        from { transform: translateX(50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideInUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .slide-in-left {
+        animation: slideInLeft 0.5s ease-in-out;
+    }
+    
+    .slide-in-right {
+        animation: slideInRight 0.5s ease-in-out;
+    }
+    
+    .slide-in-up {
+        animation: slideInUp 0.5s ease-in-out;
+    }
+    
+    .bounce-in {
+        animation: bounceIn 0.6s ease-in-out;
+    }
+    
     .icon-wrapper {
         margin-bottom: 20px;
     }
@@ -303,7 +384,7 @@
     
     .progress-bar {
         transition: width 1.5s ease;
-        background: linear-gradient(90deg, #FFC107, #FF9800);
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
     }
     
     /* Pulse Animation for Buttons */
@@ -352,7 +433,7 @@
     <!-- Periode Magang Card - Full Width -->
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="card dashboard-card periode-magang-card animate__animated animate__fadeInUp">
+            <div class="card dashboard-card periode-magang-card bounce-in">
                 <div class="card-header">
                     <h5><i class="fas fa-calendar-alt"></i> Periode Magang</h5>
                 </div>
@@ -372,14 +453,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="progress mt-2 progress-animate" style="height: 12px;">
-                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                    <div class="progress-bar" role="progressbar" 
                                         style="width: 0%;" 
                                         data-width="{{ $sisaHari > 0 ? (1 - ($sisaHari / Carbon\Carbon::parse($tanggalMulai)->diffInDays(Carbon\Carbon::parse($tanggalSelesai)))) * 100 : 100 }}%">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2 text-end">
-                                <p class="text-danger mb-0 animate__animated animate__pulse animate__infinite">
+                                <p class="text-danger mb-0 fade-in" style="animation: pulse 2s infinite;">
                                     <i class="fas fa-clock me-1"></i>
                                     <strong>{{ $sisaHari }} hari</strong> lagi
                                 </p>
@@ -398,36 +479,45 @@
     <!-- Statistics Row -->
     <div class="row statistics-row">
         <div class="col-12">
-            <h4 class="section-title animate__animated animate__fadeIn">Statistik Kehadiran</h4>
+            <h4 class="section-title fade-in">Statistik Kehadiran</h4>
         </div>
         <div class="col-md-4">
-            <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h3>Total Kehadiran</h3>
-                    <i class="fas fa-user-check text-success fa-2x"></i>
+            <div class="stat-card slide-in-up" style="animation-delay: 0.1s">
+                <div class="icon">
+                    <i class="fas fa-user-check"></i>
                 </div>
+                <h3>Total Kehadiran</h3>
                 <p class="h2 counter">{{ $totalKehadiran }}</p>
                 <small class="text-muted">Hari ini: <span class="text-success">{{ $kehadiranHariIni }}</span></small>
+                <div class="progress mt-3" style="height: 5px;">
+                    <div class="progress-bar bg-success progress-animate" role="progressbar" style="width: 0%;" data-width="75%"></div>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h3>Total Izin</h3>
-                    <i class="fas fa-file-alt text-warning fa-2x"></i>
+            <div class="stat-card slide-in-up" style="animation-delay: 0.2s">
+                <div class="icon">
+                    <i class="fas fa-file-alt"></i>
                 </div>
+                <h3>Total Izin</h3>
                 <p class="h2 counter">{{ $totalIzin }}</p>
                 <small class="text-muted">Bulan ini</small>
+                <div class="progress mt-3" style="height: 5px;">
+                    <div class="progress-bar bg-warning progress-animate" role="progressbar" style="width: 0%;" data-width="45%"></div>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h3>Total Sakit</h3>
-                    <i class="fas fa-procedures text-danger fa-2x"></i>
+            <div class="stat-card slide-in-up" style="animation-delay: 0.3s">
+                <div class="icon">
+                    <i class="fas fa-procedures"></i>
                 </div>
+                <h3>Total Sakit</h3>
                 <p class="h2 counter">{{ $totalSakit }}</p>
                 <small class="text-muted">Bulan ini</small>
+                <div class="progress mt-3" style="height: 5px;">
+                    <div class="progress-bar bg-danger progress-animate" role="progressbar" style="width: 0%;" data-width="30%"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -435,10 +525,10 @@
     <!-- Quick Actions -->
     <div class="row mt-5">
         <div class="col-12">
-            <h4 class="section-title animate__animated animate__fadeIn">Absensi Cepat</h4>
+            <h4 class="section-title fade-in">Absensi Cepat</h4>
         </div>
         <div class="col-md-4">
-            <div class="card dashboard-card action-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+            <div class="card dashboard-card action-card bounce-in" style="animation-delay: 0.1s">
                 <div class="card-body text-center">
                     <div class="icon-wrapper">
                         <i class="fas fa-sign-in-alt text-primary"></i>
@@ -450,7 +540,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card dashboard-card action-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+            <div class="card dashboard-card action-card bounce-in" style="animation-delay: 0.2s">
                 <div class="card-body text-center">
                     <div class="icon-wrapper">
                         <i class="fas fa-calendar-times text-warning"></i>
@@ -462,7 +552,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card dashboard-card action-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+            <div class="card dashboard-card action-card bounce-in" style="animation-delay: 0.3s">
                 <div class="card-body text-center">
                     <div class="icon-wrapper">
                         <i class="fas fa-heartbeat text-danger"></i>
@@ -476,78 +566,88 @@
     </div>
 
     <!-- Recent Activity -->
-<div class="row mt-5">
-    <div class="col-12">
-        <h4 class="section-title animate__animated animate__fadeIn">Aktivitas Terakhir</h4>
-        <div class="card dashboard-card animate__animated animate__fadeInUp">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table activity-table">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Aktivitas</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($aktivitasRiwayat as $aktivitas)
-                                <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ $loop->index * 0.1 }}s">
-                                    <td>{{ $aktivitas->tanggal }}</td>
-                                    <td>
-                                        @if(strpos($aktivitas->aktivitas, 'Absensi') !== false)
-                                            <i class="fas fa-clipboard-check me-2 text-primary"></i>
-                                        @elseif(strpos($aktivitas->aktivitas, 'Laporan') !== false)
-                                            <i class="fas fa-file-alt me-2 text-info"></i>
-                                        @endif
-                                        {{ $aktivitas->aktivitas }}
-                                    </td>
-                                    <td>
-                                        @switch(strtolower($aktivitas->status))
-                                            @case('hadir')
-                                                <span class="badge bg-success">Hadir</span>
-                                                @break
-                                            @case('izin')
-                                                <span class="badge bg-warning">Izin</span>
-                                                @break
-                                            @case('sakit')
-                                                <span class="badge bg-info">Sakit</span>
-                                                @break
-                                            @case('terlambat')
-                                                <span class="badge bg-danger">Terlambat</span>
-                                                @break
-                                            @case('menunggu')
-                                                <span class="badge bg-warning">Menunggu</span>
-                                                @break
-                                            @case('acc')
-                                                <span class="badge bg-success">Acc</span>
-                                                @break
-                                            @case('ditolak')
-                                                <span class="badge bg-danger">Ditolak</span>
-                                                @break
-                                            @default
-                                                <span class="badge bg-secondary">{{ ucfirst($aktivitas->status) }}</span>
-                                        @endswitch
-                                    </td>
-                                </tr>
-                            @empty
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="section-title fade-in">Aktivitas Terakhir</h4>
+            <div class="card dashboard-card bounce-in">
+                <div class="card-header">
+                    <h5><i class="fas fa-history"></i> Riwayat Aktivitas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table activity-table">
+                            <thead>
                                 <tr>
-                                    <td colspan="3" class="text-center">Tidak ada aktivitas</td>
+                                    <th>Tanggal</th>
+                                    <th>Aktivitas</th>
+                                    <th>Status</th>
                                 </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @forelse($aktivitasRiwayat as $aktivitas)
+                                    <tr class="fade-in" style="animation-delay: {{ $loop->index * 0.1 }}s">
+                                        <td>
+                                            <i class="far fa-calendar-alt me-2 text-primary"></i>
+                                            {{ $aktivitas->tanggal }}
+                                        </td>
+                                        <td>
+                                            @if(strpos($aktivitas->aktivitas, 'Absensi') !== false)
+                                                <i class="fas fa-clipboard-check me-2 text-primary"></i>
+                                            @elseif(strpos($aktivitas->aktivitas, 'Laporan') !== false)
+                                                <i class="fas fa-file-alt me-2 text-info"></i>
+                                            @elseif(strpos($aktivitas->aktivitas, 'Izin') !== false)
+                                                <i class="fas fa-calendar-times me-2 text-warning"></i>
+                                            @elseif(strpos($aktivitas->aktivitas, 'Sakit') !== false)
+                                                <i class="fas fa-procedures me-2 text-danger"></i>
+                                            @else
+                                                <i class="fas fa-tasks me-2 text-secondary"></i>
+                                            @endif
+                                            {{ $aktivitas->aktivitas }}
+                                        </td>
+                                        <td>
+                                            @switch(strtolower($aktivitas->status))
+                                                @case('hadir')
+                                                    <span class="badge bg-success">Hadir</span>
+                                                    @break
+                                                @case('izin')
+                                                    <span class="badge bg-warning">Izin</span>
+                                                    @break
+                                                @case('sakit')
+                                                    <span class="badge bg-info">Sakit</span>
+                                                    @break
+                                                @case('terlambat')
+                                                    <span class="badge bg-danger">Terlambat</span>
+                                                    @break
+                                                @case('menunggu')
+                                                    <span class="badge bg-warning">Menunggu</span>
+                                                    @break
+                                                @case('acc')
+                                                    <span class="badge bg-success">Acc</span>
+                                                    @break
+                                                @case('ditolak')
+                                                    <span class="badge bg-danger">Ditolak</span>
+                                                    @break
+                                                @default
+                                                    <span class="badge bg-secondary">{{ ucfirst($aktivitas->status) }}</span>
+                                            @endswitch
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center">Tidak ada aktivitas</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
 @endsection
 
 @section('additional_scripts')
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Animate progress bar

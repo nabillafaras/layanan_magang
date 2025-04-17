@@ -1,4 +1,4 @@
-@extends('layouts.header_admin')
+@extends('layouts.header_pimpinan')
 
 @section('title', 'Rekapitulasi Absensi Peserta Magang - Kementerian Sosial RI')
 
@@ -371,10 +371,11 @@
     <div class="dashboard-header fade-in">
         <h2 class="mt-4">Rekapitulasi Absensi Peserta Magang</h2>
         <ol class="breadcrumb mb-4 slide-in-right">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('pimpinan.dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active">Rekapitulasi Absensi</li>
         </ol>
     </div>
+
 
     <!-- Filters -->
 <div class="card filter-card mb-4 slide-in-up" style="animation-delay: 0.1s">
@@ -382,7 +383,7 @@
         <h5><i class="fas fa-filter"></i> Filter Data</h5>
     </div>
     <div class="card-body">
-        <form action="{{ route('admin.rekapitulasi-absensi') }}" method="GET">
+        <form action="{{ route('pimpinan.absensi') }}" method="GET">
             <div class="row">
                 <div class="col-md-3 mb-2">
                     <label for="bulan" class="form-label">Bulan</label>
@@ -407,11 +408,6 @@
                         <i class="fas fa-search me-1"></i> Filter
                     </button>
                 </div>
-                <div class="col-md-2 mb-2 d-flex align-items-end">
-                    <a href="{{ route('admin.export-absensi') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
-                        <i class="fas fa-file-excel me-1"></i> Export Excel
-                    </a>
-                </div>
             </div>
         </form>
     </div>
@@ -419,9 +415,15 @@
 
 <!-- Absensi Data -->
 <div class="card bounce-in" style="animation-delay: 0.2s">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5><i class="fas fa-calendar-check"></i> Data Absensi Peserta Magang</h5>
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-users"></i> Data Absensi</h5>
+                <div class="col-md-2 mb-2 d-flex align-items-end">
+                    <a href="{{ route('export-absensi') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
+                        <i class="fas fa-file-excel me-1"></i> Export Excel
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -537,9 +539,9 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.4s">
                                     <div>
-                                        <i class="fas fa-times-circle text-danger me-2"></i> Alpha (A)
+                                        <i class="fas fa-times-circle text-danger me-2"></i> Terlambat (T)
                                     </div>
-                                    <span class="badge bg-danger rounded-pill">{{ $totalAlpha ?? 0 }}</span>
+                                    <span class="badge bg-danger rounded-pill">{{ $totalTerlambat ?? 0 }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.5s">
                                     <div class="fw-bold">

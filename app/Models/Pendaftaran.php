@@ -36,7 +36,8 @@ class Pendaftaran extends Authenticatable
         'surat_balasan',
         'role',
         'tanggal_mulai',
-        'tanggal_selesai'
+        'tanggal_selesai',
+        'foto_profile',
     ];
 
     protected $dates = [

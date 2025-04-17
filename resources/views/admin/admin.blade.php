@@ -330,90 +330,84 @@
     </div>
 
     <!-- Recent Activities -->
-<div class="row">
-    <div class="col-12">
-        <div class="dashboard-card bounce-in">
-            <div class="card-header">
-                <h5><i class="fas fa-history"></i> Aktivitas Terbaru</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="activity-table">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Nama</th>
-                                <th>Aktivitas</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentActivities ?? [] as $activity)
-                            <tr class="fade-in" style="animation-delay: {{ $loop->index * 0.1 }}s">
-                                <td>
-                                    <i class="far fa-calendar-alt me-2 text-primary"></i>
-                                    {{ $activity->tanggal }}
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-user text-primary"></i>
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card bounce-in">
+                <div class="card-header">
+                    <h5><i class="fas fa-history"></i> Aktivitas Terbaru</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Nama</th>
+                                    <th>Direktorat</th>
+                                    <th>Aktivitas</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentActivities ?? [] as $activity)
+                                <tr class="fade-in" style="animation-delay: {{ $loop->index * 0.1 }}s">
+                                    <td>
+                                        <i class="far fa-calendar-alt me-2 text-primary"></i>
+                                        {{ \Carbon\Carbon::parse($activity->tanggal)->format('d-m-Y H:i') }}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-user text-primary"></i>
+                                            </div>
+                                            <span>{{ $activity->nama }}</span>
                                         </div>
-                                        <span>{{ $activity->nama }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    @if(strpos(strtolower($activity->aktivitas), 'absen') !== false)
-                                        <i class="fas fa-clipboard-check me-2 text-success"></i>
-                                    @elseif(strpos(strtolower($activity->aktivitas), 'laporan') !== false)
-                                        <i class="fas fa-file-alt me-2 text-warning"></i>
-                                    @elseif(strpos(strtolower($activity->aktivitas), 'izin') !== false)
-                                        <i class="fas fa-calendar-times me-2 text-danger"></i>
-                                    @else
-                                        <i class="fas fa-tasks me-2 text-info"></i>
-                                    @endif
-                                    {{ $activity->aktivitas }}
-                                </td>
-                                <td>
-                                    @switch(strtolower($activity->status))
-                                        @case('hadir')
-                                            <span class="badge badge-success">{{ $activity->status }}</span>
-                                            @break
-                                        @case('izin')
-                                            <span class="badge badge-warning">{{ $activity->status }}</span>
-                                            @break
-                                        @case('sakit')
-                                            <span class="badge badge-info">{{ $activity->status }}</span>
-                                            @break
-                                        @case('terlambat')
-                                            <span class="badge badge-danger">{{ $activity->status }}</span>
-                                            @break
-                                        @case('Menunggu')
-                                            <span class="badge badge-warning">{{ $activity->status }}</span>
-                                            @break
-                                        @case('Acc')
-                                            <span class="badge badge-success">{{ $activity->status }}</span>
-                                            @break
-                                        @case('Ditolak')
-                                            <span class="badge badge-danger">{{ $activity->status }}</span>
-                                            @break
-                                        @default
-                                            <span class="badge badge-info">{{ $activity->status }}</span>
-                                    @endswitch
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="text-center">Tidak ada aktivitas terbaru</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>{{ $activity->direktorat }}</td>
+                                    <td>
+                                        @if(strpos(strtolower($activity->aktivitas), 'absen') !== false)
+                                            <i class="fas fa-clipboard-check me-2 text-success"></i>
+                                        @elseif(strpos(strtolower($activity->aktivitas), 'laporan') !== false)
+                                            <i class="fas fa-file-alt me-2 text-warning"></i>
+                                        @elseif(strpos(strtolower($activity->aktivitas), 'izin') !== false)
+                                            <i class="fas fa-calendar-times me-2 text-danger"></i>
+                                        @else
+                                            <i class="fas fa-tasks me-2 text-info"></i>
+                                        @endif
+                                        {{ $activity->aktivitas }}
+                                    </td>
+                                    <td>
+                                        @if($activity->status == 'hadir')
+                                            <span class="badge bg-success">Hadir</span>
+                                        @elseif($activity->status == 'terlambat')
+                                            <span class="badge bg-danger">Terlambat</span>
+                                        @elseif($activity->status == 'izin')
+                                            <span class="badge bg-warning">Izin</span>
+                                        @elseif($activity->status == 'sakit')
+                                            <span class="badge bg-info">Sakit</span>
+                                        @elseif($activity->status == 'Menunggu')
+                                            <span class="badge bg-warning">Menunggu</span>
+                                        @elseif($activity->status == 'Acc')
+                                            <span class="badge bg-success">Acc</span>
+                                        @elseif($activity->status == 'Ditolak')
+                                            <span class="badge bg-danger">Ditolak</span>
+                                        @else
+                                            <span class="badge bg-secondary">{{ $activity->status }}</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak ada aktivitas terbaru</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     
     <!-- Quick Stats and Charts Row -->
     <div class="row">

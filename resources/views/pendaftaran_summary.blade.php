@@ -594,17 +594,17 @@
                 </li>
                 <li class="list-group-item list-appear" data-aos="fade-up" data-aos-delay="250">
                     <div class="icon"><i class="fas fa-university"></i></div>
-                    <strong class="label">Asal Universitas</strong> 
+                    <strong class="label">Asal Institusi Pendidikan</strong> 
                     <span class="value">{{ $pendaftaran->asal_universitas }}</span>
                 </li>
                 <li class="list-group-item list-appear" data-aos="fade-up" data-aos-delay="300">
                     <div class="icon"><i class="fas fa-book"></i></div>
-                    <strong class="label">Jurusan</strong> 
+                    <strong class="label">Jurusan/Bidang Keilmuan</strong> 
                     <span class="value">{{ $pendaftaran->jurusan }}</span>
                 </li>
                 <li class="list-group-item list-appear" data-aos="fade-up" data-aos-delay="350">
                     <div class="icon"><i class="fas fa-graduation-cap"></i></div>
-                    <strong class="label">Prodi</strong> 
+                    <strong class="label">Program/Keahlian yang Diambil</strong> 
                     <span class="value">{{ $pendaftaran->prodi }}</span>
                 </li>
                 <li class="list-group-item list-appear" data-aos="fade-up" data-aos-delay="400">

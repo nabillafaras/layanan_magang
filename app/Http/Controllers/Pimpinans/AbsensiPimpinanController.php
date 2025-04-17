@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pimpinans;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Pendaftaran;
 use App\Models\Attendance;
-use Illuminate\Support\Facades\DB;
+use App\Models\Pendaftaran;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RekapAbsensiExport;
 
-class RekapAbsensiController extends Controller
+class AbsensiPimpinanController extends Controller
 {
 
     public function __construct()
-    {
-        // Middleware untuk memastikan hanya admin yang bisa mengakses
-        $this->middleware('auth:admin');
-        $this->middleware(function ($request, $next) {
-        if (auth('admin')->user()->role !== 'admin') {
+{
+    // Menggunakan guard admin tapi memeriksa role pimpinan
+    $this->middleware('auth:admin');
+    $this->middleware(function ($request, $next) {
+        if (auth('admin')->user()->role !== 'pimpinan') {
             abort(403, 'Unauthorized');
         }
         return $next($request);
     });
-    }
+}
     public function index(Request $request)
     {
         // Set default ke bulan dan tahun sekarang jika tidak ada filter
@@ -54,16 +54,16 @@ class RekapAbsensiController extends Controller
         $totalHadir = 0;
         $totalSakit = 0;
         $totalIzin = 0;
-        $totalAlpha = 0;
+        $totalTerlambat = 0;
 
         foreach ($pesertaAbsensi as $peserta) {
             $totalHadir += $peserta->attendances->where('status', 'H')->count();
             $totalSakit += $peserta->attendances->where('status', 'S')->count();
             $totalIzin += $peserta->attendances->where('status', 'I')->count();
-            $totalAlpha += $peserta->attendances->where('status', 'A')->count();
+            $totalTerlambat += $peserta->attendances->where('status', 'T')->count();
         }
 
-        return view('admin.rekap_absensi', compact(
+        return view('pimpinan.absensi_pimpinan', compact(
             'pesertaAbsensi',
             'totalDays',
             'tahun',
@@ -71,7 +71,7 @@ class RekapAbsensiController extends Controller
             'totalHadir',
             'totalSakit',
             'totalIzin',
-            'totalAlpha'
+            'totalTerlambat'
         ));
     }
 

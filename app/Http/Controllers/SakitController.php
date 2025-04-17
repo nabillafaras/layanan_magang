@@ -113,27 +113,30 @@ class SakitController extends Controller
                                    ->first();
             
             // Jika sudah ada status yang terisi, kembalikan error
-            if ($attendance && in_array($attendance->status, ['hadir', 'izin', 'sakit'])) {
+            if ($attendance && in_array($attendance->status, ['hadir', 'izin', 'sakit','terlambat'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Anda sudah melakukan absensi hari ini'
                 ]);
             }
             
-            // Buat direktori bukti_sakit jika belum ada
-            $path = public_path('bukti_sakit');
-            if (!File::isDirectory($path)) {
-                File::makeDirectory($path, 0777, true, true);
+            // Pastikan folder public/storage/bukti_sakit juga ada
+            $publicPath = public_path('storage/bukti_sakit');
+            if (!File::isDirectory($publicPath)) {
+                // Buat direktori jika belum ada
+                File::makeDirectory($publicPath, 0777, true, true);
             }
-            
+
             // Upload bukti sakit
-            $buktiSakit = $request->file('bukti_sakit');
-            $fileName = time() . '_' . $pendaftaran->id . '.' . $buktiSakit->getClientOriginalExtension();
-            $buktiSakit->move($path, $fileName);
-            
+            $buktiFile = $request->file('bukti_sakit');
+            $fileName = time() . '_' . $pendaftaran->id . '.' . $buktiFile->getClientOriginalExtension();
+
+            // Simpan file di kedua lokasi untuk memastikan file tersedia
+            $buktiFile->storeAs('public/bukti_sakit', $fileName);
+            $buktiFile->move($publicPath, $fileName);
             // Simpan atau update data absensi
             $currentDateTime = Carbon::now();
-            
+
             if ($attendance) {
                 $attendance->update([
                     'status' => 'sakit',
@@ -142,29 +145,33 @@ class SakitController extends Controller
                     'updated_at' => $currentDateTime
                 ]);
             } else {
-                // Pastikan semua kolom yang required terisi dengan nilai yang benar
-                Attendance::create([
-                    'user_id' => $pendaftaran->id,
-                    'date' => $today,
-                    'status' => 'sakit',
-                    'ket_sakit' => $request->ket_sakit,
-                    'bukti_sakit' => 'bukti_sakit/' . $fileName,
-                    // Tambahkan nilai untuk semua kolom yang wajib diisi
-                    'check_in_location' => 'Sakit', // Menambahkan nilai default untuk kolom ini
-                    'check_out_location' => 'Sakit',
-                    'check_in_photo' => 'default.jpg', // Berikan nilai default untuk foto
-                    'check_out_photo' => 'default.jpg',
-                    'check_in_latitude' => 0.0, // Berikan koordinat default
-                    'check_in_longitude' => 0.0,
-                    'check_out_latitude' => 0.0,
-                    'check_out_longitude' => 0.0,
-                    'check_in_time' => $currentDateTime->format('H:i:s'),
-                    'check_out_time' => $currentDateTime->format('H:i:s'),
-                    'created_at' => $currentDateTime,
-                    'updated_at' => $currentDateTime
-                ]);
+                // Instantiate a new model like in the izin code
+                $attendance = new Attendance();
+                $attendance->user_id = $pendaftaran->id;
+                $attendance->date = $today;
+                $attendance->status = 'sakit';
+                $attendance->ket_sakit = $request->ket_sakit;
+                $attendance->bukti_sakit = 'bukti_sakit/' . $fileName;
+                
+                // Set default values for required fields
+                $attendance->check_in_location = '-';
+                $attendance->check_out_location = '-';
+                $attendance->check_in_photo = 'default.jpg';
+                $attendance->check_out_photo = 'default.jpg';
+                $attendance->check_in_latitude = 0.0;
+                $attendance->check_in_longitude = 0.0;
+                $attendance->check_out_latitude = 0.0;
+                $attendance->check_out_longitude = 0.0;
+                
+                // Set time fields to null like in the izin code
+                $attendance->check_in_time = null;
+                $attendance->check_out_time = null;
+                
+                $attendance->created_at = $currentDateTime;
+                $attendance->updated_at = $currentDateTime;
+                $attendance->save();
             }
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Izin sakit berhasil disubmit'

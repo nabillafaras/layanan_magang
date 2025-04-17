@@ -341,15 +341,12 @@
                     <h5><i class="fas fa-user-circle"></i> Informasi Profil</h5>
                 </div>
                 <div class="card-body p-4 text-center">
-                    <div class="profile-image-container mb-4">
-                        @if(isset($user->foto_profile))
-                            <img src="{{ asset('storage/profile_photos/'.$user->foto_profile) }}" alt="Profile" class="profile-image profile-pulse">
-                        @else
-                            <img src="{{ asset('assets/images/default-profile.png') }}" alt="Profile" class="profile-image">
-                        @endif
-                        <label for="profile-image-upload" class="profile-image-edit" title="Ubah Foto Profil">
-                            <i class="fas fa-camera"></i>
-                        </label>
+                <div class="profile-image-container mb-4">
+                    @if(isset($user->foto_profile))
+                        <img src="{{ asset('storage/' . $user->foto_profile) }}" alt="Profile" class="profile-image profile-pulse">
+                    @else
+                        <img src="{{ asset('assets/images/default-profile.png') }}" alt="Profile" class="profile-image">
+                    @endif
                     </div>
                     
                     <h4 class="mb-1">{{ $user->nama_lengkap }}</h4>
@@ -360,7 +357,7 @@
                             <span class="badge bg-success badge-status">
                                 <i class="fas fa-check-circle me-1"></i> Diterima
                             </span>
-                        @elseif($user->status == 'DIproses')
+                        @elseif($user->status == 'Diproses')
                             <span class="badge bg-warning badge-status">
                                 <i class="fas fa-clock me-1"></i> Proses
                             </span>
@@ -648,11 +645,11 @@
                                     <div class="profile-info-item">
                                         <div class="profile-info-label">Status</div>
                                         <div class="profile-info-value">
-                                            @if($user->status == 'aktif')
-                                                <span class="badge bg-success">Aktif</span>
-                                            @elseif($user->status == 'menunggu')
-                                                <span class="badge bg-warning text-dark">Menunggu</span>
-                                            @elseif($user->status == 'ditolak')
+                                            @if($user->status == 'Diterima')
+                                                <span class="badge bg-success">Diterima</span>
+                                            @elseif($user->status == 'Diproses')
+                                                <span class="badge bg-warning text-dark">Diproses</span>
+                                            @elseif($user->status == 'Ditolak')
                                                 <span class="badge bg-danger">Ditolak</span>
                                             @else
                                                 <span class="badge bg-secondary">{{ $user->status }}</span>

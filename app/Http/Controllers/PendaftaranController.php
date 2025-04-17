@@ -75,6 +75,7 @@ class PendaftaranController extends Controller
                 'direktorat' => 'required|max:255',
                 'unit_kerja' => 'required|max:255',
                 'cv' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+                'foto_profile' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             ]
         ];
 
@@ -82,15 +83,22 @@ class PendaftaranController extends Controller
 
         $pendaftaran = Pendaftaran::updateOrCreate(
             ['email' => $request->email],
-            $request->except(['step', 'transkrip_nilai', 'surat_pengantar', 'cv'])
+            $request->except(['step', 'transkrip_nilai', 'surat_pengantar', 'cv', 'foto_profile'])
         );
 
-        $fileFields = ['transkrip_nilai' => 'uploads/transkrip', 'surat_pengantar' => 'uploads/surat', 'cv' => 'uploads/cv'];
+        $fileFields = ['transkrip_nilai' => 'uploads/transkrip', 'surat_pengantar' => 'uploads/surat', 'cv' => 'uploads/cv', 'foto_profile' => 'uploads/foto'];
         foreach ($fileFields as $field => $path) {
             if ($request->hasFile($field)) {
                 $filePath = $request->file($field)->storeAs($path, time() . '_' . $request->file($field)->getClientOriginalName());
                 $pendaftaran->$field = $filePath;
             }
+        }
+
+        if ($request->hasFile('foto_profile')) {
+            Log::info('Foto profile received', ['filename' => $request->file('foto_profile')->getClientOriginalName()]);
+            $filePath = $request->file('foto_profile')->storeAs('uploads/foto', time() . '_' . $request->file('foto_profile')->getClientOriginalName());
+            $pendaftaran->foto_profile = $filePath;
+            Log::info('Foto profile path saved', ['path' => $filePath]);
         }
 
         try {

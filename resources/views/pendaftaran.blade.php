@@ -679,24 +679,24 @@
             <!-- Step 2: Akademik -->
             <div id="step-2" class="form-step">
                 <div class="input-group">
-                    <label for="asal_universitas" class="form-label">Asal Universitas</label>
+                    <label for="asal_universitas" class="form-label">Asal Institusi Pendidikan</label>
                     <i class="fas fa-university input-icon"></i>
-                    <input type="text" class="form-control" id="asal_universitas" name="asal_universitas" placeholder="Masukkan nama universitas" required>
-                    <div class="form-feedback">Asal universitas wajib diisi</div>
+                    <input type="text" class="form-control" id="asal_universitas" name="asal_universitas" placeholder="Masukkan nama asal institusi pendidikan" required>
+                    <div class="form-feedback">Asal Institusi Pendidikan</div>
                 </div>
                 
                 <div class="input-group">
-                    <label for="jurusan" class="form-label">Jurusan</label>
+                    <label for="jurusan" class="form-label">Jurusan/Bidang Keilmuan</label>
                     <i class="fas fa-book input-icon"></i>
-                    <input type="text" class="form-control" id="jurusan" name="jurusan" placeholder="Masukkan jurusan" required>
-                    <div class="form-feedback">Jurusan wajib diisi</div>
+                    <input type="text" class="form-control" id="jurusan" name="jurusan" placeholder="Masukkan jurusan/bidang keilmuan" required>
+                    <div class="form-feedback">Jurusan/Bidang Keilmuan wajib diisi</div>
                 </div>
                 
                 <div class="input-group">
-                    <label for="prodi" class="form-label">Program Studi</label>
+                    <label for="prodi" class="form-label">Program/Keahlian yang Diambil</label>
                     <i class="fas fa-graduation-cap input-icon"></i>
-                    <input type="text" class="form-control" id="prodi" name="prodi" placeholder="Masukkan program studi" required>
-                    <div class="form-feedback">Program studi wajib diisi</div>
+                    <input type="text" class="form-control" id="prodi" name="prodi" placeholder="Masukkan program/keahlian yang diambil" required>
+                    <div class="form-feedback">Program/Keahlian yang diambil wajib diisi</div>
                 </div>
                 
                 <div class="input-group">
@@ -707,24 +707,24 @@
                 </div>
                 
                 <div class="input-group">
-                    <label for="ipk" class="form-label">IPK</label>
+                    <label for="ipk" class="form-label">IPK/Nilai Rata-Rata</label>
                     <i class="fas fa-award input-icon"></i>
-                    <input type="number" step="0.01" class="form-control" id="ipk" name="ipk" placeholder="Contoh: 3.50" required min="0" max="4" title="IPK harus antara 0 dan 4">
-                    <div class="form-feedback">IPK wajib diisi (0.00 - 4.00)</div>
+                    <input type="number" step="0.01" class="form-control" id="ipk" name="ipk" placeholder="Contoh: 3.50/88.7" required min="0" max="100">
+                    <div class="form-feedback">IPK/Nilai Rata-Rata wajib diisi</div>
                 </div>
                 
                 <div class="file-upload-wrapper">
-                    <label for="transkrip_nilai" class="form-label">Unggah Transkrip Nilai</label>
+                    <label for="transkrip_nilai" class="form-label">Unggah Transkrip Nilai/Rata-Rata Raport</label>
                     <div class="custom-file-upload fixed-height-upload">
                         <i class="fas fa-file-pdf upload-icon"></i>
                         <p class="mb-0" id="transkrip-label">Klik atau seret file PDF/JPG/PNG</p>
                         <input type="file" class="form-control" id="transkrip_nilai" name="transkrip_nilai" accept=".pdf,.jpg,.png" required>
                     </div>
-                    <div class="form-feedback">Transkrip nilai wajib diunggah</div>
+                    <div class="form-feedback">Transkrip Nilai/Rata-Rata Raport wajib diunggah</div>
                 </div>
                 
                 <div class="file-upload-wrapper">
-                    <label for="surat_pengantar" class="form-label">Unggah Surat Pengantar Universitas</label>
+                    <label for="surat_pengantar" class="form-label">Unggah Surat Pengantar Institusi Pendidikan</label>
                     <div class="custom-file-upload fixed-height-upload">
                         <i class="fas fa-file-alt upload-icon"></i>
                         <p class="mb-0" id="surat-label">Klik atau seret file PDF/JPG/PNG</p>
@@ -789,6 +789,16 @@
                         <input type="file" class="form-control" id="cv" name="cv" accept=".pdf,.jpg,.png" required>
                     </div>
                     <div class="form-feedback">CV wajib diunggah</div>
+                </div>
+
+                <div class="file-upload-wrapper">
+                    <label for="foto_profile" class="form-label">Unggah Photo</label>
+                    <div class="custom-file-upload fixed-height-upload">
+                        <i class="fas fa-file-contract upload-icon"></i>
+                        <p class="mb-0" id="foto-label">Klik atau seret file JPG/PNG</p>
+                        <input type="file" class="form-control" id="foto_profile" name="foto_profile" accept=".pdf,.jpg,.png" required>
+                    </div>
+                    <div class="form-feedback">Photo wajib formal</div>
                 </div>
                 
                 <div class="d-grid gap-2 mt-4">
@@ -1001,6 +1011,20 @@
         document.getElementById('cv').addEventListener('change', function() {
             const fileName = this.files[0]?.name || "Klik atau seret file PDF/JPG/PNG";
             const label = document.getElementById('cv-label');
+            
+            // Animasi perubahan teks
+            label.style.opacity = '0';
+            setTimeout(() => {
+                label.textContent = fileName;
+                label.style.opacity = '1';
+            }, 300);
+            
+            this.classList.remove('is-invalid');
+        });
+
+        document.getElementById('foto_profile').addEventListener('change', function() {
+            const fileName = this.files[0]?.name || "Klik atau seret file PDF/JPG/PNG";
+            const label = document.getElementById('foto-label');
             
             // Animasi perubahan teks
             label.style.opacity = '0';

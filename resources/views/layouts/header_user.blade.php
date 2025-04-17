@@ -21,6 +21,8 @@
             --sidebar-width: 280px;
             --header-height: 70px;
             --transition-speed: 0.3s;
+            --gold-color: #FFD700;
+            --blue-color: #4e73df;
         }
         
         body {
@@ -42,8 +44,8 @@
             z-index: 100;
             transition: all var(--transition-speed);
             box-shadow: 3px 0 10px rgba(0,0,0,0.1);
-            overflow-y: auto; /* Memungkinkan scroll vertikal */
-            max-height: 100vh; /* Membatasi tinggi maksimal sesuai viewport */
+            overflow-y: auto;
+            max-height: 100vh;
         }
         
         .sidebar-collapsed .sidebar {
@@ -119,9 +121,8 @@
             color: white;
             font-weight: 500;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid gold;  /* Memberikan garis gold pada item aktif */
         }
-
+        
         .sidebar .nav-link.active::before {
             content: '';
             position: absolute;
@@ -129,7 +130,25 @@
             top: 0;
             height: 100%;
             width: 4px;
-            background-color: var(--gold-color);  /* Garis gold di samping item aktif */
+            background-color: var(--gold-color);
+        }
+        
+        .sidebar .dropdown-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sidebar .dropdown-toggle i.fa-chevron-down {
+            transition: transform var(--transition-speed);
+        }
+        
+        .sidebar .dropdown-toggle[aria-expanded="true"] i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        
+        .sidebar .collapse {
+            transition: all var(--transition-speed);
         }
         
         .sidebar .dropdown-menu {
@@ -171,6 +190,7 @@
         .dropdown-toggle::after {
             display: none;
         }
+        
         .navbar {
             background-color: white;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
@@ -221,6 +241,7 @@
             border-radius: 10px;
             padding: 10px 0;
             min-width: 200px;
+            animation: fadeIn 0.3s ease-in-out;
         }
         
         .navbar .dropdown-item {
@@ -387,7 +408,81 @@
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
+        
+        /* Badge Styles */
+        .badge-user {
+            background-color: #4e73df;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.25em 0.6em;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        
+        /* Progress Bar Styles */
+        .progress {
+            height: 8px;
+            border-radius: 10px;
+            margin-top: 10px;
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        /* Attendance Status Badges */
+        .badge-hadir {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .badge-izin {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-sakit {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .badge-alpha {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        /* Floating Action Button */
+        .floating-action-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 99;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-action-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+        }
+        
+        .floating-action-btn i {
+            font-size: 24px;
+        }
     </style>
+    @yield('additional_css')
 </head>
 <body>
     <div class="wrapper" id="app">
@@ -397,68 +492,73 @@
                 <img src="{{ asset('images/ic_kemensos_1.png') }}" alt="Logo" class="logo">
             </div>
             <div class="user-profile">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->nama_lengkap) }}&background=8b0000&color=fff" alt="User" class="profile-img">
+            <img src="{{ asset('storage/' . auth()->user()->foto_profile) }}" alt="Profile" class="profile-image profile-pulse">
                 <h6 class="mb-0 text-white">{{ auth()->user()->nama_lengkap }}</h6>
-                <small class="text-white-50">{{ auth()->user()->nomor_pendaftaran }}</small>
+                <small class="text-white-50">
+                    <span class="badge-user">Peserta</span>
+                </small>
+                <div class="mt-2">
+                    <small class="text-white-50 d-block">Nomor Pendaftaran:</small>
+                    <small class="text-white">{{ auth()->user()->nomor_pendaftaran }}</small>
+                </div>
             </div>
             
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('user') ? 'active' : '' }}" href="{{ route('user') }}">
-                        <i class="fas fa-home"></i>Dashboard
+                    <a href="{{ route('user') }}" class="nav-link {{ request()->routeIs('user') ? 'active' : '' }}">
+                        <i class="fas fa-home"></i> Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="#absensiCollapse" data-bs-toggle="collapse">
-                        Absensi
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('attendance') || request()->routeIs('izin') || request()->routeIs('sakit') ? 'active' : '' }}" href="#absensiCollapse" data-bs-toggle="collapse">
+                        <i class="fas fa-clipboard-check"></i> Absensi
                         <i class="fas fa-chevron-down ms-auto"></i>
                     </a>
                     <div class="collapse {{ request()->routeIs('attendance') || request()->routeIs('izin') || request()->routeIs('sakit') ? 'show' : '' }}" id="absensiCollapse">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('attendance') ? 'active' : '' }}" href="{{ route('attendance') }}">
-                                    <i class="fas fa-sign-in-alt"></i>Masuk
+                                    <i class="fas fa-sign-in-alt"></i> Masuk
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('izin') ? 'active' : '' }}" href="{{ route('izin') }}">
-                                    <i class="fas fa-calendar-times"></i>Izin
+                                    <i class="fas fa-calendar-times"></i> Izin
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('sakit') ? 'active' : '' }}" href="{{ route('sakit') }}">
-                                    <i class="fas fa-procedures"></i>Sakit
+                                    <i class="fas fa-procedures"></i> Sakit
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="#laporanCollapse" data-bs-toggle="collapse">
-                        Laporan
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('laporan.bulanan') || request()->routeIs('laporan.akhir') ? 'active' : '' }}" href="#laporanCollapse" data-bs-toggle="collapse">
+                        <i class="fas fa-file-alt"></i> Laporan
                         <i class="fas fa-chevron-down ms-auto"></i>
                     </a>
                     <div class="collapse {{ request()->routeIs('laporan.bulanan') || request()->routeIs('laporan.akhir') ? 'show' : '' }}" id="laporanCollapse">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('laporan.bulanan') ? 'active' : '' }}" href="{{ route('laporan.bulanan') }}">
-                                    <i class="fas fa-calendar-alt"></i>Laporan Bulanan
+                                    <i class="fas fa-calendar-alt"></i> Laporan Bulanan
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('laporan.akhir') ? 'active' : '' }}" href="{{ route('laporan.akhir') }}">
-                                    <i class="fas fa-flag-checkered"></i>Laporan Akhir
+                                    <i class="fas fa-flag-checkered"></i> Laporan Akhir
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-bullhorn"></i>Pengumuman
+                    <a href="#" class="nav-link {{ request()->routeIs('pengumuman') ? 'active' : '' }}">
+                        <i class="fas fa-bullhorn"></i> Pengumuman
                     </a>
                 </li>
-
             </ul>
         </div>
 
@@ -491,7 +591,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="userDropdown">
                                     <li>
                                         <a href="{{ route('profile.index') }}" class="dropdown-item">
-                                            <i class="fas fa-id-card me-2"></i>Profile
+                                            <i class="fas fa-id-card me-2"></i> Profil
                                         </a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
@@ -499,7 +599,7 @@
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                                <i class="fas fa-sign-out-alt me-2"></i> Logout
                                             </button>
                                         </form>
                                     </li>
@@ -514,6 +614,7 @@
             <div class="container-fluid py-4">
                 @yield('content')
             </div>
+            
         </div>
     </div>
     
@@ -523,34 +624,34 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
-            // Initialize sidebar toggle
-            document.addEventListener('DOMContentLoaded', function() {
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const wrapper = document.getElementById('app');
-        const sidebar = document.querySelector('.sidebar');
-        
-        if (sidebarToggle && sidebar) {
-            sidebarToggle.addEventListener('click', function() {
-                // Untuk layar mobile
-                if (window.innerWidth <= 992) {
-                    sidebar.classList.toggle('show');
-                } 
-                
-                // Untuk semua ukuran layar
-                wrapper.classList.toggle('sidebar-collapsed');
-            });
+        // Initialize sidebar toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const wrapper = document.getElementById('app');
+            const sidebar = document.querySelector('.sidebar');
             
-            // Tambahkan event listener untuk menutup sidebar di layar mobile
-            document.addEventListener('click', function(event) {
-                if (window.innerWidth <= 992 && 
-                    sidebar.classList.contains('show') && 
-                    !sidebar.contains(event.target) && 
-                    !sidebarToggle.contains(event.target)) {
-                    sidebar.classList.remove('show');
-                    wrapper.classList.add('sidebar-collapsed');
-                }
-            });
-        }
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    // Untuk layar mobile
+                    if (window.innerWidth <= 992) {
+                        sidebar.classList.toggle('show');
+                    } 
+                    
+                    // Untuk semua ukuran layar
+                    wrapper.classList.toggle('sidebar-collapsed');
+                });
+                
+                // Tambahkan event listener untuk menutup sidebar di layar mobile
+                document.addEventListener('click', function(event) {
+                    if (window.innerWidth <= 992 && 
+                        sidebar.classList.contains('show') && 
+                        !sidebar.contains(event.target) && 
+                        !sidebarToggle.contains(event.target)) {
+                        sidebar.classList.remove('show');
+                        wrapper.classList.add('sidebar-collapsed');
+                    }
+                });
+            }
 
             // Display current date
             const dateElement = document.getElementById('currentDate');
@@ -581,9 +682,18 @@
             
             // Run animation on scroll
             window.addEventListener('scroll', animateOnScroll);
+            
+            // Animasi dropdown menu
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(function(toggle) {
+                toggle.addEventListener('click', function() {
+                    const chevron = this.querySelector('.fa-chevron-down');
+                    if (chevron) {
+                        chevron.style.transform = this.getAttribute('aria-expanded') === 'true' ? 'rotate(0deg)' : 'rotate(180deg)';
+                    }
+                });
+            });
         });
-
-        
     </script>
     
     @yield('additional_scripts')

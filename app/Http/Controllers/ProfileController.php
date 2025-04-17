@@ -29,40 +29,48 @@ class ProfileController extends Controller
     }
 
     public function index()
-{
-    // Gunakan metode getPendaftaran untuk mendapatkan user
-    $user = $this->getPendaftaran();
+    {
+        // Gunakan metode getPendaftaran untuk mendapatkan user
+        $user = $this->getPendaftaran();
 
-    if (!$user) {
-        return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
+        if (!$user) {
+            return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
+        }
+
+        // Ambil data periode magang
+        $periodeData = Pendaftaran::where('id', $user->id) // pastikan 'id' milik user
+            ->select('tanggal_mulai', 'tanggal_selesai')
+            ->first();
+
+        // Ubah format tanggal untuk tampilan
+        $tanggalMulai = null;
+        $tanggalSelesai = null;
+        $sisaHari = null;
+
+        if ($periodeData && $periodeData->tanggal_mulai && $periodeData->tanggal_selesai) {
+            // Mengonversi tanggal menjadi format 'd M Y'
+            $tanggalMulai = Carbon::parse($periodeData->tanggal_mulai)->format('d M Y');
+            $tanggalSelesai = Carbon::parse($periodeData->tanggal_selesai)->format('d M Y');
+
+            // Menghitung sisa hari antara tanggal mulai dan tanggal selesai
+            $today = Carbon::now(); // Tanggal saat ini
+            $startDate = Carbon::parse($periodeData->tanggal_mulai); // Tanggal mulai
+            $endDate = Carbon::parse($periodeData->tanggal_selesai); // Tanggal selesai magang
+            $sisaHari = ($endDate->gt($startDate)) ? $startDate->diffInDays($endDate) : 0; // Menghitung selisih hari
+        }
+
+        // Kembalikan view profil dengan data pengguna dan periode magang
+        return view('user.profile', compact('user', 'tanggalMulai', 'tanggalSelesai', 'sisaHari'));
     }
 
-    // Ambil data periode magang
-    $periodeData = Pendaftaran::where('id', $user->id) // pastikan 'id' milik user
-        ->select('tanggal_mulai', 'tanggal_selesai')
-        ->first();
-
-    // Ubah format tanggal untuk tampilan
-    $tanggalMulai = null;
-    $tanggalSelesai = null;
-    $sisaHari = null;
-
-    if ($periodeData && $periodeData->tanggal_mulai && $periodeData->tanggal_selesai) {
-        // Mengonversi tanggal menjadi format 'd M Y'
-        $tanggalMulai = Carbon::parse($periodeData->tanggal_mulai)->format('d M Y');
-        $tanggalSelesai = Carbon::parse($periodeData->tanggal_selesai)->format('d M Y');
-
-        // Menghitung sisa hari antara tanggal mulai dan tanggal selesai
-        $today = Carbon::now(); // Tanggal saat ini
-        $startDate = Carbon::parse($periodeData->tanggal_mulai); // Tanggal mulai
-        $endDate = Carbon::parse($periodeData->tanggal_selesai); // Tanggal selesai magang
-        $sisaHari = ($endDate->gt($startDate)) ? $startDate->diffInDays($endDate) : 0; // Menghitung selisih hari
+    /**
+     * Metode untuk mengarahkan ke updateProfile 
+     * (Ini metode yang akan menangani route resource)
+     */
+    public function update(Request $request)
+    {
+        return $this->updateProfile($request);
     }
-
-    // Kembalikan view profil dengan data pengguna dan periode magang
-    return view('user.profile', compact('user', 'tanggalMulai', 'tanggalSelesai', 'sisaHari'));
-}
-
 
     /**
      * Metode untuk memperbarui profil pengguna

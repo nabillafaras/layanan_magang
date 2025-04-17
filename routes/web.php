@@ -24,6 +24,8 @@ use App\Http\Controllers\LaporanBulananController;
 use App\Http\Controllers\LaporanAkhirController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DirektoratController;
+use App\Http\Controllers\Pimpinans\AbsensiPimpinanController;
+use App\Http\Controllers\Pimpinans\LaporanPimpinanController;
 use Illuminate\Support\Facades\Route;
 
 // Route publik
@@ -145,6 +147,14 @@ Route::prefix('pimpinan')->group(function () {
         // Route untuk data peserta
         Route::get('/pimpinan/peserta', [PesertaPimpinanController::class, 'index'])->name('pimpinan.peserta.index');
         Route::get('/pimpinan/peserta/{id}', [PesertaPimpinanController::class, 'show'])->name('pimpinan.peserta.show');
-        
-    });
+        // route untuk rekap absensi
+        Route::get('/rekap-absensi', [AbsensiPimpinanController::class, 'index'])->name('pimpinan.absensi');
+        Route::get('/export-absensi', [AbsensiPimpinanController::class, 'exportExcel'])->name('export-absensi');
+    
+        // Rute untuk rekapitulasi laporan
+    Route::get('/rekapitulasi-laporan', [LaporanPimpinanController::class, 'index'])->name('pimpinan.laporan');
+    Route::get('/export-laporan', [LaporanPimpinanController::class, 'exportExcel'])->name('export-laporan');
+
+
+});
 });

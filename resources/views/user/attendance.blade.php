@@ -498,7 +498,7 @@
                                         <td>{{ $record->check_in_time }}</td>
                                         <td>{{ $record->check_out_time ?? '-' }}</td>
                                         <td>
-                                            <span class="badge {{ $record->status === 'hadir' ? 'bg-success' : ($record->status === 'terlambat' ? 'bg-warning' : 'bg-danger') }}">
+                                            <span class="badge {{ $record->status === 'hadir' ? 'bg-success' : ($record->status === 'terlambat' ? 'bg-danger' : 'bg-danger') }}">
                                                 {{ $record->status }}
                                             </span>
                                         </td>
@@ -798,112 +798,43 @@
 
     // Fungsi untuk mendapatkan lokasi dan menampilkannya di iframe Google Maps
     function getLocation(type) {
-        if (navigator.geolocation) {
-            // Tampilkan indikator loading dengan animasi
-            const infoElement = document.getElementById(`location-info-${type === 'check-in' ? 'in' : 'out'}`);
-            infoElement.innerHTML = '<div class="text-center animate__animated animate__pulse animate__infinite"><i class="fas fa-spinner fa-spin me-2"></i> Mendapatkan lokasi...</div>';
+    if (navigator.geolocation) {
+        // Tampilkan indikator loading dengan animasi
+        const infoElement = document.getElementById(`location-info-${type === 'check-in' ? 'in' : 'out'}`);
+        infoElement.innerHTML = '<div class="text-center animate__animated animate__pulse animate__infinite"><i class="fas fa-spinner fa-spin me-2"></i> Mendapatkan lokasi presisi tinggi...</div>';
+        
+        // Opsi geolokasi dengan akurasi tinggi dan timeout lebih lama
+        const geoOptions = {
+            enableHighAccuracy: true,  // Paksa menggunakan GPS
+            maximumAge: 0,             // Jangan gunakan cache
+            timeout: 30000             // 30 detik - beri waktu lebih untuk GPS lock
+        };
+        
+        // Tambahkan penanganan error yang lebih baik
+        const errorHandler = function(error) {
+            console.error("Geolocation error:", error);
+            let pesanError = 'Error mendapatkan lokasi: ';
             
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                
-                // Update field tersembunyi
-                if (type === 'check-in') {
-                    document.getElementById('latitude').value = lat;
-                    document.getElementById('longitude').value = lng;
-                    document.getElementById('location').value = `${lat}, ${lng}`;
-                    
-                    // Update iframe dengan URL Google Maps
-                    const mapIframe = document.getElementById('map-iframe-in');
-                    mapIframe.src = `https://www.google.com/maps?q=${lat},${lng}&hl=id&z=16&output=embed`;
-                    
-                    // Update info lokasi dengan animasi
-                    document.getElementById('location-info-in').innerHTML = `
-                        <div class="text-success animate__animated animate__fadeIn">
-                            <i class="fas fa-check-circle me-2"></i><strong>Lokasi terdeteksi:</strong>
-                        </div>
-                        <div class="mt-2 animate__animated animate__fadeIn" style="animation-delay: 0.2s">
-                            <i class="fas fa-map-pin me-2" style="color: #8b0000;"></i> Latitude: ${lat.toFixed(6)}<br>
-                            <i class="fas fa-map-pin me-2" style="color: #8b0000;"></i> Longitude: ${lng.toFixed(6)}
-                        </div>
-                    `;
-                    
-                    // Aktifkan tombol submit dengan animasi
-                    const submitBtn = document.getElementById('submitBtn');
-                    submitBtn.disabled = false;
-                    submitBtn.classList.add('animate__animated', 'animate__pulse');
-                    
-                } else {
-                    document.getElementById('latitude_out').value = lat;
-                    document.getElementById('longitude_out').value = lng;
-                    document.getElementById('location_out').value = `${lat}, ${lng}`;
-                    
-                    // Update iframe dengan URL Google Maps
-                    const mapIframe = document.getElementById('map-iframe-out');
-                    mapIframe.src = `https://www.google.com/maps?q=${lat},${lng}&hl=id&z=16&output=embed`;
-                    
-                    // Update info lokasi dengan animasi
-                    document.getElementById('location-info-out').innerHTML = `
-                        <div class="text-success animate__animated animate__fadeIn">
-                            <i class="fas fa-check-circle me-2"></i><strong>Lokasi terdeteksi:</strong>
-                        </div>
-                        <div class="mt-2 animate__animated animate__fadeIn" style="animation-delay: 0.2s">
-                            <i class="fas fa-map-pin me-2" style="color: #1a8754;"></i> Latitude: ${lat.toFixed(6)}<br>
-                            <i class="fas fa-map-pin me-2" style="color: #1a8754;"></i> Longitude: ${lng.toFixed(6)}
-                        </div>
-                    `;
-                    
-                    // Aktifkan tombol submit dengan animasi
-                    const submitBtn = document.getElementById('submitBtnOut');
-                    submitBtn.disabled = false;
-                    submitBtn.classList.add('animate__animated', 'animate__pulse');
-                }
-                
-            }, function(error) {
-                let pesanError = 'Error mendapatkan lokasi: ';
-                
-                switch(error.code) {
-                    case error.PERMISSION_DENIED:
-                        pesanError += 'Izin akses lokasi ditolak.';
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        pesanError += 'Informasi lokasi tidak tersedia.';
-                        break;
-                    case error.TIMEOUT:
-                        pesanError += 'Waktu permintaan lokasi habis.';
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        pesanError += 'Terjadi kesalahan yang tidak diketahui.';
-                        break;
-                }
-                
-                // Tampilkan error dengan alert yang lebih menarik
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lokasi Tidak Ditemukan',
-                    text: pesanError,
-                    confirmButtonColor: '#8b0000',
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutUp'
-                    }
-                });
-                
-                document.getElementById(`location-info-${type === 'check-in' ? 'in' : 'out'}`).innerHTML = 
-                    `<div class="text-danger animate__animated animate__fadeIn"><i class="fas fa-exclamation-triangle me-2"></i> ${pesanError}</div>`;
-            }, {
-                maximumAge: 0,      // Tidak menggunakan cache
-                timeout: 10000,     // 10 detik
-                enableHighAccuracy: true
-            });
-        } else {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    pesanError += 'Izin akses lokasi ditolak. Mohon izinkan akses lokasi di browser Anda.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    pesanError += 'Informasi lokasi tidak tersedia. Pastikan GPS dan layanan lokasi aktif.';
+                    break;
+                case error.TIMEOUT:
+                    pesanError += 'Waktu permintaan lokasi habis. Coba lagi atau pastikan berada di area dengan sinyal GPS yang baik.';
+                    break;
+                case error.UNKNOWN_ERROR:
+                    pesanError += 'Terjadi kesalahan yang tidak diketahui saat mengakses lokasi.';
+                    break;
+            }
+            
             // Tampilkan error dengan alert yang lebih menarik
             Swal.fire({
                 icon: 'error',
-                title: 'Browser Tidak Mendukung',
-                text: 'Geolocation tidak didukung oleh browser ini.',
+                title: 'Lokasi Tidak Akurat',
+                text: pesanError,
                 confirmButtonColor: '#8b0000',
                 showClass: {
                     popup: 'animate__animated animate__fadeInDown'
@@ -912,8 +843,128 @@
                     popup: 'animate__animated animate__fadeOutUp'
                 }
             });
+            
+            document.getElementById(`location-info-${type === 'check-in' ? 'in' : 'out'}`).innerHTML = 
+                `<div class="text-danger animate__animated animate__fadeIn"><i class="fas fa-exclamation-triangle me-2"></i> ${pesanError}</div>`;
+        };
+        
+        // Fungsi untuk memproses lokasi yang diterima
+        const successHandler = function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy; // dalam meter
+            
+            console.log("Lokasi diterima:", lat, lng, "Akurasi:", accuracy);
+            
+            // Periksa akurasi lokasi
+            if (accuracy > 100) { // Jika akurasi lebih dari 100 meter
+                infoElement.innerHTML = `
+                    <div class="text-warning animate__animated animate__fadeIn">
+                        <i class="fas fa-exclamation-circle me-2"></i><strong>Perhatian: Lokasi kurang akurat (±${Math.round(accuracy)}m)</strong>
+                        <button class="btn btn-sm btn-outline-warning ms-2" onclick="getLocation('${type}')">
+                            <i class="fas fa-sync-alt me-1"></i> Coba Lagi
+                        </button>
+                    </div>`;
+                
+                // Tunjukkan peringatan
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Lokasi Kurang Akurat',
+                    text: `Akurasi lokasi saat ini adalah ±${Math.round(accuracy)}m. Ini mungkin menyebabkan lokasi tidak dikenali sebagai area kantor. Pastikan GPS aktif dan lakukan di area terbuka.`,
+                    confirmButtonText: 'Gunakan Lokasi Ini',
+                    showCancelButton: true,
+                    cancelButtonText: 'Coba Lagi',
+                    confirmButtonColor: '#8b0000',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lanjut menggunakan lokasi meskipun kurang akurat
+                        processLocation(lat, lng, accuracy, type);
+                    } else {
+                        // Mencoba ulang mendapatkan lokasi
+                        getLocation(type);
+                    }
+                });
+            } else {
+                // Lokasi cukup akurat, langsung proses
+                processLocation(lat, lng, accuracy, type);
+            }
+        };
+        
+        // Fungsi untuk memproses lokasi yang sudah didapatkan
+        function processLocation(lat, lng, accuracy, type) {
+            // Update field tersembunyi
+            if (type === 'check-in') {
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+                document.getElementById('location').value = `${lat}, ${lng}`;
+                
+                // Update iframe dengan URL Google Maps
+                const mapIframe = document.getElementById('map-iframe-in');
+                mapIframe.src = `https://www.google.com/maps?q=${lat},${lng}&hl=id&z=16&output=embed`;
+                
+                // Update info lokasi dengan animasi dan info akurasi
+                document.getElementById('location-info-in').innerHTML = `
+                    <div class="text-success animate__animated animate__fadeIn">
+                        <i class="fas fa-check-circle me-2"></i><strong>Lokasi terdeteksi:</strong>
+                    </div>
+                    <div class="mt-2 animate__animated animate__fadeIn" style="animation-delay: 0.2s">
+                        <i class="fas fa-map-pin me-2" style="color: #8b0000;"></i> Latitude: ${lat.toFixed(6)}<br>
+                        <i class="fas fa-map-pin me-2" style="color: #8b0000;"></i> Longitude: ${lng.toFixed(6)}<br>
+                        <i class="fas fa-bullseye me-2" style="color: #8b0000;"></i> Akurasi: ±${Math.round(accuracy)}m
+                    </div>
+                `;
+                
+                // Aktifkan tombol submit dengan animasi
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = false;
+                submitBtn.classList.add('animate__animated', 'animate__pulse');
+                
+            } else {
+                document.getElementById('latitude_out').value = lat;
+                document.getElementById('longitude_out').value = lng;
+                document.getElementById('location_out').value = `${lat}, ${lng}`;
+                
+                // Update iframe dengan URL Google Maps
+                const mapIframe = document.getElementById('map-iframe-out');
+                mapIframe.src = `https://www.google.com/maps?q=${lat},${lng}&hl=id&z=16&output=embed`;
+                
+                // Update info lokasi dengan animasi dan info akurasi
+                document.getElementById('location-info-out').innerHTML = `
+                    <div class="text-success animate__animated animate__fadeIn">
+                        <i class="fas fa-check-circle me-2"></i><strong>Lokasi terdeteksi:</strong>
+                    </div>
+                    <div class="mt-2 animate__animated animate__fadeIn" style="animation-delay: 0.2s">
+                        <i class="fas fa-map-pin me-2" style="color: #1a8754;"></i> Latitude: ${lat.toFixed(6)}<br>
+                        <i class="fas fa-map-pin me-2" style="color: #1a8754;"></i> Longitude: ${lng.toFixed(6)}<br>
+                        <i class="fas fa-bullseye me-2" style="color: #1a8754;"></i> Akurasi: ±${Math.round(accuracy)}m
+                    </div>
+                `;
+                
+                // Aktifkan tombol submit dengan animasi
+                const submitBtn = document.getElementById('submitBtnOut');
+                submitBtn.disabled = false;
+                submitBtn.classList.add('animate__animated', 'animate__pulse');
+            }
         }
+        
+        // Mulai mendapatkan lokasi
+        navigator.geolocation.getCurrentPosition(successHandler, errorHandler, geoOptions);
+    } else {
+        // Browser tidak mendukung geolokasi
+        Swal.fire({
+            icon: 'error',
+            title: 'Browser Tidak Mendukung',
+            text: 'Geolocation tidak didukung oleh browser ini.',
+            confirmButtonColor: '#8b0000',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        });
     }
+}
 </script>
 <!-- SweetAlert2 untuk notifikasi yang lebih menarik -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Models\Pendaftaran;
 use App\Models\Attendance;
 use App\Models\Laporan;
@@ -17,6 +18,12 @@ class AdminController extends Controller
     {
         // Middleware untuk memastikan hanya admin yang bisa mengakses
         $this->middleware('auth:admin');
+        $this->middleware(function ($request, $next) {
+            if (auth('admin')->user()->role !== 'admin') {
+                abort(403, 'Unauthorized');
+            }
+            return $next($request);
+        });
     }
 
     public function index()
@@ -32,64 +39,24 @@ class AdminController extends Controller
             $totalPeserta = Pendaftaran::where('status', 'diterima')->count();
 
             // 2. Total Absensi Hari Ini untuk Peserta Diterima
-            $totalAbsensiHariIni = Attendance::whereHas('pendaftaran', function($query) {
-                $query->where('status', 'diterima');
-            })
-            ->whereDate('date', Carbon::today())
-            ->count();
+            $today = Carbon::today()->format('Y-m-d');
+            $totalAbsensiHariIni = Attendance::whereDate('date', $today)
+                ->whereHas('pendaftaran', function($query) {
+                    $query->where('status', 'diterima');
+                })
+                ->count();
 
-            // 3. Total Laporan Bulan Ini untuk Peserta Diterima
+            // 3. Total Laporan untuk Peserta Diterima
             $totalLaporan = Laporan::whereHas('pendaftaran', function($query) {
-                $query->where('status', 'diterima');
-            })
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->count();
+                    $query->where('status', 'diterima');
+                })
+                ->count();
 
             // 4. Total Admin
             $totalAdmin = Admin::count();
 
-            $recentActivities = collect(); // Inisialisasi collection kosong
-
-// Ambil data absensi
-$attendanceActivities = Attendance::with('pendaftaran')
-    ->whereHas('pendaftaran', function($query) {
-        $query->where('status', 'diterima');
-    })
-    ->orderBy('created_at', 'desc')
-    ->take(5)
-    ->get()
-    ->map(function($activity) {
-        return (object)[
-            'tanggal' => $activity->created_at,
-            'nama' => $activity->pendaftaran->nama_lengkap,
-            'aktivitas' => 'Absensi',
-            'status' => $activity->status ?? 'Hadir'
-        ];
-    });
-
-// Ambil data laporan
-$reportActivities = Laporan::with('pendaftaran')
-    ->whereHas('pendaftaran', function($query) {
-        $query->where('status', 'diterima');
-    })
-    ->orderBy('created_at', 'desc')
-    ->take(5)
-    ->get()
-    ->map(function($report) {
-        return (object)[
-            'tanggal' => $report->created_at,
-            'nama' => $report->pendaftaran->nama_lengkap,
-            'aktivitas' => $report->jenis_laporan, // Misalnya "Laporan Bulanan" atau "Laporan Akhir"
-            'status' => $report->status ?? 'Menunggu'
-        ];
-        
-    });
-
-
-// Gabungkan kedua aktivitas dan urutkan berdasarkan tanggal terbaru
-$recentActivities = $attendanceActivities->merge($reportActivities)
-    ->sortByDesc('tanggal')
-    ->take(5);
+            // Ambil aktivitas terbaru
+            $recentActivities = $this->getRecentActivities();
                 
             return view('admin.admin', compact(
                 'totalPeserta',
@@ -110,5 +77,44 @@ $recentActivities = $attendanceActivities->merge($reportActivities)
                 ->back()
                 ->with('error', 'Terjadi kesalahan saat memuat halaman admin');
         }
+    }
+
+    private function getRecentActivities()
+    {
+        // Gabungkan aktivitas dari absensi dan laporan
+        $absensiActivities = Attendance::select(
+                'attendances.date as tanggal',
+                'pendaftaran.nama_lengkap as nama',
+                'pendaftaran.direktorat as direktorat',  // Tambahkan kolom direktorat
+                DB::raw("'Absensi' as jenis"),
+                DB::raw("CASE 
+                    WHEN attendances.check_in_time IS NOT NULL THEN 'Melakukan check in' 
+                    ELSE 'Mengajukan izin/sakit' 
+                END as aktivitas"),
+                'attendances.status as status'
+            )
+            ->join('pendaftaran', 'pendaftaran.id', '=', 'attendances.user_id')
+            ->where('pendaftaran.status', 'diterima')
+            ->orderBy('attendances.date', 'desc');
+            
+        $laporanActivities = Laporan::select(
+                'laporan.created_at as tanggal',
+                'pendaftaran.nama_lengkap as nama',
+                'pendaftaran.direktorat as direktorat',  // Tambahkan kolom direktorat
+                DB::raw("'Laporan' as jenis"),
+                DB::raw("CONCAT('Mengumpulkan laporan ', laporan.jenis_laporan) as aktivitas"),
+                'laporan.status as status'
+            )
+            ->join('pendaftaran', 'pendaftaran.id', '=', 'laporan.user_id')
+            ->where('pendaftaran.status', 'diterima')
+            ->orderBy('laporan.created_at', 'desc');
+            
+        // Gabungkan dan ambil 10 aktivitas terbaru
+        $activities = $absensiActivities->union($laporanActivities)
+            ->orderBy('tanggal', 'desc')
+            ->limit(10)
+            ->get();
+            
+        return $activities;
     }
 }

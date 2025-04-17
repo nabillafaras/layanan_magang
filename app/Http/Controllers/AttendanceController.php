@@ -20,8 +20,8 @@ class AttendanceController extends Controller
         ],
         [
             'name' => 'Kantor Cabang 1',
-            'latitude' => -6.198777370807888, // ganti dengan koordinat sebenarnya
-            'longitude' => 106.85241486264262, // ganti dengan koordinat sebenarnya
+            'latitude' => 0.488243, // ganti dengan koordinat sebenarnya
+            'longitude' => 101.423514, // ganti dengan koordinat sebenarnya
             'max_distance' => 0.1 // 100 meter (0.1 km)
         ],
         [

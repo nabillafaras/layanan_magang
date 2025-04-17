@@ -5,9 +5,24 @@ namespace App\Http\Controllers\Pimpinans;
 use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DataPesertaPimpinanExport;
 
 class PesertaPimpinanController extends Controller
 {
+
+    public function __construct()
+    {
+        // Menggunakan guard admin tapi memeriksa role pimpinan
+        $this->middleware('auth:admin');
+        $this->middleware(function ($request, $next) {
+            if (auth('admin')->user()->role !== 'pimpinan') {
+                abort(403, 'Unauthorized');
+            }
+            return $next($request);
+        });
+    }
     public function index(Request $request)
     {
         // Filter untuk status
@@ -71,4 +86,28 @@ class PesertaPimpinanController extends Controller
         'laporanTerbaru'
     ));
 }
+public function exportExcel(Request $request)
+    {
+        // Ambil parameter filter
+        $status = $request->status ?? 'diterima';
+        $direktorat = $request->direktorat;
+        $search = $request->search;
+        $tanggal = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY');
+        
+        // Buat nama file
+        $fileName = 'Data_Peserta_Magang_' . $tanggal;
+        
+        if ($status) {
+            $fileName .= '_Status_' . str_replace(' ', '', $status);
+        }
+        
+        if ($direktorat) {
+            $fileName .= '_' . str_replace(' ', '', $direktorat);
+        }
+        
+        $fileName .= '.xlsx';
+        
+        // Export ke Excel
+        return Excel::download(new DataPesertaPimpinanExport($status, $direktorat, $search), $fileName);
+    }
 }

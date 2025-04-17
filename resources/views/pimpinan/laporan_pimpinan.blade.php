@@ -1,4 +1,4 @@
-@extends('layouts.header_admin')
+@extends('layouts.header_pimpinan')
 
 @section('title', 'Rekapitulasi Laporan Peserta Magang - Kementerian Sosial RI')
 
@@ -88,6 +88,11 @@
         color: var(--primary-color);
     }
     
+    .card-header.bg-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #6a0000 100%) !important;
+        border-bottom: none;
+    }
+    
     .table {
         width: 100%;
         margin-bottom: 0;
@@ -109,7 +114,7 @@
         transition: all 0.3s;
     }
     
-    .table tr:hover td:not([class*="bg-"]) {
+    .table tr:hover td {
         background-color: rgba(139, 0, 0, 0.02);
     }
     
@@ -186,6 +191,15 @@
         background-color: rgba(255, 255, 255, 0.2);
     }
     
+    .btn-info {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+    }
+    
+    .btn-info::after {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
     .list-group-item {
         border-radius: 8px;
         margin-bottom: 5px;
@@ -205,20 +219,35 @@
         font-size: 0.85rem;
     }
     
-    .bg-success {
+    /* Badge Colors */
+    .bg-success, .text-bg-success {
         background-color: #28a745 !important;
+        color: white !important;
     }
     
-    .bg-warning {
+    .bg-warning, .text-bg-warning {
         background-color: #ffc107 !important;
+        color: #212529 !important;
     }
     
-    .bg-info {
-        background-color: #17a2b8 !important;
-    }
-    
-    .bg-danger {
+    .bg-danger, .text-bg-danger {
         background-color: #dc3545 !important;
+        color: white !important;
+    }
+    
+    .bg-secondary, .text-bg-secondary {
+        background-color: #6c757d !important;
+        color: white !important;
+    }
+    
+    .bg-primary, .text-bg-primary {
+        background-color: var(--primary-color) !important;
+        color: white !important;
+    }
+    
+    .bg-info, .text-bg-info {
+        background-color: #17a2b8 !important;
+        color: white !important;
     }
     
     /* Animation Classes */
@@ -314,7 +343,6 @@
         color: var(--primary-color) !important;
         border: none;
     }
-
     .filter-card {
         background-color: #f8f9fa;
         border-radius: 15px;
@@ -382,7 +410,7 @@
         <h5><i class="fas fa-filter"></i> Filter Data</h5>
     </div>
     <div class="card-body">
-        <form action="{{ route('admin.rekapitulasi-laporan') }}" method="GET">
+        <form action="{{ route('pimpinan.laporan') }}" method="GET">
             <div class="row">
                 <div class="col-md-3 mb-2">
                     <label for="bulan" class="form-label">Bulan</label>
@@ -408,7 +436,7 @@
                     </button>
                 </div>
                 <div class="col-md-2 mb-2 d-flex align-items-end">
-                    <a href="{{ route('admin.export-laporan') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
+                    <a href="{{ route('export-laporan') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
                         <i class="fas fa-file-excel me-1"></i> Export Excel
                     </a>
                 </div>
@@ -849,6 +877,5 @@
             });
         });
     });
-
 </script>
 @endsection
