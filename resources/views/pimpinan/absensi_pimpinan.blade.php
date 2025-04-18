@@ -434,7 +434,7 @@
                         <th rowspan="2" class="text-center align-middle">No</th>
                         <th rowspan="2" class="text-center align-middle">Nama Lengkap</th>
                         <th rowspan="2" class="text-center align-middle">Direktorat</th>
-                        <th rowspan="2" class="text-center align-middle">Asal Instansi</th>
+                        <th rowspan="2" class="text-center align-middle">Institusi Pendidikan</th>
                         <th colspan="{{ $totalDays ?? 31 }}" class="text-center">Tanggal</th>
                         <th colspan="4" class="text-center">Rekapitulasi</th>
                     </tr>

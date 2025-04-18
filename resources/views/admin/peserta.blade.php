@@ -543,7 +543,7 @@
                     <th width="15%">No. Pendaftaran</th>
                     <th width="10%">Nama Lengkap</th>
                     <th width="15%">Direktorat</th>
-                    <th width="15%">Institusi</th>
+                    <th width="15%">Institusi Pendidikan</th>
                     <th width="15%">Tanggal Daftar</th>
                     <th width="10%">Status</th>
                     <th width="10%">Aksi</th>
@@ -639,12 +639,22 @@
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-body">
                                     <h6 class="card-title mb-3 text-primary">Informasi Peserta</h6>
+                                    <div class="avatar-sm me-2" style="width: 100px; height: 100px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                        @if(isset($p->foto_profile))
+                                            <img src="{{ asset('storage/' . $p->foto_profile) }}" alt="Profile" class="profile-image profile-pulse" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0;">
+                                        @else
+                                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #666;">
+                                                {{ strtoupper(substr($p->nama_lengkap, 0, 1)) }}
+                                            </div>
+                                        @endif
+                                    </div>
+
                                     <p class="mb-2"><strong><i class="fas fa-id-card me-2"></i>No. Pendaftaran:</strong> {{ $p->nomor_pendaftaran }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-user me-2"></i>Nama Lengkap:</strong> {{ $p->nama_lengkap }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-building me-2"></i>Direktorat:</strong> {{ $p->direktorat }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-envelope me-2"></i>Email:</strong> {{ $p->email }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-phone me-2"></i>No. Telepon:</strong> {{ $p->no_hp }}</p>
-                                    <p class="mb-2"><strong><i class="fas fa-university me-2"></i>Institusi:</strong> {{ $p->asal_universitas }}</p>
+                                    <p class="mb-2"><strong><i class="fas fa-university me-2"></i>Institusi Pendidikan:</strong> {{ $p->asal_universitas }}</p>
                                 </div>
                             </div>
                         </div>
@@ -652,7 +662,8 @@
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-body">
                                     <h6 class="card-title mb-3 text-primary">Informasi Tambahan</h6>
-                                    <p class="mb-2"><strong><i class="fas fa-graduation-cap me-2"></i>Program Studi:</strong> {{ $p->prodi }}</p>
+                                    <p class="mb-2"><strong><i class="fas fa-graduation-cap me-2"></i>Jurusan/Bidang Keilmuan:</strong> {{ $p->jurusan }}</p>
+                                    <p class="mb-2"><strong><i class="fas fa-graduation-cap me-2"></i>Program/Keahlian yang Diambil:</strong> {{ $p->prodi }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-check-circle me-2"></i>Status:</strong> 
                                         @if($p->status == 'Diproses')
                                             <span class="badge bg-warning">Diproses</span>
@@ -681,10 +692,10 @@
                                                 <i class="fas fa-file-pdf me-1"></i> CV
                                             </a>
                                             <a href="{{ asset('storage/'.$p->surat_pengantar) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-file-pdf me-1"></i> Surat Pengantar
+                                                <i class="fas fa-file-pdf me-1"></i> Surat Pengantar Institusi Pendidikan
                                             </a>
                                             <a href="{{ asset('storage/'.$p->transkrip_nilai) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-file-pdf me-1"></i> Transkrip Nilai
+                                                <i class="fas fa-file-pdf me-1"></i> Transkrip Nilai/Rata-Rata Raport
                                             </a>
                                         </div>
                                     </div>
@@ -770,6 +781,7 @@
 @endsection
 
 @section('additional_scripts')
+
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.full.min.js"></script>
 <script>

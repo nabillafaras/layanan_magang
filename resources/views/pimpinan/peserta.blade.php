@@ -479,7 +479,7 @@
                             <th width="15%">No. Pendaftaran</th>
                             <th width="10%">Nama Lengkap</th>
                             <th width="15%">Direktorat</th>
-                            <th width="15%">Institusi</th>
+                            <th width="15%">Institusi Pendidikan</th>
                             <th width="15%">Tanggal Daftar</th>
                             <th width="10%">Status</th>
                             <th width="10%">Aksi</th>
@@ -571,7 +571,7 @@
                             <div class="card-body">
                                 <h6 class="card-title mb-3 border-bottom pb-2">
                                     <i class="fas fa-id-card me-2 text-primary"></i>
-                                    Informasi Pribadi
+                                    Informasi Peserta
                                 </h6>
                                 <p><strong>No. Pendaftaran:</strong> {{ $p->nomor_pendaftaran }}</p>
                                 <p><strong>Nama Lengkap:</strong> {{ $p->nama_lengkap }}</p>
@@ -585,10 +585,11 @@
                             <div class="card-body">
                                 <h6 class="card-title mb-3 border-bottom pb-2">
                                     <i class="fas fa-university me-2 text-primary"></i>
-                                    Informasi Akademik
+                                    Informasi Tambahan
                                 </h6>
-                                <p><strong>Institusi:</strong> {{ $p->asal_universitas }}</p>
-                                <p><strong>Program Studi:</strong> {{ $p->prodi }}</p>
+                                <p><strong>Institusi Pendidikan:</strong> {{ $p->asal_universitas }}</p>
+                                <p><strong>Jurusan/Bidang Keilmuan:</strong> {{ $p->jurusan }}</p>
+                                <p><strong>Program/Keahlian yang Diambil:</strong> {{ $p->prodi }}</p>
                                 <p><strong>Direktorat:</strong> {{ $p->direktorat }}</p>
                                 <p><strong>Unit Kerja:</strong> {{ $p->unit_kerja }}</p>
                             </div>
@@ -630,6 +631,15 @@
                                     Status Peserta
                                 </h6>
                                 <p><strong>Tanggal Daftar:</strong> {{ $p->created_at->format('d-m-Y') }}</p>
+                                <p class="mb-2"><strong></i>Periode Magang:</strong> 
+                                        @if($p->tanggal_mulai && $p->tanggal_selesai)
+                                            {{ \Carbon\Carbon::parse($p->tanggal_mulai)->format('d-m-Y') }} 
+                                            s/d 
+                                            {{ \Carbon\Carbon::parse($p->tanggal_selesai)->format('d-m-Y') }}
+                                        @else
+                                            <span class="text-muted">Belum diatur</span>
+                                        @endif
+                                    </p>
                                 <p>
                                     <strong>Status:</strong> 
                                     <span class="badge {{ $p->status == 'Diproses' ? 'bg-warning' : ($p->status == 'Diterima' ? 'bg-success' : 'bg-danger') }}">

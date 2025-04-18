@@ -24,6 +24,7 @@ use App\Http\Controllers\LaporanBulananController;
 use App\Http\Controllers\LaporanAkhirController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DirektoratController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\Pimpinans\AbsensiPimpinanController;
 use App\Http\Controllers\Pimpinans\LaporanPimpinanController;
 use Illuminate\Support\Facades\Route;
@@ -60,8 +61,8 @@ Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])->name('attendance.check-out');
     Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
     Route::get('/attendance/check-gps', [AttendanceController::class, 'checkGpsStatus'])->name('attendance.check-gps');
-Route::post('/attendance/request-gps-access', [AttendanceController::class, 'requestGpsAccess'])->name('attendance.request-gps-access');
-Route::get('/attendance/location-confirmation', [AttendanceController::class, 'showLocationConfirmation'])->name('attendance.location-confirmation');
+    Route::post('/attendance/request-gps-access', [AttendanceController::class, 'requestGpsAccess'])->name('attendance.request-gps-access');
+    Route::get('/attendance/location-confirmation', [AttendanceController::class, 'showLocationConfirmation'])->name('attendance.location-confirmation');
     // Routes untuk fitur izin
     Route::get('/izin', [IzinController::class, 'index'])->name('izin');
     Route::post('/izin/submit', [IzinController::class, 'submit'])->name('izin.submit');
@@ -78,12 +79,14 @@ Route::get('/attendance/location-confirmation', [AttendanceController::class, 's
     Route::post('/laporan/akhir/upload', [LaporanAkhirController::class, 'upload'])->name('laporan.akhir.upload');
     Route::get('/laporan/akhir/download/{id}', [LaporanAkhirController::class, 'download'])->name('laporan.akhir.download');
     Route::delete('/laporan/akhir/delete/{id}', [LaporanAkhirController::class, 'delete'])->name('laporan.akhir.delete');
-    
+    //profile
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::get('/change-password', [App\Http\Controllers\ProfileController::class, 'showChangePasswordForm'])->name('password.change');
     Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update.password');
-
+    //pengumuman
+    Route::get('/pengumuman', [App\Http\Controllers\PengumumanUserController::class, 'index'])->name('pengumuman');
+    Route::get('/pengumuman/{id}', [App\Http\Controllers\PengumumanUserController::class, 'show'])->name('pengumuman.show');
 });
 
 
@@ -135,8 +138,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/admin/direktorat/{id}', [DirektoratController::class, 'showDirektorat'])->name('admin.direktorat');
         Route::get('/admin/direktorat/{direktorat}/map', [DirektoratController::class, 'mapDirektorat'])->name('admin.direktorat.map');
     
-    });
-    
+
+      
+    // Pengumuman routes
+Route::prefix('admin/pengumuman')->name('admin.pengumuman.')->group(function () {
+    Route::get('/', [PengumumanController::class, 'index'])->name('index');
+    Route::post('/', [PengumumanController::class, 'store'])->name('store');
+    Route::put('/{pengumuman}', [PengumumanController::class, 'update'])->name('update');
+    Route::delete('/{pengumuman}', [PengumumanController::class, 'destroy'])->name('destroy');
+    Route::patch('/{pengumuman}/status', [PengumumanController::class, 'updateStatus'])->name('update.status');
+});
+});
 });
 
 // Routes untuk pimpinan (di luar grup admin)

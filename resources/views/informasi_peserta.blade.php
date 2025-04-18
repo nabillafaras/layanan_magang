@@ -782,7 +782,7 @@
                                     <th width="25%">Nama Lengkap</th>
                                     <th width="30%">Asal Universitas/Sekolah</th>
                                     <th width="20%">Unit Kerja</th>
-                                    <th width="20%">Program Studi</th>
+                                    <th width="20%">Program/Keahlian</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -26,7 +26,7 @@ class PesertaPimpinanController extends Controller
     public function index(Request $request)
     {
         // Filter untuk status
-        $status = $request->status ? $request->status : 'diterima';
+        $status = $request->status ;
         
         // Query dasar
         $query = Pendaftaran::query();

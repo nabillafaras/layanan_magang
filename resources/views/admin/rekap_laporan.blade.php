@@ -432,7 +432,7 @@
                         <th class="text-center">No</th>
                         <th class="text-center">Nama Lengkap</th>
                         <th class="text-center">Direktorat</th>
-                        <th class="text-center">Asal Instansi</th>
+                        <th class="text-center">Institusi Pendidikan</th>
                         <th class="text-center">Judul Laporan</th>
                         <th class="text-center">File</th>
                         <th class="text-center">Status</th>

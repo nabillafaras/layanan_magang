@@ -555,7 +555,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ request()->routeIs('pengumuman') ? 'active' : '' }}">
+                <a href="{{ route('pengumuman') }}" class="nav-link {{ request()->routeIs('pengumuman') || request()->routeIs('pengumuman.show') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i> Pengumuman
                     </a>
                 </li>

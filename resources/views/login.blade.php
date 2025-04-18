@@ -503,9 +503,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Kode Akses</label>
+                        <label for="password">Password</label>
                         <div class="password-container">
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan Kode Akses" required>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan Password" required>
                             <i class="fa fa-eye toggle-password" id="togglePassword"></i>
                         </div>
                     </div>

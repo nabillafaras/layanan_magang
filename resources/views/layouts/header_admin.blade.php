@@ -496,6 +496,11 @@
                             </li>
                         </ul>
                     </div>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.pengumuman.index') }}" class="nav-link {{ request()->routeIs('admin.pengumuman.index') ? 'active' : '' }}">
+                            <i class="fas fa-cloud-upload-alt"></i> Informasi
+                        </a>
+                    </li>
                 </li>
             </ul>
         </div>

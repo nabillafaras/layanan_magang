@@ -528,21 +528,21 @@
                             <div class="row mt-4">
                                 <div class="col-md-6 mb-3">
                                     <div class="profile-info-item">
-                                        <div class="profile-info-label">Asal Universitas</div>
+                                        <div class="profile-info-label">Asal Institusi Pendidikan</div>
                                         <div class="profile-info-value">{{ $user->asal_universitas }}</div>
                                     </div>
                                 </div>
                                 
                                 <div class="col-md-6 mb-3">
                                     <div class="profile-info-item">
-                                        <div class="profile-info-label">Jurusan</div>
+                                        <div class="profile-info-label">Jurusan/Bidang Keilmuan</div>
                                         <div class="profile-info-value">{{ $user->jurusan }}</div>
                                     </div>
                                 </div>
                                 
                                 <div class="col-md-6 mb-3">
                                     <div class="profile-info-item">
-                                        <div class="profile-info-label">Program Studi</div>
+                                        <div class="profile-info-label">Program/Keahlian yang Diambil</div>
                                         <div class="profile-info-value">{{ $user->prodi }}</div>
                                     </div>
                                 </div>
@@ -556,7 +556,7 @@
                                 
                                 <div class="col-md-6 mb-3">
                                     <div class="profile-info-item">
-                                        <div class="profile-info-label">IPK</div>
+                                        <div class="profile-info-label">IPK/Nilai Rata-Rata</div>
                                         <div class="profile-info-value">{{ $user->ipk }}</div>
                                     </div>
                                 </div>
@@ -566,7 +566,7 @@
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h6 class="card-title"><i class="fas fa-file-alt me-2"></i>Transkrip Nilai</h6>
+                                            <h6 class="card-title"><i class="fas fa-file-alt me-2"></i>Transkrip Nilai/Rata-Rata Raport</h6>
                                             @if($user->transkrip_nilai)
                                                 <a href="{{ asset('storage/'.$user->transkrip_nilai) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
                                                     <i class="fas fa-eye me-1"></i> Lihat Dokumen
@@ -581,7 +581,7 @@
                                 <div class="col-md-6 mb-3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h6 class="card-title"><i class="fas fa-file-alt me-2"></i>Surat Pengantar</h6>
+                                            <h6 class="card-title"><i class="fas fa-file-alt me-2"></i>Surat Pengantar Institusi Pendidikan</h6>
                                             @if($user->surat_pengantar)
                                                 <a href="{{ asset('storage/'.$user->surat_pengantar) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
                                                     <i class="fas fa-eye me-1"></i> Lihat Dokumen
