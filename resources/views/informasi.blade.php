@@ -683,7 +683,7 @@
                 <div class="col-lg-12 mb-5">
                     <h2 data-aos="fade-up">Struktur Organisasi</h2>
                     <div class="img-container" data-aos="fade-up" data-aos-delay="100">
-                        <img src="images/informasi.png" alt="Struktur Organisasi" class="img-fluid">
+                        <img src="images/informasi2.png" alt="Struktur Organisasi" class="img-fluid">
                     </div>
                     <div class="info-content" data-aos="fade-up" data-aos-delay="200">
                         <h4>Struktur Organisasi Kementerian Sosial RI (Perpres No 110 Tahun 2021)</h4>

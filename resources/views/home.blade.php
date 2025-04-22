@@ -540,7 +540,7 @@
                         </div>
                         <h5>Informasi</h5>
                         <p>Akses informasi terkini tentang program dan layanan sosial pemerintah.</p>
-                        <a href="#" class="btn-more">Selengkapnya <i class="fas fa-chevron-right"></i></a>
+                        <a href="{{ route('informasi') }}" class="btn-more">Selengkapnya <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
@@ -550,7 +550,7 @@
                         </div>
                         <h5>Persyaratan</h5>
                         <p>Masuk ke akun Anda untuk mengakses layanan lebih lanjut.</p>
-                        <a href="#" class="btn-more">Selengkapnya <i class="fas fa-chevron-right"></i></a>
+                        <a href="{{ route('persyaratan') }}" class="btn-more">Selengkapnya <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
@@ -560,7 +560,7 @@
                         </div>
                         <h5>Informasi Peserta Magang</h5>
                         <p>Daftar dan cek status Anda untuk layanan sosial pemerintah.</p>
-                        <a href="#" class="btn-more">Selengkapnya <i class="fas fa-chevron-right"></i></a>
+                        <a href="{{ route('informasi_peserta') }}" class="btn-more">Selengkapnya <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
