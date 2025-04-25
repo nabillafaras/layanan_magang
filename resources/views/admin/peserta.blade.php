@@ -552,7 +552,7 @@
             <tbody>
                 @forelse($pendaftaran as $key => $p)
                 <tr class="fade-in" style="animation-delay: {{ $key * 0.05 }}s">
-                    <td>{{ ($pendaftaran->currentPage() - 1) * $pendaftaran->perPage() + $key + 1 }}</td>
+                <td>{{ $key + 1 }}</td>
                     <td>{{ $p->nomor_pendaftaran }}</td>
                     <td>
                         <div class="d-flex align-items-center">
@@ -604,17 +604,10 @@
                     </td>
                 </tr>
                 @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Pagination -->
-    @if(isset($pendaftaran) && method_exists($pendaftaran, 'links'))
-    <div class="d-flex justify-content-center mt-3">
-        {{ $pendaftaran->appends(request()->query())->links() }}
-    </div>
-    @endif
-</div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -782,9 +775,40 @@
 
 @section('additional_scripts')
 
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.0/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+
 <script>
+
+$(document).ready(function() {
+        // Inisialisasi DataTable dengan animasi
+        $('#datatables-peserta').DataTable({
+            "scrollX": true,
+            "searching": false,
+            "language": {
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data yang tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total data)",
+                
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                }
+            },
+            "pageLength": 10,
+            "responsive": true,
+            "drawCallback": function() {
+                $('.datatables-peserta_paginate .paginate_button').addClass('fade-in');
+            }
+        });
+    });
     // Fungsi untuk toggle fields berdasarkan status yang dipilih
     function toggleFields(id) {
         var statusSelect = document.getElementById('status' + id);

@@ -14,20 +14,20 @@ class AttendanceController extends Controller
     private const OFFICE_LOCATIONS = [
         [
             'name' => 'Kantor Pusat',
-            'latitude' => -0.920781,
-            'longitude' => 100.374938,
+            'latitude' => -6.254691,
+            'longitude' => 106.870595,
             'max_distance' => 0.1 // 100 meter (0.1 km)
         ],
         [
             'name' => 'Kantor Cabang 1',
-            'latitude' => 0.488243, // ganti dengan koordinat sebenarnya
-            'longitude' => 101.423514, // ganti dengan koordinat sebenarnya
+            'latitude' => 0.488243,
+            'longitude' => 101.423514, 
             'max_distance' => 0.1 // 100 meter (0.1 km)
         ],
         [
             'name' => 'Kantor Cabang 2',
-            'latitude' => -0.930000, // ganti dengan koordinat sebenarnya
-            'longitude' => 100.385000, // ganti dengan koordinat sebenarnya
+            'latitude' => -0.930000, 
+            'longitude' => 100.385000, 
             'max_distance' => 0.1 // 100 meter (0.1 km)
         ]
     ];

@@ -417,26 +417,7 @@
                         <i class="fas fa-file-alt"></i> Laporan
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="#statistikCollapse" data-bs-toggle="collapse">
-                        <i class="fas fa-chart-bar"></i> Statistik
-                        <i class="fas fa-chevron-down ms-auto"></i>
-                    </a>
-                    <div class="collapse {{ request()->routeIs('pimpinan.statistik.*') ? 'show' : '' }}" id="statistikCollapse">
-                        <ul class="nav flex-column ms-3">
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('pimpinan.statistik.bulanan') ? 'active' : '' }}" href="#">
-                                    <i class="fas fa-angle-right"></i> Statistik Bulanan
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('pimpinan.statistik.tahunan') ? 'active' : '' }}" href="#">
-                                    <i class="fas fa-angle-right"></i> Statistik Tahunan
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                
             </ul>
         </div>
 

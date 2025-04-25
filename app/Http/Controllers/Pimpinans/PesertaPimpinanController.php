@@ -52,7 +52,7 @@ class PesertaPimpinanController extends Controller
         }
         
         // Dapatkan peserta
-        $peserta = $query->orderBy('created_at', 'desc')->paginate(10);
+        $peserta = $query->orderBy('created_at', 'desc')->get();
         
         // Dapatkan list direktorat untuk filter
         $direktorat = Pendaftaran::distinct('direktorat')->pluck('direktorat');

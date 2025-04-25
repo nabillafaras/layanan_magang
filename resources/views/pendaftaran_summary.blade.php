@@ -16,6 +16,7 @@
     <!-- jsPDF untuk mengunduh PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     
     <style>
     /* Modern Variable Colors */
@@ -325,7 +326,7 @@
     .label::after {
         content: ":";
         position: absolute;
-        right: 15px;
+        right: 50px;
     }
 
     .value {
@@ -408,20 +409,7 @@
         transform: translateY(-3px);
     }
 
-    /* Loading Overlay */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(139, 0, 0, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
+    
     
     .loading-spinner {
         width: 60px;
@@ -643,7 +631,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize AOS animation library
@@ -709,63 +697,49 @@
         });
     });
     
-    // Fungsi untuk download PDF
     function downloadPDF() {
-            // Tampilkan loading
-            document.getElementById('loadingOverlay').classList.remove('fade-out');
-            
-            // Gunakan jsPDF dan html2canvas untuk membuat PDF
-            const { jsPDF } = window.jspdf;
-            
-            // Buat instance PDF
-            const doc = new jsPDF('p', 'mm', 'a4');
-            
-            // Ambil elemen yang akan dijadikan PDF
-            const element = document.getElementById('registrationCard');
-            
-            // Konversi elemen ke canvas
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                // Tambahkan gambar canvas ke PDF
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 190;
-                const pageHeight = 297;
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 10;
-                
-                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-                
-                // Jika konten lebih dari 1 halaman
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                
-                // Simpan PDF
-                doc.save('Bukti_Pendaftaran_{{ $pendaftaran->nomor_pendaftaran }}.pdf');
-                
-                // Sembunyikan loading
-                setTimeout(function() {
-                    document.getElementById('loadingOverlay').classList.add('fade-out');
-                    
-                    // Tampilkan notifikasi sukses
-                    const toast = document.getElementById('toastNotification');
-                    toast.classList.add('show');
-                    
-                    // Sembunyikan notifikasi setelah 3 detik
-                    setTimeout(function() {
-                        toast.classList.remove('show');
-                    }, 3000);
-                }, 1500);
-            });
-    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const element = document.getElementById('registrationCard');
+
+    html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 190;
+        const pageHeight = 297;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 10;
+
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            doc.addPage();
+            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+        }
+
+        const nomorPendaftaran = document.querySelector('.registration-number h5').textContent.split(':')[1].trim();
+        doc.save('Bukti_Pendaftaran_' + nomorPendaftaran + '.pdf');
+
+        // Notifikasi sukses
+        const toast = document.getElementById('toastNotification');
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }).catch(error => {
+        console.error('Error generating PDF:', error);
+        alert('Terjadi kesalahan saat mengunduh PDF. Silakan coba lagi.');
+    });
+}
+
+
 </script>
 </body>
 </html>

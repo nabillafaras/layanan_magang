@@ -15,6 +15,7 @@ class Pendaftaran extends Authenticatable
     protected $fillable = [
         'nama_lengkap',
         'ttl',
+        'tanggal_lahir',
         'jenis_kelamin',
         'no_hp',
         'email',
@@ -43,6 +44,7 @@ class Pendaftaran extends Authenticatable
     protected $dates = [
         'tanggal_mulai',
         'tanggal_selesai',
+        'tanggal_lahir',
         'created_at',
         'updated_at'
     ];

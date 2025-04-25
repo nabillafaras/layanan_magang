@@ -56,6 +56,7 @@ class PendaftaranController extends Controller
             1 => [
                 'nama_lengkap' => 'required|max:255',
                 'ttl' => 'required|max:255',
+                'tanggal_lahir' => 'required|date',
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                 'no_hp' => 'required|regex:/^\d{10,15}$/',
                 'email' => 'required|email|unique:pendaftaran,email,' . ($request->id ?? 'NULL'),

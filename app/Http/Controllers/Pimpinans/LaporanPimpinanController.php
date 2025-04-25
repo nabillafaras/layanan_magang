@@ -37,10 +37,25 @@ class LaporanPimpinanController extends Controller
         // Query untuk mendapatkan peserta magang dengan status diterima
         $query = Pendaftaran::where('status', 'diterima');
 
-        // Filter berdasarkan direktorat jika ada
-        if ($direktorat) {
-            $query->where('direktorat', $direktorat);
+        // Filter berdasarkan direktorat
+        if ($request->has('direktorat') && $request->direktorat) {
+            $query->where('direktorat', $request->direktorat);
         }
+
+        // Filter berdasarkan pencarian
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nomor_pendaftaran', 'like', "%{$search}%")
+                  ->orWhere('asal_universitas', 'like', "%{$search}%");
+            });
+        }
+
+       
+        // Dapatkan list direktorat untuk filter
+        $direktorat = Pendaftaran::distinct('direktorat')->pluck('direktorat');
+        
 
         $peserta = $query->get();
         

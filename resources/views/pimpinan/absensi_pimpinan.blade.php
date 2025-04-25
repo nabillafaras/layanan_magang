@@ -392,21 +392,24 @@
                         <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                    <label for="direktorat" class="form-label">Direktorat</label>
-                    <select class="form-select" name="direktorat" id="direktorat">
-                        <option value="">Semua Direktorat</option>
-                        <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
-                        <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
-                        <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
-                        <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
-                        <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-filter w-100">
-                        <i class="fas fa-search me-1"></i> Filter
-                    </button>
+                <div class="col-md-3 mb-2">
+                        <label for="direktorat" class="form-label">Direktorat</label>
+                        <select class="form-select" id="direktorat" name="direktorat">
+                            <option value="">Semua Direktorat</option>
+                            @foreach($direktorat ?? [] as $d)
+                                <option value="{{ $d }}" {{ request('direktorat') == $d ? 'selected' : '' }}>{{ $d }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label for="search" class="form-label">Pencarian</label>
+                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
+                    </div>
+                    <div class="col-md-2 mb-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-filter w-100">
+                            <i class="fas fa-search me-1"></i> Filter
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -505,8 +508,9 @@
                 <div class="card-header">
                     <h5><i class="fas fa-chart-pie"></i> Statistik Absensi Peserta Magang</h5>
                 </div>
-                <div class="card-body">
-                    <canvas id="absensiChart" width="100%" height="50"></canvas>
+                <!-- Ubah ukuran canvas -->
+                <div class="card-body" style="height: 300px;"> <!-- Menambahkan height yang lebih besar -->
+                    <canvas id="absensiChart" width="100%" height="300"></canvas> <!-- Menambahkan height yang lebih besar -->
                 </div>
             </div>
         </div>
@@ -547,7 +551,7 @@
                                     <div class="fw-bold">
                                         <i class="fas fa-users text-primary me-2"></i> Total Kehadiran
                                     </div>
-                                    <span class="badge bg-primary rounded-pill">{{ ($totalHadir ?? 0) + ($totalSakit ?? 0) + ($totalIzin ?? 0) + ($totalAlpha ?? 0) }}</span>
+                                    <span class="badge bg-primary rounded-pill">{{ ($totalHadir ?? 0) + ($totalSakit ?? 0) + ($totalIzin ?? 0) + ($totalTerlambat ?? 0) }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -570,13 +574,14 @@
         // Inisialisasi DataTable dengan animasi
         $('#absensiTable').DataTable({
             "scrollX": true,
+            "searching": false,
             "language": {
                 "lengthMenu": "Tampilkan _MENU_ data per halaman",
                 "zeroRecords": "Tidak ada data yang ditemukan",
                 "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
                 "infoEmpty": "Tidak ada data yang tersedia",
                 "infoFiltered": "(difilter dari _MAX_ total data)",
-                "search": "Cari:",
+                
                 "paginate": {
                     "first": "Pertama",
                     "last": "Terakhir",
@@ -596,13 +601,13 @@
         var myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Hadir', 'Sakit', 'Izin', 'Alpha'],
+                labels: ['Hadir', 'Sakit', 'Izin', 'Terlambat'],
                 datasets: [{
                     data: [
                         {{ $totalHadir ?? 0 }}, 
                         {{ $totalSakit ?? 0 }}, 
                         {{ $totalIzin ?? 0 }}, 
-                        {{ $totalAlpha ?? 0 }}
+                        {{ $totalTerlambat ?? 0 }}
                     ],
                     backgroundColor: [
                         '#28a745',  // success

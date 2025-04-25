@@ -1,6 +1,6 @@
 @extends('layouts.header_admin')
 
-@section('title', 'Direktorat 3 - Kementerian Sosial RI')
+@section('title', 'Direktorat Jenderal Rehabilitasi Sosial - Kementerian Sosial RI')
 
 @section('additional_css')
 <style>
@@ -363,10 +363,10 @@
 @section('content')
 <div class="container-fluid px-4">
     <div class="dashboard-header fade-in">
-        <h2 class="mt-4">Direktorat 3</h2>
+        <h2 class="mt-4">Direktorat Jenderal Rehabilitasi Sosial</h2>
         <ol class="breadcrumb mb-4 slide-in-right">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active">Direktorat 3</li>
+            <li class="breadcrumb-item active">Direktorat Jenderal Rehabilitasi Sosial</li>
         </ol>
     </div>
 

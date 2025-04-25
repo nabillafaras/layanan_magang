@@ -391,28 +391,25 @@
                         <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                    <label for="direktorat" class="form-label">Direktorat</label>
-                    <select class="form-select" name="direktorat" id="direktorat">
-                        <option value="">Semua Direktorat</option>
-                        <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
-                        <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
-                        <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
-                        <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
-                        <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
-                    </select>
+                <div class="col-md-3 mb-2">
+                        <label for="direktorat" class="form-label">Direktorat</label>
+                        <select class="form-select" id="direktorat" name="direktorat">
+                            <option value="">Semua Direktorat</option>
+                            @foreach($direktorat ?? [] as $d)
+                                <option value="{{ $d }}" {{ request('direktorat') == $d ? 'selected' : '' }}>{{ $d }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label for="search" class="form-label">Pencarian</label>
+                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
+                    </div>
+                    <div class="col-md-2 mb-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-filter w-100">
+                            <i class="fas fa-search me-1"></i> Filter
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-3 mb-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-filter w-100">
-                        <i class="fas fa-search me-1"></i> Filter
-                    </button>
-                </div>
-                <div class="col-md-2 mb-2 d-flex align-items-end">
-                    <a href="{{ route('admin.export-absensi') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
-                        <i class="fas fa-file-excel me-1"></i> Export Excel
-                    </a>
-                </div>
-            </div>
         </form>
     </div>
 </div>
@@ -422,6 +419,11 @@
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h5><i class="fas fa-calendar-check"></i> Data Absensi Peserta Magang</h5>
+            <div class="col-md-2 mb-2 d-flex align-items-end">
+                    <a href="{{ route('admin.export-absensi') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
+                        <i class="fas fa-file-excel me-1"></i> Export Excel
+                    </a>
+                </div>
         </div>
     </div>
     <div class="card-body">
@@ -497,58 +499,57 @@
     </div>
 </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="dashboard-card bounce-in" style="animation-delay: 0.3s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Statistik Absensi Peserta Magang</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="absensiChart" width="100%" height="50"></canvas>
-                </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="dashboard-card bounce-in" style="animation-delay: 0.3s">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-pie"></i> Statistik Absensi Peserta Magang</h5>
+            </div>
+            <div class="card-body" style="height: 300px;"> <!-- Menambahkan height yang lebih besar -->
+                    <canvas id="absensiChart" width="100%" height="300"></canvas> <!-- Menambahkan height yang lebih besar -->
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="dashboard-card bounce-in" style="animation-delay: 0.4s">
-                <div class="card-header">
-                    <h5><i class="fas fa-info-circle"></i> Keterangan</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.1s">
-                                    <div>
-                                        <i class="fas fa-check-circle text-success me-2"></i> Hadir (H)
-                                    </div>
-                                    <span class="badge bg-success rounded-pill">{{ $totalHadir ?? 0 }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.2s">
-                                    <div>
-                                        <i class="fas fa-procedures text-warning me-2"></i> Sakit (S)
-                                    </div>
-                                    <span class="badge bg-warning rounded-pill">{{ $totalSakit ?? 0 }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.3s">
-                                    <div>
-                                        <i class="fas fa-calendar-minus text-info me-2"></i> Izin (I)
-                                    </div>
-                                    <span class="badge bg-info rounded-pill">{{ $totalIzin ?? 0 }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.4s">
-                                    <div>
-                                        <i class="fas fa-times-circle text-danger me-2"></i> Alpha (A)
-                                    </div>
-                                    <span class="badge bg-danger rounded-pill">{{ $totalAlpha ?? 0 }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.5s">
-                                    <div class="fw-bold">
-                                        <i class="fas fa-users text-primary me-2"></i> Total Kehadiran
-                                    </div>
-                                    <span class="badge bg-primary rounded-pill">{{ ($totalHadir ?? 0) + ($totalSakit ?? 0) + ($totalIzin ?? 0) + ($totalAlpha ?? 0) }}</span>
-                                </li>
-                            </ul>
-                        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="dashboard-card bounce-in" style="animation-delay: 0.4s">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Keterangan</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.1s">
+                                <div>
+                                    <i class="fas fa-check-circle text-success me-2"></i> Hadir (H)
+                                </div>
+                                <span class="badge bg-success rounded-pill">{{ $totalHadir ?? 0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.2s">
+                                <div>
+                                    <i class="fas fa-procedures text-warning me-2"></i> Sakit (S)
+                                </div>
+                                <span class="badge bg-warning rounded-pill">{{ $totalSakit ?? 0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.3s">
+                                <div>
+                                    <i class="fas fa-calendar-minus text-info me-2"></i> Izin (I)
+                                </div>
+                                <span class="badge bg-info rounded-pill">{{ $totalIzin ?? 0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.4s">
+                                <div>
+                                    <i class="fas fa-times-circle text-danger me-2"></i> Terlambat (T)
+                                </div>
+                                <span class="badge bg-danger rounded-pill">{{ $totalTerlambat ?? 0 }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center slide-in-right" style="animation-delay: 0.5s">
+                                <div class="fw-bold">
+                                    <i class="fas fa-users text-primary me-2"></i> Total Kehadiran
+                                </div>
+                                <span class="badge bg-primary rounded-pill">{{ ($totalHadir ?? 0) + ($totalSakit ?? 0) + ($totalIzin ?? 0) + ($totalTerlambat ?? 0) }}</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -568,13 +569,14 @@
         // Inisialisasi DataTable dengan animasi
         $('#absensiTable').DataTable({
             "scrollX": true,
+            "searching": false,
             "language": {
                 "lengthMenu": "Tampilkan _MENU_ data per halaman",
                 "zeroRecords": "Tidak ada data yang ditemukan",
                 "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
                 "infoEmpty": "Tidak ada data yang tersedia",
                 "infoFiltered": "(difilter dari _MAX_ total data)",
-                "search": "Cari:",
+                
                 "paginate": {
                     "first": "Pertama",
                     "last": "Terakhir",
@@ -589,68 +591,68 @@
             }
         });
 
-        // Chart Data dengan animasi
-        var ctx = document.getElementById('absensiChart');
-        var myPieChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Hadir', 'Sakit', 'Izin', 'Alpha'],
-                datasets: [{
-                    data: [
-                        {{ $totalHadir ?? 0 }}, 
-                        {{ $totalSakit ?? 0 }}, 
-                        {{ $totalIzin ?? 0 }}, 
-                        {{ $totalAlpha ?? 0 }}
-                    ],
-                    backgroundColor: [
-                        '#28a745',  // success
-                        '#ffc107',  // warning
-                        '#17a2b8',  // info
-                        '#dc3545'   // danger
-                    ],
-                    borderWidth: 0
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                var label = context.label || '';
-                                var value = context.raw || 0;
-                                var total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                var percentage = Math.round((value / total) * 100);
-                                return label + ': ' + value + ' (' + percentage + '%)';
-                            }
+    // Chart Data dengan animasi
+    var ctx = document.getElementById('absensiChart');
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Hadir', 'Sakit', 'Izin', 'Terlambat'],
+            datasets: [{
+                data: [
+                    {{ $totalHadir ?? 0 }}, 
+                    {{ $totalSakit ?? 0 }}, 
+                    {{ $totalIzin ?? 0 }}, 
+                    {{ $totalTerlambat ?? 0 }}
+                ],
+                backgroundColor: [
+                    '#28a745',  // success
+                    '#ffc107',  // warning
+                    '#17a2b8',  // info
+                    '#dc3545'   // danger
+                ],
+                borderWidth: 0
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var label = context.label || '';
+                            var value = context.raw || 0;
+                            var total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            var percentage = Math.round((value / total) * 100);
+                            return label + ': ' + value + ' (' + percentage + '%)';
                         }
                     }
-                },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 2000,
-                    easing: 'easeOutQuart'
                 }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 2000,
+                easing: 'easeOutQuart'
             }
+        }
+    });
+    
+    // Tambahkan efek hover pada baris tabel
+    const tableRows = document.querySelectorAll('#absensiTable tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(5px)';
+            this.style.transition = 'transform 0.3s ease';
         });
         
-        // Tambahkan efek hover pada baris tabel
-        const tableRows = document.querySelectorAll('#absensiTable tbody tr');
-        tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateX(5px)';
-                this.style.transition = 'transform 0.3s ease';
-            });
-            
-            row.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateX(0)';
-            });
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
         });
     });
+});
 </script>
 @endsection

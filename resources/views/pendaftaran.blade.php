@@ -640,10 +640,18 @@
                 </div>
                 
                 <div class="input-group">
-                    <label for="ttl" class="form-label">Tempat, Tanggal Lahir</label>
+                    <label for="ttl" class="form-label">Tempat Lahir</label>
+                    <i class="fas fa-map-marker-alt input-icon"></i>
+                    <input type="text" class="form-control" id="ttl" name="ttl" placeholder="Contoh: Jakarta" required>
+                    <div class="form-feedback">Tempat lahir wajib diisi</div>
+                </div>
+
+
+                <div class="input-group">
+                    <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
                     <i class="fas fa-calendar-alt input-icon"></i>
-                    <input type="text" class="form-control" id="ttl" name="ttl" placeholder="Contoh: Jakarta, 15 Januari 2000" required>
-                    <div class="form-feedback">Tempat, tanggal lahir wajib diisi</div>
+                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+                    <div class="form-feedback">Tanggal lahir wajib diisi</div>
                 </div>
                 
                 <div class="input-group">
@@ -765,11 +773,11 @@
                     <i class="fas fa-building input-icon"></i>
                     <select class="form-select" id="direktorat" name="direktorat" required>
                         <option value="">Pilih direktorat</option>
-                        <option value="Direktorat 1">Direktorat 1</option>
-                        <option value="Direktorat 2">Direktorat 2</option>
-                        <option value="Direktorat 3">Direktorat 3</option>
-                        <option value="Direktorat 4">Direktorat 4</option>
-                        <option value="Direktorat 5">Direktorat 5</option>
+                        <option value="Sekretariat Jenderal">Sekretariat Jenderal</option>
+                        <option value="Direktorat Jenderal Perlindungan dan Jaminan Sosial">Direktorat Jenderal Perlindungan dan Jaminan Sosial</option>
+                        <option value="Direktorat Jenderal Rehabilitasi Sosial">Direktorat Jenderal Rehabilitasi Sosial</option>
+                        <option value="Direktorat Jenderal Pemberdayaan Sosial">Direktorat Jenderal Pemberdayaan Sosial</option>
+                        <option value="Inspektorat Jenderal">Inspektorat Jenderal</option>
                     </select>
                     <div class="form-feedback">Direktorat wajib dipilih</div>
                 </div>
@@ -777,8 +785,10 @@
                 <div class="input-group">
                     <label for="unit_kerja" class="form-label">Unit Kerja</label>
                     <i class="fas fa-briefcase input-icon"></i>
-                    <input type="text" class="form-control" id="unit_kerja" name="unit_kerja" placeholder="Masukkan unit kerja" required>
-                    <div class="form-feedback">Unit kerja wajib diisi</div>
+                    <select class="form-select" id="unit_kerja" name="unit_kerja" required>
+                        <option value="">Pilih unit kerja</option>
+                    </select>
+                    <div class="form-feedback">Unit kerja wajib dipilih</div>
                 </div>
                 
                 <div class="file-upload-wrapper">
@@ -810,8 +820,6 @@
                     </button>
                 </div>
             </div>
-        </form>
-    </div>
 
     <!-- Loading Overlay -->
     <div class="loading" id="loading-overlay">
@@ -820,6 +828,79 @@
     </div>
 
     <script>
+// Definisikan data unit kerja untuk setiap direktorat
+const unitKerjaOptions = {
+    "Sekretariat Jenderal": [
+        "Biro Perencanaan",
+        "Biro Keuangan",
+        "Biro Organisasi dan Sumber Daya Manusia",
+        "Biro Hukum",
+        "Biro Umum",
+        "Biro Hubungan Masyarakat",
+        "Pusat Pendidikan, Pelatihan, dan Pengembangan Profesi Kesejahteraan Sosial",
+        "Pusat Data dan Informasi Kesejahteraan Sosial"
+    ],
+    "Direktorat Jenderal Perlindungan dan Jaminan Sosial": [
+        "Sekretariat Direktorat Jenderal",
+        "Direktorat Jaminan Sosial",
+        "Direktorat Perlindungan Sosial Non Kebencanaan",
+        "Direktorat Perlindungan Sosial Korban Bencana"
+    ],
+    "Direktorat Jenderal Rehabilitasi Sosial": [
+        "Sekretariat Direktorat Jenderal",
+        "Direktorat Rehabilitasi Sosial Anak",
+        "Direktorat Rehabilitasi Sosial Penyandang Disabilitas",
+        "Direktorat Rehabilitasi Sosial Tuna Sosial dan Korban Perdagangan Orang",
+        "Direktorat Rehabilitasi Sosial Korban Penyalahgunaan Napza, Psikotropika, Zat Adiktif Lainnya, dan ODHA (HIV)",
+        "Direktorat Rehabilitasi Sosial Lanjut Usia"
+    ],
+    "Direktorat Jenderal Pemberdayaan Sosial": [
+        "Sekretariat Direktorat Jenderal",
+        "Direktorat Pemberdayaan Sosial Komunitas Adat Terpencil",
+        "Direktorat Pemberdayaan Sosial Keluarga Miskin dan Rentan",
+        "Direktorat Pemberdayaan Sosial Masyarakat",
+        "Direktorat Pemberdayaan Potensi dan Sumber Daya Sosial"
+    ],
+    "Inspektorat Jenderal": [
+        "Sekretariat Inspektorat Jenderal",
+        "Inspektorat Bidang Investigasi",
+        "Inspektorat Bidang Perlindungan dan Jaminan Sosial",
+        "Inspektorat Bidang Rehabilitasi Sosial",
+        "Inspektorat Bidang Pemberdayaan Sosial",
+        "Inspektorat Bidang Penunjang"
+    ]
+};
+
+// Tambahkan event listener untuk perubahan pada direktorat
+document.getElementById('direktorat').addEventListener('change', function() {
+    const selectedDirektorat = this.value;
+    const unitKerjaSelect = document.getElementById('unit_kerja');
+    
+    // Reset pilihan unit kerja
+    unitKerjaSelect.innerHTML = '<option value="">Pilih unit kerja</option>';
+    
+    // Jika direktorat dipilih, tambahkan opsi unit kerja yang sesuai
+    if (selectedDirektorat && unitKerjaOptions[selectedDirektorat]) {
+        // Tambahkan animasi fade out
+        unitKerjaSelect.style.opacity = '0';
+        
+        setTimeout(() => {
+            // Tambahkan opsi-opsi unit kerja
+            unitKerjaOptions[selectedDirektorat].forEach(unit => {
+                const option = document.createElement('option');
+                option.value = unit;
+                option.textContent = unit;
+                unitKerjaSelect.appendChild(option);
+            });
+            
+            // Tambahkan animasi fade in
+            unitKerjaSelect.style.opacity = '1';
+            unitKerjaSelect.style.transition = 'opacity 0.3s ease';
+        }, 300);
+    }
+});
+
+
         // Fungsi untuk mengubah status progres dengan animasi
         function updateProgress(currentStep, nextStep) {
             // Ambil semua lingkaran step

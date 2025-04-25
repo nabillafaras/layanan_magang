@@ -419,27 +419,26 @@
                         <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
-                    <label for="direktorat" class="form-label">Direktorat</label>
-                    <select class="form-select" name="direktorat" id="direktorat">
-                        <option value="">Semua Direktorat</option>
-                        <option value="Direktorat 1" {{ request('direktorat') == 'Direktorat 1' ? 'selected' : '' }}>Direktorat Rehabilitasi Sosial</option>
-                        <option value="Direktorat 2" {{ request('direktorat') == 'Direktorat 2' ? 'selected' : '' }}>Direktorat Perlindungan Sosial</option>
-                        <option value="Direktorat 3" {{ request('direktorat') == 'Direktorat 3' ? 'selected' : '' }}>Direktorat Pemberdayaan Sosial</option>
-                        <option value="Direktorat 4" {{ request('direktorat') == 'Direktorat 4' ? 'selected' : '' }}>Direktorat Penanganan Fakir Miskin</option>
-                        <option value="Direktorat 5" {{ request('direktorat') == 'Direktorat 5' ? 'selected' : '' }}>Direktorat Jaminan Sosial</option>
-                    </select>
+                <div class="col-md-3 mb-2">
+                        <label for="direktorat" class="form-label">Direktorat</label>
+                        <select class="form-select" id="direktorat" name="direktorat">
+                            <option value="">Semua Direktorat</option>
+                            @foreach($direktorat ?? [] as $d)
+                                <option value="{{ $d }}" {{ request('direktorat') == $d ? 'selected' : '' }}>{{ $d }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label for="search" class="form-label">Pencarian</label>
+                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
+                    </div>
+                    <div class="col-md-2 mb-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-filter w-100">
+                            <i class="fas fa-search me-1"></i> Filter
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-3 mb-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-filter w-100">
-                        <i class="fas fa-search me-1"></i> Filter
-                    </button>
-                </div>
-                <div class="col-md-2 mb-2 d-flex align-items-end">
-                    <a href="{{ route('export-laporan') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
-                        <i class="fas fa-file-excel me-1"></i> Export Excel
-                    </a>
-                </div>
+                
             </div>
         </form>
     </div>
@@ -450,6 +449,11 @@
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h5><i class="fas fa-calendar-alt"></i> Rekapitulasi Laporan Bulanan - {{ $bulanNama ?? 'Semua Periode' }}</h5>
+            <div class="col-md-2 mb-2 d-flex align-items-end">
+                    <a href="{{ route('export-laporan') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
+                        <i class="fas fa-file-excel me-1"></i> Export Excel
+                    </a>
+                </div>
         </div>
     </div>
     <div class="card-body">

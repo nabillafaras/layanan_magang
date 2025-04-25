@@ -33,13 +33,13 @@ class DirektoratController extends Controller
     public function direktorat1()
     {
         // Hitung jumlah peserta magang aktif di Direktorat 3
-        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat 1')
+        $jumlahPeserta = Pendaftaran::where('direktorat', 'Sekretariat Jenderal')
                                     ->where('status', 'diterima')
                                     ->count();
         
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 1')
+                        $query->where('direktorat', 'Sekretariat Jenderal')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
@@ -48,26 +48,26 @@ class DirektoratController extends Controller
         
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 1')
+                        $query->where('direktorat', 'Sekretariat Jenderal')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
                     ->get();
-                    session(['previous_direktorat' => 'Direktorat 1']);
+                    session(['previous_direktorat' => 'Sekretariat Jenderal']);
         return view('admin.direktorat.direktorat1', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 
     public function direktorat2()
     {
         // Hitung jumlah peserta magang aktif di Direktorat 3
-        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat 2')
+        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
                                     ->where('status', 'diterima')
                                     ->count();
         
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 2')
+                        $query->where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
@@ -76,26 +76,26 @@ class DirektoratController extends Controller
         
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 2')
+                        $query->where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
                     ->get();
-                    session(['previous_direktorat' => 'Direktorat 2']);
+                    session(['previous_direktorat' => 'Direktorat Jenderal Perlindungan dan Jaminan Sosial']);
         return view('admin.direktorat.direktorat2', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 
     public function direktorat3()
     {
-        // Hitung jumlah peserta magang aktif di Direktorat 3
-        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat 3')
+        // Hitung jumlah peserta magang aktif di Direktorat Jenderal Rehabilitasi Sosial
+        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
                                     ->where('status', 'diterima')
                                     ->count();
         
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 3')
+                        $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
@@ -104,26 +104,26 @@ class DirektoratController extends Controller
         
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 3')
+                        $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
                     ->get();
-                    session(['previous_direktorat' => 'Direktorat 3']);
+                    session(['previous_direktorat' => 'Direktorat Jenderal Rehabilitasi Sosial']);
         return view('admin.direktorat.direktorat3', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 
     public function direktorat4()
     {
-        // Hitung jumlah peserta magang aktif di Direktorat 3
-        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat 4')
+        // Hitung jumlah peserta magang aktif di Direktorat Jenderal Pemberdayaan Sosial
+        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat Jenderal Pemberdayaan Sosial')
                                     ->where('status', 'diterima')
                                     ->count();
         
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 4')
+                        $query->where('direktorat', 'Direktorat Jenderal Pemberdayaan Sosial')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
@@ -132,26 +132,26 @@ class DirektoratController extends Controller
         
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 4')
+                        $query->where('direktorat', 'Direktorat Jenderal Pemberdayaan Sosial')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
                     ->get();
-                    session(['previous_direktorat' => 'Direktorat 4']);
+                    session(['previous_direktorat' => 'Direktorat Jenderal Pemberdayaan Sosial']);
         return view('admin.direktorat.direktorat4', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 
     public function direktorat5()
     {
         // Hitung jumlah peserta magang aktif di Direktorat 3
-        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat 5')
+        $jumlahPeserta = Pendaftaran::where('direktorat', 'Inspektorat Jenderal')
                                     ->where('status', 'diterima')
                                     ->count();
         
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 5')
+                        $query->where('direktorat', 'Inspektorat Jenderal')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
@@ -160,13 +160,13 @@ class DirektoratController extends Controller
         
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat 5')
+                        $query->where('direktorat', 'Inspektorat Jenderal')
                               ->where('status', 'diterima');
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
                     ->get();
-                    session(['previous_direktorat' => 'Direktorat 5']);
+                    session(['previous_direktorat' => 'Inspektorat Jenderal']);
         return view('admin.direktorat.direktorat5', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 

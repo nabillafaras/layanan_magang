@@ -464,11 +464,11 @@
                         <label for="kategori">Kategori <span class="text-danger">*</span></label>
                         <select class="form-control" id="kategori" name="kategori" required>
                             <option value="Semua Direktorat">Semua Direktorat</option>
-                            <option value="Direktorat 1">Direktorat 1</option>
-                            <option value="Direktorat 2">Direktorat 2</option>
-                            <option value="Direktorat 3">Direktorat 3</option>
-                            <option value="Direktorat 4">Direktorat 4</option>
-                            <option value="Direktorat 5">Direktorat 5</option>
+                            <option value="Sekretariat Jenderal">Sekretariat Jenderal</option>
+                            <option value="Direktorat Jenderal Perlindungan dan Jaminan Sosial">Direktorat Jenderal Perlindungan dan Jaminan Sosial</option>
+                            <option value="Direktorat Jenderal Rehabilitasi Sosial">Direktorat Jenderal Rehabilitasi Sosial</option>
+                            <option value="Direktorat Jenderal Pemberdayaan Sosial">Direktorat Jenderal Pemberdayaan Sosial</option>
+                            <option value="Inspektorat Jenderal">Inspektorat Jenderal</option>
                             <option value="Home">Home</option>
                             <option value="Informasi Layanan">Informasi Layanan</option>
                         </select>
@@ -621,11 +621,11 @@
                             <label for="kategori{{ $item->id }}">Kategori <span class="text-danger">*</span></label>
                             <select class="form-control" id="kategori{{ $item->id }}" name="kategori" required>
                                 <option value="Semua Direktorat" {{ $item->kategori == 'Semua Direktorat' ? 'selected' : '' }}>Semua Direktorat</option>
-                                <option value="Direktorat 1" {{ $item->kategori == 'Direktorat 1' ? 'selected' : '' }}>Direktorat 1</option>
-                                <option value="Direktorat 2" {{ $item->kategori == 'Direktorat 2' ? 'selected' : '' }}>Direktorat 2</option>
-                                <option value="Direktorat 3" {{ $item->kategori == 'Direktorat 3' ? 'selected' : '' }}>Direktorat 3</option>
-                                <option value="Direktorat 4" {{ $item->kategori == 'Direktorat 4' ? 'selected' : '' }}>Direktorat 4</option>
-                                <option value="Direktorat 5" {{ $item->kategori == 'Direktorat 5' ? 'selected' : '' }}>Direktorat 5</option>
+                                <option value="Sekretariat Jenderal" {{ $item->kategori == 'Sekretariat Jenderal' ? 'selected' : '' }}>Sekretariat Jenderal</option>
+                                <option value="Direktorat Jenderal Perlindungan dan Jaminan Sosial" {{ $item->kategori == 'Direktorat Jenderal Perlindungan dan Jaminan Sosial' ? 'selected' : '' }}>Direktorat Jenderal Perlindungan dan Jaminan Sosial</option>
+                                <option value="Direktorat Jenderal Rehabilitasi Sosial" {{ $item->kategori == 'Direktorat Jenderal Rehabilitasi Sosial' ? 'selected' : '' }}>Direktorat Jenderal Rehabilitasi Sosial</option>
+                                <option value="Direktorat Jenderal Pemberdayaan Sosial" {{ $item->kategori == 'Direktorat Jenderal Pemberdayaan Sosial' ? 'selected' : '' }}>Direktorat Jenderal Pemberdayaan Sosial</option>
+                                <option value="Inspektorat Jenderal" {{ $item->kategori == 'Inspektorat Jenderal' ? 'selected' : '' }}>Inspektorat Jenderal</option>
                                 <option value="Home" {{ $item->kategori == 'Home' ? 'selected' : '' }}>Home</option>
                                 <option value="Informasi Layanan" {{ $item->kategori == 'Informasi Layanan' ? 'selected' : '' }}>Informasi Layanan</option>
                             </select>

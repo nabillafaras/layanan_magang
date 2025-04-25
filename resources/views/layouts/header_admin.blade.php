@@ -471,27 +471,27 @@
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('admin.direktorat.direktorat1') ? 'active' : '' }}" href="{{ route('admin.direktorat.direktorat1') }}">
-                                    <i class="fas fa-angle-right"></i> Direktorat 1
+                                    <i class="fas fa-angle-right"></i> Sekretariat Jenderal
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('admin.direktorat.direktorat2') ? 'active' : '' }}" href="{{ route('admin.direktorat.direktorat2') }}">
-                                    <i class="fas fa-angle-right"></i> Direktorat 2
+                                    <i class="fas fa-angle-right"></i> Direktorat Jenderal Perlindungan dan Jaminan Sosial
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('admin.direktorat.direktorat3') ? 'active' : '' }}" href="{{ route('admin.direktorat.direktorat3') }}">
-                                    <i class="fas fa-angle-right"></i> Direktorat 3
+                                    <i class="fas fa-angle-right"></i> Direktorat Jenderal Rehabilitasi Sosial
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('admin.direktorat.direktorat4') ? 'active' : '' }}" href="{{ route('admin.direktorat.direktorat4') }}">
-                                    <i class="fas fa-angle-right"></i> Direktorat 4
+                                    <i class="fas fa-angle-right"></i> Direktorat Jenderal Pemberdayaan Sosial
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('admin.direktorat.direktorat5') ? 'active' : '' }}" href="{{ route('admin.direktorat.direktorat5') }}">
-                                    <i class="fas fa-angle-right"></i> Direktorat 5
+                                    <i class="fas fa-angle-right"></i> Inspektorat Jenderal
                                 </a>
                             </li>
                         </ul>

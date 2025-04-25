@@ -754,13 +754,11 @@
             @php
                 $direktoratGroups = $peserta->groupBy('direktorat');
                 $icons = [
-                    'Direktorat Jenderal' => 'building',
                     'Sekretariat Jenderal' => 'briefcase',
+                    'Direktorat Jenderal Perlindungan dan Jaminan Sosial' => 'shield-alt',
+                    'Direktorat Jenderal Rehabilitasi Sosial' => 'hands-helping',
+                    'Direktorat Jenderal Pemberdayaan Sosial' => 'people-carry',
                     'Inspektorat Jenderal' => 'search',
-                    'Badan Pendidikan' => 'book',
-                    'Direktorat Rehabilitasi Sosial' => 'hands-helping',
-                    'Direktorat Perlindungan Sosial' => 'shield-alt',
-                    'Direktorat Pemberdayaan Sosial' => 'people-carry',
                     'default' => 'sitemap'
                 ];
             @endphp

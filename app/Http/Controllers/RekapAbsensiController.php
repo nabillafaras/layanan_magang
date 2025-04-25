@@ -43,24 +43,38 @@ class RekapAbsensiController extends Controller
                                 ->whereMonth('date', $bulan);
                       }]);
 
-        // Filter berdasarkan direktorat jika ada
-        if ($direktorat) {
-            $query->where('direktorat', $direktorat);
+        // Filter berdasarkan pencarian
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nomor_pendaftaran', 'like', "%{$search}%")
+                  ->orWhere('asal_universitas', 'like', "%{$search}%");
+            });
         }
-
+        
+        // Filter berdasarkan direktorat
+        if ($request->has('direktorat') && $request->direktorat) {
+            $query->where('direktorat', $request->direktorat);
+        }
+        
+        
+        // Dapatkan list direktorat untuk filter
+        $direktorat = Pendaftaran::distinct('direktorat')->pluck('direktorat');
+        
         $pesertaAbsensi = $query->get();
 
         // Hitung total untuk setiap status absensi
         $totalHadir = 0;
         $totalSakit = 0;
         $totalIzin = 0;
-        $totalAlpha = 0;
+        $totalTerlambat = 0;
 
         foreach ($pesertaAbsensi as $peserta) {
-            $totalHadir += $peserta->attendances->where('status', 'H')->count();
-            $totalSakit += $peserta->attendances->where('status', 'S')->count();
-            $totalIzin += $peserta->attendances->where('status', 'I')->count();
-            $totalAlpha += $peserta->attendances->where('status', 'A')->count();
+            $totalHadir += $peserta->attendances->where('status', 'hadir')->count();
+            $totalSakit += $peserta->attendances->where('status', 'sakit')->count();
+            $totalIzin += $peserta->attendances->where('status', 'izin')->count();
+            $totalTerlambat += $peserta->attendances->where('status', 'terlambat')->count();
         }
 
         return view('admin.rekap_absensi', compact(
@@ -71,7 +85,8 @@ class RekapAbsensiController extends Controller
             'totalHadir',
             'totalSakit',
             'totalIzin',
-            'totalAlpha'
+            'totalTerlambat',
+            'direktorat'
         ));
     }
 
