@@ -47,4 +47,25 @@ class Admin extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public function isAdmin1()
+    {
+        return $this->role === 'admin1';
+    }
+
+    public function isAdmin2()
+    {
+        return $this->role === 'admin2';
+    }
+
+    public function isAdmin3()
+    {
+        return $this->role === 'admin3';
+    }public function isAdmin4()
+    {
+        return $this->role === 'admin4';
+    }public function isAdmin5()
+    {
+        return $this->role === 'admin5';
+    }
 }

@@ -45,6 +45,7 @@ class CreateController extends Controller
             'username' => 'required|string|max:255|unique:admins',
             'email' => 'required|string|email|max:255|unique:admins',
             'password' => ['required', 'confirmed', Password::min(8)],
+            'role' => 'required|string|in:pimpinan,admin,admin1,admin2,admin3,admin4,admin5',
         ]);
 
         // Simpan data admin baru
@@ -53,6 +54,7 @@ class CreateController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role, // Menyimpan role yang dipilih
         ]);
 
         // Redirect dengan pesan sukses

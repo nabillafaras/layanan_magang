@@ -28,6 +28,51 @@ class CheckRole
             return $next($request);
         }
 
+        // Cek guard admin dengan role admin1
+        if ($role === 'admin1') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin1') {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Please login as pimpinan first');
+            }
+            return $next($request);
+        }
+
+        // Cek guard admin dengan role admin2
+        if ($role === 'admin2') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin2') {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Please login as pimpinan first');
+            }
+            return $next($request);
+        }
+
+        // Cek guard admin dengan role admin3
+        if ($role === 'admin3') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin3') {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Please login as pimpinan first');
+            }
+            return $next($request);
+        }
+
+        // Cek guard admin dengan role admin4
+        if ($role === 'admin4') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin4') {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Please login as pimpinan first');
+            }
+            return $next($request);
+        }
+
+        // Cek guard admin dengan role admin2
+        if ($role === 'admin5') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->role !== 'admin5') {
+                return redirect()->route('admin.login')
+                    ->with('error', 'Please login as pimpinan first');
+            }
+            return $next($request);
+        }
+
         // Cek guard web (user regular)
         if ($role === 'user') {
             if (!Auth::guard('web')->check()) {

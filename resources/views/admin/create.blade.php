@@ -342,6 +342,29 @@
                         </div>
 
                         <div class="form-group row mb-4">
+                            <label for="role" class="col-md-4 col-form-label text-md-right">Pilih Direktorat</label>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-building"></i></span>
+                                    <select id="role" name="role" class="form-control @error('role') is-invalid @enderror" required>
+                                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                                        <option value="admin">Semua Direktorat</option>
+                                        <option value="admin1">Sekretariat Jenderal</option>
+                                        <option value="admin2">Direktorat Jenderal Perlindungan dan Jaminan Sosial</option>
+                                        <option value="admin3">Direktorat Jenderal Rehabilitasi Sosial</option>
+                                        <option value="admin4">Direktorat Jenderal Pemberdayaan Sosial</option>
+                                        <option value="admin5">Inspektorat Jenderal</option>
+                                    </select>
+                                </div>
+                                @error('role')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
                             <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
                             <div class="col-md-6">
                                 <div class="input-group">

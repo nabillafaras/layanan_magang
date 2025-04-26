@@ -1,4 +1,5 @@
 <?php
+// app/Http/Controllers/AdminAuthController.php
 
 namespace App\Http\Controllers;
 
@@ -15,30 +16,39 @@ class AdminAuthController extends Controller
             'password' => 'required'
         ]);
         
-        // Tambahkan logging untuk debug
-        Log::info('Admin/Pimpinan login attempt:', ['username' => $credentials['username']]);
+        // Log untuk debugging
+        Log::info('Login attempt:', ['username' => $credentials['username']]);
         
         if (Auth::guard('admin')->attempt($credentials)) {
             $user = Auth::guard('admin')->user();
-            Log::info('Login successful for: ' . $user->role);
+            Log::info('Login successful for: ' . $user->username . ' with role: ' . $user->role);
             
             $request->session()->regenerate();
             
-            // Validasi dan autentikasi
-            if (Auth::guard('admin')->user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            } elseif (Auth::guard('admin')->user()->role === 'pimpinan') {
-                return redirect()->route('pimpinan.dashboard');
+            // Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->intended(route('admin.dashboard'));
+            } elseif ($user->role === 'pimpinan') {
+                return redirect()->intended(route('pimpinan.dashboard'));
+            } elseif ($user->role === 'admin1') {
+                return redirect()->intended(route('admin1.dashboard'));
+            } elseif ($user->role === 'admin2') {
+                return redirect()->intended(route('admin2.dashboard'));
+            } elseif ($user->role === 'admin3') {
+                return redirect()->intended(route('admin3.dashboard'));
+            } elseif ($user->role === 'admin4') {
+                return redirect()->intended(route('admin4.dashboard'));
+            } elseif ($user->role === 'admin5') {
+                return redirect()->intended(route('admin5.dashboard'));
             }
         }
         
-        Log::info('Login failed');
+        Log::info('Login failed for: ' . $credentials['username']);
         return back()->withErrors([
             'username' => 'Username atau password salah',
         ])->withInput($request->except('password'));
     }
 
-    // Handle logout untuk admin dan pimpinan
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();

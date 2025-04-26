@@ -1,38 +1,58 @@
 <?php
 
-use App\Http\Controllers\InformasiController;
-use App\Http\Controllers\PersyaratanController;
-use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\Pendaftaran_SummaryController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UserAuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginAdminController;
+use App\Http\Controllers\Admin1\Admin1Controller;
+use App\Http\Controllers\Admin2\Admin2Controller;
+use App\Http\Controllers\Admin3\Admin3Controller;
+use App\Http\Controllers\Admin4\Admin4Controller;
+use App\Http\Controllers\Admin5\Admin5Controller;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Pimpinans\PimpinanController;
-use App\Http\Controllers\Pimpinans\PesertaPimpinanController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CreateController;
-use App\Http\Controllers\PesertaController;
-use App\Http\Controllers\StatusController;
+use App\Http\Controllers\DirektoratController;
+use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\Informasi_PesertaController;
 use App\Http\Controllers\IzinController;
-use App\Http\Controllers\SakitController;
-use App\Http\Controllers\RekapAbsensiController;
-use App\Http\Controllers\LaporanBulananController;
 use App\Http\Controllers\LaporanAkhirController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DirektoratController;
+use App\Http\Controllers\LaporanBulananController;
+use App\Http\Controllers\LoginAdminController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\Pendaftaran_SummaryController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\PengumumanUserController;
+use App\Http\Controllers\PersyaratanController;
+use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\Pimpinans\AbsensiPimpinanController;
 use App\Http\Controllers\Pimpinans\LaporanPimpinanController;
+use App\Http\Controllers\Pimpinans\PesertaPimpinanController;
+use App\Http\Controllers\Pimpinans\PimpinanController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RekapAbsensiController;
+use App\Http\Controllers\RekapLaporanController;
+use App\Http\Controllers\SakitController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Route publik
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Berikut adalah definisi routes untuk aplikasi web. Routes ini di-load oleh
+| RouteServiceProvider dan semuanya akan masuk ke group "web" middleware.
+|
+*/
+
+// ====================================
+// ROUTE PUBLIK (TIDAK PERLU LOGIN)
+// ====================================
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
 Route::get('/informasi', [InformasiController::class, 'index'])->name('informasi');
 Route::get('/persyaratan', [PersyaratanController::class, 'index'])->name('persyaratan');
 Route::get('/informasi_peserta', [Informasi_PesertaController::class, 'index'])->name('informasi_peserta');
@@ -42,15 +62,19 @@ Route::get('/pendaftaran', [PendaftaranController::class, 'showForm'])->name('pe
 Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 Route::get('/pendaftaran/summary/{id}', [Pendaftaran_SummaryController::class, 'index'])->name('pendaftaran.summary');
 
-// routes/web.php
+// Routes untuk cek status pendaftaran
 Route::get('/cek-status', [StatusController::class, 'form'])->name('status.form');
 Route::post('/cek-status', [StatusController::class, 'check'])->name('status.check');
 
-// Route autentikasi user
+// ====================================
+// ROUTE AUTENTIKASI USER
+// ====================================
 Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [UserAuthController::class, 'authenticate'])->name('login.authenticate');
 
-// Routes untuk user yang sudah login
+// ====================================
+// ROUTE USER (PESERTA) - PERLU LOGIN
+// ====================================
 Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
@@ -89,8 +113,9 @@ Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::get('/pengumuman/{id}', [App\Http\Controllers\PengumumanUserController::class, 'show'])->name('pengumuman.show');
 });
 
-
-// Routes untuk admin
+// ====================================
+// ROUTE ADMIN
+// ====================================
 Route::prefix('admin')->group(function () {
     // Admin login routes
     Route::middleware('guest:admin')->group(function () {
@@ -151,7 +176,9 @@ Route::prefix('admin/pengumuman')->name('admin.pengumuman.')->group(function () 
 });
 });
 
-// Routes untuk pimpinan (di luar grup admin)
+// ====================================
+// ROUTE PIMPINAN
+// ====================================
 Route::prefix('pimpinan')->group(function () {
     Route::middleware(['auth:admin', 'checkRole:pimpinan'])->group(function () {
         Route::get('/', [PimpinanController::class, 'index'])->name('pimpinan.dashboard');
@@ -166,7 +193,58 @@ Route::prefix('pimpinan')->group(function () {
         // Rute untuk rekapitulasi laporan
     Route::get('/rekapitulasi-laporan', [LaporanPimpinanController::class, 'index'])->name('pimpinan.laporan');
     Route::get('/export-laporan', [LaporanPimpinanController::class, 'exportExcel'])->name('export-laporan');
-
-
 });
+});
+
+// ====================================
+// ROUTE ADMIN1
+// ====================================
+Route::prefix('admin1')->group(function () {
+    Route::middleware(['auth:admin', 'checkRole:admin1'])->group(function () {
+        Route::get('/', [Admin1Controller::class, 'index'])->name('admin1.dashboard');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin1.logout');
+    });
+});
+
+
+// ====================================
+// ROUTE ADMIN2
+// ====================================
+Route::prefix('admin2')->group(function () {
+    Route::middleware(['auth:admin', 'checkRole:admin2'])->group(function () {
+        Route::get('/', [Admin2Controller::class, 'index'])->name('admin2.dashboard');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin2.logout');
+    });
+});
+
+
+// ====================================
+// ROUTE ADMIN3
+// ====================================
+Route::prefix('admin3')->group(function () {
+    Route::middleware(['auth:admin', 'checkRole:admin3'])->group(function () {
+        Route::get('/', [Admin3Controller::class, 'index'])->name('admin3.dashboard');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin3.logout');
+    });
+});
+
+
+// ====================================
+// ROUTE ADMIN4
+// ====================================
+Route::prefix('admin4')->group(function () {
+    Route::middleware(['auth:admin', 'checkRole:admin4'])->group(function () {
+        Route::get('/', [Admin4Controller::class, 'index'])->name('admin4.dashboard');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin4.logout');
+    });
+});
+
+// ====================================
+// ROUTE ADMIN5
+// ====================================
+Route::prefix('admin5')->group(function () {
+    Route::middleware(['auth:admin', 'checkRole:admin5'])->group(function () {
+        Route::get('/', [Admin5Controller::class, 'index'])->name('admin5.dashboard');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin5.logout');
+    });
 });
