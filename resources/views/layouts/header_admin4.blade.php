@@ -438,32 +438,32 @@
             
             <ul class="nav flex-column">
                 <li class="nav-item">
-                <a href="{{ route('admin4.dashboard') }}" class="nav-link {{ request()->routeIs('admin4.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin4.dashboard') }}" class="nav-link {{ request()->routeIs('admin4.dashboard') ? 'active' : '' }}">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin4.peserta4') }}" class="nav-link {{ request()->routeIs('admin4.peserta4') ? 'active' : '' }}">
                         <i class="fas fa-user"></i> Data Peserta
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin4.rekapitulasi-absensi4') }}" class="nav-link {{ request()->routeIs('admin4.rekapitulasi-absensi4') ? 'active' : '' }}">
                         <i class="fas fa-clipboard-list"></i> Rekapitulasi Absensi
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin4.rekapitulasi-laporan4') }}" class="nav-link {{ request()->routeIs('admin4.rekapitulasi-laporan4') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i> Rekapitulasi Laporan
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a class="nav-link {{ request()->routeIs('admin4.direktorat4') ? 'active' : '' }}" href="{{ route('admin4.direktorat4')}}">
                         <i class="fas fa-building"></i> Direktorat Jenderal Pemberdayaan Sosial
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <a href="{{ route('admin4.pengumuman4.index') }}" class="nav-link {{ request()->routeIs('admin4.pengumuman4.index') ? 'active' : '' }}">
                         <i class="fas fa-cloud-upload-alt"></i> Informasi
                     </a>
                 </li>
@@ -498,11 +498,7 @@
                                     <i class="fas fa-user me-2"></i>{{ Auth::guard('admin')->user()->nama_lengkap }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="userDropdown">
-                                    <li>
-                                        <a href="#" class="dropdown-item">
-                                            <i class="fas fa-id-card me-2"></i>Profile
-                                        </a>
-                                    </li>
+                                    
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('admin4.logout') }}" method="POST">

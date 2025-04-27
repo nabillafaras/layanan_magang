@@ -381,138 +381,169 @@
                     @endif
 
                     <!-- Check-in Form -->
-                    @if(!isset($hasCheckedIn) || !$hasCheckedIn)
-                    <div class="form-card mb-4 animate__animated animate__fadeInUp">
-                        <div class="form-header bg-primary">
-                            <i class="fas fa-sign-in-alt me-2"></i> Absen Masuk
-                        </div>
-                        <div class="form-body">
-                            <form action="{{ route('attendance.check-in') }}" method="POST" enctype="multipart/form-data" id="absensiForm">
-                                @csrf
-                                <div class="mb-4">
-                                    <label class="form-label fw-bold">Lokasi</label>
-                                    <button type="button" class="location-btn w-100 mb-3" onclick="getLocation('check-in')">
-                                        <i class="fas fa-map-marker-alt me-2" style="color: var(--primary-color);"></i> Dapatkan Lokasi Saat Ini
-                                    </button>
-                                    <div id="map-container-in" class="map-container">
-                                        <iframe id="map-iframe-in" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                                    </div>
-                                    <div class="location-info" id="location-info-in">
-                                        <i class="fas fa-info-circle me-2" style="color: var(--primary-color);"></i>
-                                        <small>Koordinat akan muncul di sini setelah lokasi terdeteksi</small>
-                                    </div>
-                                    <input type="hidden" name="location" id="location">
-                                    <input type="hidden" name="latitude" id="latitude">
-                                    <input type="hidden" name="longitude" id="longitude">
-                                    <input type="hidden" name="real_time" id="real_time">
-                                </div>
+@if(!isset($hasCheckedIn) || !$hasCheckedIn)
+<div class="form-card mb-4 animate__animated animate__fadeInUp">
+    <div class="form-header bg-primary">
+        <i class="fas fa-sign-in-alt me-2"></i> Absen Masuk
+    </div>
+    <div class="form-body">
+        <form action="{{ route('attendance.check-in') }}" method="POST" enctype="multipart/form-data" id="absensiForm">
+            @csrf
+            <div class="mb-4">
+                <label class="form-label fw-bold">Lokasi</label>
+                <button type="button" class="location-btn w-100 mb-3" onclick="getLocation('check-in')">
+                    <i class="fas fa-map-marker-alt me-2" style="color: var(--primary-color);"></i> Dapatkan Lokasi Saat Ini
+                </button>
+                <div id="map-container-in" class="map-container">
+                    <iframe id="map-iframe-in" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="location-info" id="location-info-in">
+                    <i class="fas fa-info-circle me-2" style="color: var(--primary-color);"></i>
+                    <small>Koordinat akan muncul di sini setelah lokasi terdeteksi</small>
+                </div>
+                <input type="hidden" name="location" id="location">
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
+                <input type="hidden" name="real_time" id="real_time">
+            </div>
 
-                                <div class="mb-4">
-                                    <label class="form-label fw-bold">Foto</label>
-                                    <div class="camera-box" onclick="document.getElementById('photo').click()">
-                                        <i class="fas fa-camera camera-icon"></i>
-                                        <p class="mb-0">Ambil Foto Absensi</p>
-                                    </div>
-                                    <input type="file" id="photo" name="photo" accept="image/*" capture="user" class="d-none" required>
-                                    <div class="photo-preview-container">
-                                        <img id="photoPreview" class="img-fluid preview-image d-none" alt="Preview">
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="action-btn check-in-btn btn-pulse" id="submitBtn" disabled>
-                                        <i class="fas fa-check-circle me-2"></i> Absen Masuk
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold">Foto</label>
+                <div class="camera-box" id="cameraTriggerIn">
+                    <i class="fas fa-camera camera-icon"></i>
+                    <p class="mb-0">Buka Kamera Absensi</p>
+                </div>
+                <!-- Hidden file input - hanya untuk menyimpan foto yang diambil dari kamera -->
+                <input type="file" id="photo" name="photo" accept="image/*" class="d-none">
+                
+                <!-- Container untuk kamera yang akan dibuka -->
+                <div id="cameraContainerIn" class="camera-container mt-3 d-none">
+                    <video id="cameraVideoIn" class="camera-preview img-fluid border rounded" autoplay playsinline></video>
+                    <canvas id="canvasIn" class="d-none"></canvas>
+                    <div class="camera-controls mt-2 text-center">
+                        <button type="button" id="capturePhotoIn" class="btn btn-danger">
+                            <i class="fas fa-camera me-2"></i> Ambil Foto
+                        </button>
                     </div>
-                    @endif
-
-                    <!-- Check-out Form - Hanya muncul jika sudah check-in -->
-                    @if(isset($hasCheckedIn) && $hasCheckedIn && (!isset($hasCheckedOut) || !$hasCheckedOut))
-                    <div class="form-card mb-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                        <div class="form-header bg-success">
-                            <i class="fas fa-sign-out-alt me-2"></i> Absen Pulang
-                        </div>
-                        <div class="form-body">
-                            <form action="{{ route('attendance.check-out') }}" method="POST" enctype="multipart/form-data" id="checkoutForm">
-                                @csrf
-                                <div class="mb-4">
-                                    <label class="form-label fw-bold">Lokasi</label>
-                                    <button type="button" class="location-btn w-100 mb-3" onclick="getLocation('check-out')">
-                                        <i class="fas fa-map-marker-alt me-2" style="color: #1a8754;"></i> Dapatkan Lokasi Saat Ini
-                                    </button>
-                                    <div id="map-container-out" class="map-container">
-                                        <iframe id="map-iframe-out" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                                    </div>
-                                    <div class="location-info" id="location-info-out">
-                                        <i class="fas fa-info-circle me-2" style="color: #1a8754;"></i>
-                                        <small>Koordinat akan muncul di sini setelah lokasi terdeteksi</small>
-                                    </div>
-                                    <input type="hidden" name="location" id="location_out">
-                                    <input type="hidden" name="latitude" id="latitude_out">
-                                    <input type="hidden" name="longitude" id="longitude_out">
-                                    <input type="hidden" name="real_time" id="real_time_out">
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="form-label fw-bold">Foto</label>
-                                    <div class="camera-box" onclick="document.getElementById('photo_out').click()">
-                                        <i class="fas fa-camera camera-icon" style="color: #1a8754;"></i>
-                                        <p class="mb-0">Ambil Foto Absensi</p>
-                                    </div>
-                                    <input type="file" id="photo_out" name="photo" accept="image/*" capture="user" class="d-none" required>
-                                    <div class="photo-preview-container">
-                                        <img id="photoPreviewOut" class="img-fluid preview-image d-none" alt="Preview">
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="action-btn check-out-btn btn-pulse" id="submitBtnOut" disabled>
-                                        <i class="fas fa-check-circle me-2"></i> Absen Pulang
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                </div>
+                
+                <!-- Preview foto yang diambil -->
+                <div class="photo-preview-container mt-3">
+                    <img id="photoPreviewIn" class="img-fluid preview-image d-none" alt="Preview Foto">
+                    <div id="photoControlsIn" class="mt-2 text-center d-none">
+                        <button type="button" id="retakePhotoIn" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo me-2"></i> Ambil Ulang
+                        </button>
                     </div>
-                    @endif
-
-                    <!-- Attendance History -->
-                    <div class="mt-5 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-                        <h5 class="mb-4"><i class="fas fa-history me-2" style="color: var(--primary-color);"></i>Riwayat Absensi</h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Masuk</th>
-                                        <th>Pulang</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="attendanceHistory">
-                                    @foreach($attendanceHistory ?? [] as $index => $record)
-                                    <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ $index * 0.1 }}s">
-                                        <td>{{ \Carbon\Carbon::parse($record->date)->format('d/m/Y') }}</td>
-                                        <td>{{ $record->check_in_time }}</td>
-                                        <td>{{ $record->check_out_time ?? '-' }}</td>
-                                        <td>
-                                            <span class="badge {{ $record->status === 'hadir' ? 'bg-success' : ($record->status === 'terlambat' ? 'bg-danger' : 'bg-danger') }}">
-                                                {{ $record->status }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    
                 </div>
             </div>
-        </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="action-btn check-in-btn btn-pulse" id="submitBtn" disabled>
+                    <i class="fas fa-check-circle me-2"></i> Absen Masuk
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
+
+<!-- Check-out Form - Hanya muncul jika sudah check-in -->
+@if(isset($hasCheckedIn) && $hasCheckedIn && (!isset($hasCheckedOut) || !$hasCheckedOut))
+<div class="form-card mb-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+    <div class="form-header bg-success">
+        <i class="fas fa-sign-out-alt me-2"></i> Absen Pulang
+    </div>
+    <div class="form-body">
+        <form action="{{ route('attendance.check-out') }}" method="POST" enctype="multipart/form-data" id="checkoutForm">
+            @csrf
+            <div class="mb-4">
+                <label class="form-label fw-bold">Lokasi</label>
+                <button type="button" class="location-btn w-100 mb-3" onclick="getLocation('check-out')">
+                    <i class="fas fa-map-marker-alt me-2" style="color: #1a8754;"></i> Dapatkan Lokasi Saat Ini
+                </button>
+                <div id="map-container-out" class="map-container">
+                    <iframe id="map-iframe-out" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="location-info" id="location-info-out">
+                    <i class="fas fa-info-circle me-2" style="color: #1a8754;"></i>
+                    <small>Koordinat akan muncul di sini setelah lokasi terdeteksi</small>
+                </div>
+                <input type="hidden" name="location" id="location_out">
+                <input type="hidden" name="latitude" id="latitude_out">
+                <input type="hidden" name="longitude" id="longitude_out">
+                <input type="hidden" name="real_time" id="real_time_out">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Foto</label>
+                <div class="camera-box" id="cameraTriggerOut">
+                    <i class="fas fa-camera camera-icon" style="color: #1a8754;"></i>
+                    <p class="mb-0">Buka Kamera Absensi</p>
+                </div>
+                <!-- Hidden file input - hanya untuk menyimpan foto yang diambil dari kamera -->
+                <input type="file" id="photo_out" name="photo" accept="image/*" class="d-none">
+                
+                <!-- Container untuk kamera yang akan dibuka -->
+                <div id="cameraContainerOut" class="camera-container mt-3 d-none">
+                    <video id="cameraVideoOut" class="camera-preview img-fluid border rounded" autoplay playsinline></video>
+                    <canvas id="canvasOut" class="d-none"></canvas>
+                    <div class="camera-controls mt-2 text-center">
+                        <button type="button" id="capturePhotoOut" class="btn btn-success">
+                            <i class="fas fa-camera me-2"></i> Ambil Foto
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Preview foto yang diambil -->
+                <div class="photo-preview-container mt-3">
+                    <img id="photoPreviewOut" class="img-fluid preview-image d-none" alt="Preview Foto">
+                    <div id="photoControlsOut" class="mt-2 text-center d-none">
+                        <button type="button" id="retakePhotoOut" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo me-2"></i> Ambil Ulang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="action-btn check-out-btn btn-pulse" id="submitBtnOut" disabled>
+                    <i class="fas fa-check-circle me-2"></i> Absen Pulang
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
+
+<!-- Attendance History -->
+<div class="mt-5 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+    <h5 class="mb-4"><i class="fas fa-history me-2" style="color: var(--primary-color);"></i>Riwayat Absensi</h5>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Masuk</th>
+                    <th>Pulang</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceHistory">
+                @foreach($attendanceHistory ?? [] as $index => $record)
+                <tr class="animate__animated animate__fadeIn" style="animation-delay: {{ $index * 0.1 }}s">
+                    <td>{{ \Carbon\Carbon::parse($record->date)->format('d/m/Y') }}</td>
+                    <td>{{ $record->check_in_time }}</td>
+                    <td>{{ $record->check_out_time ?? '-' }}</td>
+                    <td>
+                        <span class="badge {{ $record->status === 'hadir' ? 'bg-success' : ($record->status === 'terlambat' ? 'bg-danger' : 'bg-danger') }}">
+                            {{ $record->status }}
+                        </span>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 @endsection
@@ -520,6 +551,7 @@
 @section('additional_scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        
         // Efek animasi pada load halaman
         const animateElements = function() {
             const elements = document.querySelectorAll('.attendance-card, .form-card');
@@ -539,93 +571,318 @@
         
         // Update time every second with animation
         const timeDisplay = document.querySelector('.current-time');
-        setInterval(function() {
-            const now = new Date();
-            // Tambahkan animasi pulse saat waktu berubah
-            timeDisplay.classList.add('animate__animated', 'animate__pulse');
-            timeDisplay.textContent = now.toLocaleTimeString('id-ID');
-            setTimeout(() => {
-                timeDisplay.classList.remove('animate__animated', 'animate__pulse');
+        if (timeDisplay) {
+            setInterval(function() {
+                const now = new Date();
+                // Tambahkan animasi pulse saat waktu berubah
+                timeDisplay.classList.add('animate__animated', 'animate__pulse');
+                timeDisplay.textContent = now.toLocaleTimeString('id-ID');
+                setTimeout(() => {
+                    timeDisplay.classList.remove('animate__animated', 'animate__pulse');
+                }, 1000);
             }, 1000);
-        }, 1000);
+        }
 
-        // Photo preview for check-in with animation
+        // Variabel global untuk menyimpan stream
+        let videoStreamIn = null;
+        let videoStreamOut = null;
+        
+        // ===== KAMERA CHECK-IN =====
+        const cameraTriggerIn = document.getElementById('cameraTriggerIn');
+        const cameraContainerIn = document.getElementById('cameraContainerIn');
+        const cameraVideoIn = document.getElementById('cameraVideoIn');
+        const capturePhotoIn = document.getElementById('capturePhotoIn');
+        const canvasIn = document.getElementById('canvasIn');
+        const photoPreviewIn = document.getElementById('photoPreviewIn');
+        const photoControlsIn = document.getElementById('photoControlsIn');
+        const retakePhotoIn = document.getElementById('retakePhotoIn');
         const photoInput = document.getElementById('photo');
-        if (photoInput) {
-            photoInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const preview = document.getElementById('photoPreview');
-                        preview.src = e.target.result;
-                        preview.classList.remove('d-none');
-                        preview.classList.add('animate__animated', 'animate__fadeIn');
-                    }
-                    reader.readAsDataURL(file);
-                }
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Event listener untuk tombol "Buka Kamera"
+        if (cameraTriggerIn) {
+            cameraTriggerIn.addEventListener('click', function() {
+                startCamera('in');
             });
         }
-
-        // Photo preview for check-out with animation
+        
+        // Event listener untuk capture foto check-in
+        if (capturePhotoIn) {
+            capturePhotoIn.addEventListener('click', function() {
+                capturePhoto('in');
+            });
+        }
+        
+        // Event listener untuk ambil ulang foto check-in
+        if (retakePhotoIn) {
+            retakePhotoIn.addEventListener('click', function() {
+                startCamera('in');
+            });
+        }
+        
+        // ===== KAMERA CHECK-OUT =====
+        const cameraTriggerOut = document.getElementById('cameraTriggerOut');
+        const cameraContainerOut = document.getElementById('cameraContainerOut');
+        const cameraVideoOut = document.getElementById('cameraVideoOut');
+        const capturePhotoOut = document.getElementById('capturePhotoOut');
+        const canvasOut = document.getElementById('canvasOut');
+        const photoPreviewOut = document.getElementById('photoPreviewOut');
+        const photoControlsOut = document.getElementById('photoControlsOut');
+        const retakePhotoOut = document.getElementById('retakePhotoOut');
         const photoOutInput = document.getElementById('photo_out');
-        if (photoOutInput) {
-            photoOutInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const preview = document.getElementById('photoPreviewOut');
-                        preview.src = e.target.result;
-                        preview.classList.remove('d-none');
-                        preview.classList.add('animate__animated', 'animate__fadeIn');
-                    }
-                    reader.readAsDataURL(file);
-                }
+        const submitBtnOut = document.getElementById('submitBtnOut');
+        
+        // Event listener untuk tombol "Buka Kamera" check-out
+        if (cameraTriggerOut) {
+            cameraTriggerOut.addEventListener('click', function() {
+                startCamera('out');
             });
         }
-
-        // Tambahkan function helper untuk AJAX dengan CSRF token
-        function fetchWithCSRF(url, options = {}) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        // Event listener untuk capture foto check-out
+        if (capturePhotoOut) {
+            capturePhotoOut.addEventListener('click', function() {
+                capturePhoto('out');
+            });
+        }
+        
+        // Event listener untuk ambil ulang foto check-out
+        if (retakePhotoOut) {
+            retakePhotoOut.addEventListener('click', function() {
+                startCamera('out');
+            });
+        }
+        
+        // Fungsi untuk memulai kamera berdasarkan tipe (in/out)
+        function startCamera(type) {
+            const videoElement = type === 'in' ? cameraVideoIn : cameraVideoOut;
+            const cameraContainer = type === 'in' ? cameraContainerIn : cameraContainerOut;
+            const photoPreview = type === 'in' ? photoPreviewIn : photoPreviewOut;
+            const photoControls = type === 'in' ? photoControlsIn : photoControlsOut;
             
-            return fetch(url, {
-                ...options,
-                headers: {
-                    ...options.headers,
-                    'X-CSRF-TOKEN': csrfToken,
-                }
-            });
+            // Tampilkan container kamera dan sembunyikan preview foto
+            cameraContainer.classList.remove('d-none');
+            photoPreview.classList.add('d-none');
+            photoControls.classList.add('d-none');
+            
+            // Matikan stream sebelumnya jika ada
+            if (type === 'in' && videoStreamIn) {
+                videoStreamIn.getTracks().forEach(track => track.stop());
+                videoStreamIn = null;
+            } else if (type === 'out' && videoStreamOut) {
+                videoStreamOut.getTracks().forEach(track => track.stop());
+                videoStreamOut = null;
+            }
+            
+            // Tambahkan loading
+            videoElement.classList.add('d-none');
+            const loadingId = `loadingCamera${type.charAt(0).toUpperCase() + type.slice(1)}`;
+            let loadingElement = document.getElementById(loadingId);
+            
+            if (!loadingElement) {
+                loadingElement = document.createElement('div');
+                loadingElement.id = loadingId;
+                loadingElement.classList.add('text-center', 'p-4', 'animate__animated', 'animate__pulse', 'animate__infinite');
+                loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Mengaktifkan kamera...';
+                cameraContainer.insertBefore(loadingElement, videoElement);
+            } else {
+                loadingElement.classList.remove('d-none');
+            }
+            
+            // Konfigurasi untuk mengakses kamera
+            const constraints = {
+                video: {
+                    facingMode: 'user',  // Gunakan kamera depan, 'environment' untuk kamera belakang
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
+                },
+                audio: false
+            };
+            
+            // Akses kamera
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    // Simpan stream ke variabel global
+                    if (type === 'in') {
+                        videoStreamIn = stream;
+                    } else {
+                        videoStreamOut = stream;
+                    }
+                    
+                    // Sembunyikan loading
+                    loadingElement.classList.add('d-none');
+                    
+                    // Tampilkan video stream
+                    videoElement.classList.remove('d-none');
+                    videoElement.srcObject = stream;
+                    videoElement.play();
+                    
+                    // Tambahkan animasi
+                    videoElement.classList.add('animate__animated', 'animate__fadeIn');
+                })
+                .catch(function(error) {
+                    console.error('Error mengakses kamera:', error);
+                    
+                    // Sembunyikan loading dan container kamera
+                    loadingElement.classList.add('d-none');
+                    cameraContainer.classList.add('d-none');
+                    
+                    // Tampilkan pesan error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Tidak Dapat Mengakses Kamera',
+                        text: 'Pastikan Anda telah memberikan izin untuk mengakses kamera. Error: ' + error.message,
+                        confirmButtonColor: type === 'in' ? '#8b0000' : '#1a8754',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
+                    });
+                });
         }
-
-        // Gunakan untuk form checkIn dengan animasi loading
+        
+        // Fungsi untuk mengambil foto dari stream kamera
+        function capturePhoto(type) {
+            const videoElement = type === 'in' ? cameraVideoIn : cameraVideoOut;
+            const canvasElement = type === 'in' ? canvasIn : canvasOut;
+            const cameraContainer = type === 'in' ? cameraContainerIn : cameraContainerOut;
+            const photoPreview = type === 'in' ? photoPreviewIn : photoPreviewOut;
+            const photoControls = type === 'in' ? photoControlsIn : photoControlsOut;
+            const fileInput = type === 'in' ? photoInput : photoOutInput;
+            const submitButton = type === 'in' ? submitBtn : submitBtnOut;
+            
+            // Ambil dimensi video
+            const width = videoElement.videoWidth;
+            const height = videoElement.videoHeight;
+            
+            // Set ukuran canvas
+            canvasElement.width = width;
+            canvasElement.height = height;
+            
+            // Gambar frame dari video ke canvas
+            const context = canvasElement.getContext('2d');
+            context.drawImage(videoElement, 0, 0, width, height);
+            
+            // Konversi canvas ke data URL dengan kualitas baik
+            const dataURL = canvasElement.toDataURL('image/jpeg', 0.8);
+            
+            // Tampilkan preview foto
+            photoPreview.src = dataURL;
+            photoPreview.classList.remove('d-none');
+            photoPreview.classList.add('animate__animated', 'animate__fadeIn');
+            photoControls.classList.remove('d-none');
+            
+            // Sembunyikan container kamera
+            cameraContainer.classList.add('d-none');
+            
+            // Hentikan stream kamera
+            if (type === 'in' && videoStreamIn) {
+                videoStreamIn.getTracks().forEach(track => track.stop());
+                videoStreamIn = null;
+            } else if (type === 'out' && videoStreamOut) {
+                videoStreamOut.getTracks().forEach(track => track.stop());
+                videoStreamOut = null;
+            }
+            
+            // Konversi data URL ke File object untuk upload
+            const byteString = atob(dataURL.split(',')[1]);
+            const mimeType = dataURL.split(',')[0].split(':')[1].split(';')[0];
+            
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            
+            const blob = new Blob([ab], { type: mimeType });
+            const fileName = `photo_${type}_${new Date().getTime()}.jpg`;
+            const photoFile = new File([blob], fileName, { type: mimeType });
+            
+            // Masukkan File ke input file untuk form submission
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(photoFile);
+            fileInput.files = dataTransfer.files;
+            
+            console.log(`Foto ${type} berhasil diambil dan disimpan ke input file`);
+            
+            // Aktifkan tombol submit jika lokasi sudah terdeteksi
+            const locationField = document.getElementById(type === 'in' ? 'location' : 'location_out');
+            if (locationField && locationField.value) {
+                console.log(`Lokasi sudah ada: ${locationField.value}, mengaktifkan tombol submit`);
+                submitButton.disabled = false;
+                submitButton.classList.add('btn-pulse');
+            } else {
+                console.log('Lokasi belum terdeteksi, tombol submit masih disabled');
+            }
+        }
+        
+        // Fungsi untuk mengaktifkan tombol submit
+        function checkFormCompletion(type) {
+            const photoField = type === 'in' ? photoInput : photoOutInput;
+            const locationField = document.getElementById(type === 'in' ? 'location' : 'location_out');
+            const submitButton = type === 'in' ? submitBtn : submitBtnOut;
+            
+            console.log(`Checking form completion for ${type}:`, {
+                photoAvailable: photoField && photoField.files.length > 0,
+                locationAvailable: locationField && locationField.value
+            });
+            
+            if (photoField && photoField.files.length > 0 && locationField && locationField.value) {
+                submitButton.disabled = false;
+                submitButton.classList.add('btn-pulse');
+                console.log(`Form ${type} lengkap, tombol submit diaktifkan`);
+            } else {
+                submitButton.disabled = true;
+                submitButton.classList.remove('btn-pulse');
+                console.log(`Form ${type} belum lengkap, tombol submit masih disabled`);
+            }
+        }
+        
+        // ===== FORM SUBMISSION =====
+        
+        // Handle form check-in submission
         const checkInForm = document.getElementById('absensiForm');
         if (checkInForm) {
             checkInForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
-                // Tambahkan waktu sebenarnya ke form
+                // Set waktu real saat ini
                 document.getElementById('real_time').value = new Date().toISOString();
                 
+                // Validasi form
+                if (!photoInput.files || photoInput.files.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Foto Belum Diambil',
+                        text: 'Silakan ambil foto absensi terlebih dahulu',
+                        confirmButtonColor: '#8b0000'
+                    });
+                    return;
+                }
+                
                 // Tampilkan loading pada tombol
-                const submitBtn = document.getElementById('submitBtn');
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Memproses...';
                 submitBtn.disabled = true;
                 submitBtn.classList.remove('btn-pulse');
                 
+                // Submit form dengan AJAX
                 const formData = new FormData(checkInForm);
                 
                 try {
-                    const response = await fetchWithCSRF('/attendance/check-in', {
+                    const response = await fetch('/attendance/check-in', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
                     });
                     
                     const data = await response.json();
-                    console.log('Response:', data);
                     
                     if (data.success) {
-                        // Tampilkan notifikasi sukses yang menarik
+                        // Tampilkan notifikasi sukses
                         Swal.fire({
                             icon: 'success',
                             title: 'Absensi Berhasil!',
@@ -641,74 +898,79 @@
                             location.reload();
                         });
                     } else {
-                        // Tampilkan notifikasi error yang menarik
+                        // Tampilkan notifikasi error
                         Swal.fire({
                             icon: 'error',
                             title: 'Absensi Gagal',
                             text: data.message,
-                            confirmButtonColor: '#8b0000',
-                            showClass: {
-                                popup: 'animate__animated animate__fadeInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__fadeOutUp'
-                            }
+                            confirmButtonColor: '#8b0000'
                         });
                         
+                        // Reset tombol submit
                         submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Absen Masuk';
                         submitBtn.disabled = false;
                         submitBtn.classList.add('btn-pulse');
                     }
                 } catch (error) {
                     console.error('Error:', error);
+                    
+                    // Tampilkan notifikasi error
                     Swal.fire({
                         icon: 'error',
                         title: 'Terjadi Kesalahan',
                         text: 'Terjadi kesalahan saat mengirim data absensi',
-                        confirmButtonColor: '#8b0000',
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutUp'
-                        }
+                        confirmButtonColor: '#8b0000'
                     });
                     
+                    // Reset tombol submit
                     submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Absen Masuk';
                     submitBtn.disabled = false;
                     submitBtn.classList.add('btn-pulse');
                 }
             });
         }
-
-        // Gunakan juga untuk form checkOut dengan animasi loading
+        
+        // Handle form check-out submission
         const checkOutForm = document.getElementById('checkoutForm');
         if (checkOutForm) {
             checkOutForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
-                // Tambahkan waktu sebenarnya ke form
+                // Set waktu real saat ini
                 document.getElementById('real_time_out').value = new Date().toISOString();
                 
-                // Tampilkan loading pada tombol
-                const submitBtn = document.getElementById('submitBtnOut');
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Memproses...';
-                submitBtn.disabled = true;
-                submitBtn.classList.remove('btn-pulse');
+                // Validasi form
+                if (!photoOutInput.files || photoOutInput.files.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Foto Belum Diambil',
+                        text: 'Silakan ambil foto absensi terlebih dahulu',
+                        confirmButtonColor: '#1a8754'
+                    });
+                    return;
+                }
                 
+                // Tampilkan loading pada tombol
+                submitBtnOut.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Memproses...';
+                submitBtnOut.disabled = true;
+                submitBtnOut.classList.remove('btn-pulse');
+                
+                // Submit form dengan AJAX
                 const formData = new FormData(checkOutForm);
                 
                 try {
-                    const response = await fetchWithCSRF('/attendance/check-out', {
+                    const response = await fetch('/attendance/check-out', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
                     });
                     
                     const data = await response.json();
-                    console.log('Response:', data);
                     
                     if (data.success) {
-                        // Tampilkan notifikasi sukses yang menarik
+                        // Tampilkan notifikasi sukses
                         Swal.fire({
                             icon: 'success',
                             title: 'Absensi Pulang Berhasil!',
@@ -724,76 +986,37 @@
                             location.reload();
                         });
                     } else {
-                        // Tampilkan notifikasi error yang menarik
+                        // Tampilkan notifikasi error
                         Swal.fire({
                             icon: 'error',
                             title: 'Absensi Gagal',
                             text: data.message,
-                            confirmButtonColor: '#1a8754',
-                            showClass: {
-                                popup: 'animate__animated animate__fadeInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__fadeOutUp'
-                            }
+                            confirmButtonColor: '#1a8754'
                         });
                         
-                        submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Absen Pulang';
-                        submitBtn.disabled = false;
-                        submitBtn.classList.add('btn-pulse');
+                        // Reset tombol submit
+                        submitBtnOut.innerHTML = '<i class="fas fa-check-circle me-2"></i> Absen Pulang';
+                        submitBtnOut.disabled = false;
+                        submitBtnOut.classList.add('btn-pulse');
                     }
                 } catch (error) {
                     console.error('Error:', error);
+                    
+                    // Tampilkan notifikasi error
                     Swal.fire({
                         icon: 'error',
                         title: 'Terjadi Kesalahan',
                         text: 'Terjadi kesalahan saat mengirim data absensi',
-                        confirmButtonColor: '#1a8754',
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutUp'
-                        }
+                        confirmButtonColor: '#1a8754'
                     });
                     
-                    submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Absen Pulang';
-                    submitBtn.disabled = false;
-                    submitBtn.classList.add('btn-pulse');
+                    // Reset tombol submit
+                    submitBtnOut.innerHTML = '<i class="fas fa-check-circle me-2"></i> Absen Pulang';
+                    submitBtnOut.disabled = false;
+                    submitBtnOut.classList.add('btn-pulse');
                 }
             });
         }
-        
-        // Efek hover pada baris tabel
-        const tableRows = document.querySelectorAll('tbody tr');
-        tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function() {
-                this.style.transition = 'all 0.3s ease';
-                this.style.backgroundColor = 'rgba(139, 0, 0, 0.03)';
-            });
-            
-            row.addEventListener('mouseleave', function() {
-                this.style.backgroundColor = '';
-            });
-        });
-        
-        // Animasi untuk elemen tabel saat scroll
-        const animateOnScroll = function() {
-            const rows = document.querySelectorAll('#attendanceHistory tr');
-            rows.forEach(row => {
-                const rowTop = row.getBoundingClientRect().top;
-                const rowBottom = row.getBoundingClientRect().bottom;
-                const isVisible = (rowTop >= 0) && (rowBottom <= window.innerHeight);
-                
-                if (isVisible) {
-                    row.classList.add('animate__animated', 'animate__fadeIn');
-                }
-            });
-        };
-        
-        // Jalankan animasi saat scroll
-        window.addEventListener('scroll', animateOnScroll);
-        animateOnScroll(); // Jalankan sekali saat halaman dimuat
     });
 
     // Fungsi untuk mendapatkan lokasi dan menampilkannya di iframe Google Maps
@@ -914,11 +1137,14 @@
                     </div>
                 `;
                 
-                // Aktifkan tombol submit dengan animasi
-                const submitBtn = document.getElementById('submitBtn');
-                submitBtn.disabled = false;
-                submitBtn.classList.add('animate__animated', 'animate__pulse');
-                
+                // Cek apakah foto sudah diambil dan aktifkan tombol submit jika sudah
+                const photoInput = document.getElementById('photo');
+                if (photoInput && photoInput.files.length > 0) {
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.add('btn-pulse');
+                    console.log("Foto check-in dan lokasi sudah ada, tombol submit diaktifkan");
+                }
             } else {
                 document.getElementById('latitude_out').value = lat;
                 document.getElementById('longitude_out').value = lng;
@@ -940,10 +1166,14 @@
                     </div>
                 `;
                 
-                // Aktifkan tombol submit dengan animasi
-                const submitBtn = document.getElementById('submitBtnOut');
-                submitBtn.disabled = false;
-                submitBtn.classList.add('animate__animated', 'animate__pulse');
+                // Cek apakah foto sudah diambil dan aktifkan tombol submit jika sudah
+                const photoOutInput = document.getElementById('photo_out');
+                if (photoOutInput && photoOutInput.files.length > 0) {
+                    const submitBtnOut = document.getElementById('submitBtnOut');
+                    submitBtnOut.disabled = false;
+                    submitBtnOut.classList.add('btn-pulse');
+                    console.log("Foto check-out dan lokasi sudah ada, tombol submit diaktifkan");
+                }
             }
         }
         

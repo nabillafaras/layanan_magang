@@ -20,14 +20,14 @@ class AttendanceController extends Controller
         ],
         [
             'name' => 'Kantor Cabang 1',
-            'latitude' => 0.488243,
-            'longitude' => 101.423514, 
+            'latitude' =>  -6.383374,
+            'longitude' =>  106.820110, 
             'max_distance' => 0.1 // 100 meter (0.1 km)
         ],
         [
             'name' => 'Kantor Cabang 2',
-            'latitude' => -0.930000, 
-            'longitude' => 100.385000, 
+            'latitude' =>  -6.363546, 
+            'longitude' => 106.876109, 
             'max_distance' => 0.1 // 100 meter (0.1 km)
         ]
     ];

@@ -1,10 +1,41 @@
 <?php
 
 use App\Http\Controllers\Admin1\Admin1Controller;
+use App\Http\Controllers\Admin1\Direktorat1Controller;
+use App\Http\Controllers\Admin1\Peserta1Controller;
+use App\Http\Controllers\Admin1\RekapAbsensi1Controller;
+use App\Http\Controllers\Admin1\RekapLaporan1Controller;
+use App\Http\Controllers\Admin1\Pengumuman1Controller;
+
 use App\Http\Controllers\Admin2\Admin2Controller;
+use App\Http\Controllers\Admin2\Direktorat2Controller;
+use App\Http\Controllers\Admin2\Peserta2Controller;
+use App\Http\Controllers\Admin2\RekapAbsensi2Controller;
+use App\Http\Controllers\Admin2\RekapLaporan2Controller;
+use App\Http\Controllers\Admin2\Pengumuman2Controller;
+
 use App\Http\Controllers\Admin3\Admin3Controller;
+use App\Http\Controllers\Admin3\Direktorat3Controller;
+use App\Http\Controllers\Admin3\Peserta3Controller;
+use App\Http\Controllers\Admin3\RekapAbsensi3Controller;
+use App\Http\Controllers\Admin3\RekapLaporan3Controller;
+use App\Http\Controllers\Admin3\Pengumuman3Controller;
+
 use App\Http\Controllers\Admin4\Admin4Controller;
+use App\Http\Controllers\Admin4\Direktorat4Controller;
+use App\Http\Controllers\Admin4\Peserta4Controller;
+use App\Http\Controllers\Admin4\RekapAbsensi4Controller;
+use App\Http\Controllers\Admin4\RekapLaporan4Controller;
+use App\Http\Controllers\Admin4\Pengumuman4Controller;
+
 use App\Http\Controllers\Admin5\Admin5Controller;
+use App\Http\Controllers\Admin5\Direktorat5Controller;
+use App\Http\Controllers\Admin5\Peserta5Controller;
+use App\Http\Controllers\Admin5\RekapAbsensi5Controller;
+use App\Http\Controllers\Admin5\RekapLaporan5Controller;
+use App\Http\Controllers\Admin5\Pengumuman5Controller;
+
+
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttendanceController;
@@ -138,7 +169,8 @@ Route::prefix('admin')->group(function () {
         // Peserta routes
         Route::get('/peserta', [PesertaController::class, 'index'])->name('admin.peserta');
         Route::put('/peserta/{id}', [PesertaController::class, 'update'])->name('admin.peserta.update');
-        
+        Route::get('/export-datapeserta', [PesertaController::class, 'exportExcel'])->name('admin.export-datapeserta');
+
         // route untuk rekap absensi
         Route::get('/rekap-absensi', [RekapAbsensiController::class, 'index'])->name('admin.rekapitulasi-absensi');
         Route::get('/export-absensi', [RekapAbsensiController::class, 'exportExcel'])->name('admin.export-absensi');
@@ -203,6 +235,42 @@ Route::prefix('admin1')->group(function () {
     Route::middleware(['auth:admin', 'checkRole:admin1'])->group(function () {
         Route::get('/', [Admin1Controller::class, 'index'])->name('admin1.dashboard');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin1.logout');
+
+        //pengelolaan per direktorat
+        Route::get('/admin1/direktorat1', [Direktorat1Controller::class, 'direktorat1'])->name('admin1.direktorat1');
+    
+        // Perbaikan pada route detail laporan
+        Route::get('/admin1/detail/laporan/{id}', [Direktorat1Controller::class, 'detailLaporan'])->name('admin1.detail-laporan1');
+                
+        // Perbaikan route untuk submit feedback
+        Route::post('/admin1/submit-feedback/{id}', [Direktorat1Controller::class, 'submitFeedback'])->name('admin1.submit-feedback');
+        Route::post('/admin1/laporan/{id}/update-status', [Direktorat1Controller::class, 'updateStatus'])->name('admin1.update-status');
+        Route::get('/admin1/direktorat1/{id}', [Direktorat1Controller::class, 'showDirektorat'])->name('admin1.direktorat');
+        Route::get('/admin1/direktora1/{direktorat}/map', [Direktorat1Controller::class, 'mapDirektorat'])->name('admin1.direktorat.map');
+    
+        // Peserta routes
+        Route::get('/peserta', [Peserta1Controller::class, 'index'])->name('admin1.peserta1');
+        Route::put('/peserta/{id}', [Peserta1Controller::class, 'update'])->name('admin1.peserta1.update');
+        Route::get('/export-datapeserta', [Peserta1Controller::class, 'exportExcel'])->name('admin1.export-datapeserta1');
+
+
+        // route untuk rekap absensi
+        Route::get('/rekap-absensi', [RekapAbsensi1Controller::class, 'index'])->name('admin1.rekapitulasi-absensi1');
+        Route::get('/export-absensi', [RekapAbsensi1Controller::class, 'exportExcel'])->name('admin1.export-absensi1');
+    
+        // Rute untuk rekapitulasi laporan
+        Route::get('/rekapitulasi-laporan', [RekapLaporan1Controller::class, 'index'])->name('admin1.rekapitulasi-laporan1');
+        Route::get('/export-laporan', [RekapLaporan1Controller::class, 'exportExcel'])->name('admin1.export-laporan1');
+
+            // Pengumuman routes
+    Route::prefix('admin/pengumuman')->name('admin1.pengumuman1.')->group(function () {
+        Route::get('/', [Pengumuman1Controller::class, 'index'])->name('index');
+        Route::post('/', [Pengumuman1Controller::class, 'store'])->name('store');
+        Route::put('/{pengumuman}', [Pengumuman1Controller::class, 'update'])->name('update');
+        Route::delete('/{pengumuman}', [Pengumuman1Controller::class, 'destroy'])->name('destroy');
+        Route::patch('/{pengumuman}/status', [Pengumuman1Controller::class, 'updateStatus'])->name('update.status');
+
+    });
     });
 });
 
@@ -214,6 +282,42 @@ Route::prefix('admin2')->group(function () {
     Route::middleware(['auth:admin', 'checkRole:admin2'])->group(function () {
         Route::get('/', [Admin2Controller::class, 'index'])->name('admin2.dashboard');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin2.logout');
+
+        //pengelolaan per direktorat
+        Route::get('/admin2/direktorat2', [Direktorat2Controller::class, 'direktorat2'])->name('admin2.direktorat2');
+    
+        // Perbaikan pada route detail laporan
+        Route::get('/admin2/detail/laporan/{id}', [Direktorat2Controller::class, 'detailLaporan'])->name('admin2.detail-laporan2');
+                
+        // Perbaikan route untuk submit feedback
+        Route::post('/admin2/submit-feedback/{id}', [Direktorat2Controller::class, 'submitFeedback'])->name('admin2.submit-feedback');
+        Route::post('/admin2/laporan/{id}/update-status', [Direktorat2Controller::class, 'updateStatus'])->name('admin2.update-status');
+        Route::get('/admin2direktorat2/{id}', [Direktorat2Controller::class, 'showDirektorat'])->name('admin2.direktorat');
+        Route::get('/admin2/direktora2/{direktorat}/map', [Direktorat2Controller::class, 'mapDirektorat'])->name('admin2.direktorat.map');
+
+        // Peserta routes
+        Route::get('/peserta', [Peserta2Controller::class, 'index'])->name('admin2.peserta2');
+        Route::put('/peserta/{id}', [Peserta2Controller::class, 'update'])->name('admin2.peserta2.update');
+        Route::get('/export-datapeserta', [Peserta2Controller::class, 'exportExcel'])->name('admin2.export-datapeserta2');
+
+         // route untuk rekap absensi
+         Route::get('/rekap-absensi', [RekapAbsensi2Controller::class, 'index'])->name('admin2.rekapitulasi-absensi2');
+         Route::get('/export-absensi', [RekapAbsensi2Controller::class, 'exportExcel'])->name('admin2.export-absensi2');
+     
+         // Rute untuk rekapitulasi laporan
+         Route::get('/rekapitulasi-laporan', [RekapLaporan2Controller::class, 'index'])->name('admin2.rekapitulasi-laporan2');
+         Route::get('/export-laporan', [RekapLaporan2Controller::class, 'exportExcel'])->name('admin2.export-laporan2');
+ 
+        // Pengumuman routes
+    Route::prefix('admin/pengumuman')->name('admin2.pengumuman2.')->group(function () {
+        Route::get('/', [Pengumuman2Controller::class, 'index'])->name('index');
+        Route::post('/', [Pengumuman2Controller::class, 'store'])->name('store');
+        Route::put('/{pengumuman}', [Pengumuman2Controller::class, 'update'])->name('update');
+        Route::delete('/{pengumuman}', [Pengumuman2Controller::class, 'destroy'])->name('destroy');
+        Route::patch('/{pengumuman}/status', [Pengumuman2Controller::class, 'updateStatus'])->name('update.status');
+
+    });
+
     });
 });
 
@@ -225,6 +329,42 @@ Route::prefix('admin3')->group(function () {
     Route::middleware(['auth:admin', 'checkRole:admin3'])->group(function () {
         Route::get('/', [Admin3Controller::class, 'index'])->name('admin3.dashboard');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin3.logout');
+
+        //pengelolaan per direktorat
+        Route::get('/admin3/direktorat3', [Direktorat3Controller::class, 'direktorat3'])->name('admin3.direktorat3');
+    
+        // Perbaikan pada route detail laporan
+        Route::get('/admin3/detail/laporan/{id}', [Direktorat3Controller::class, 'detailLaporan'])->name('admin3.detail-laporan3');
+                
+        // Perbaikan route untuk submit feedback
+        Route::post('/admin3/submit-feedback/{id}', [Direktorat3Controller::class, 'submitFeedback'])->name('admin3.submit-feedback');
+        Route::post('/admin3/laporan/{id}/update-status', [Direktorat3Controller::class, 'updateStatus'])->name('admin3.update-status');
+        Route::get('/admin3direktorat3/{id}', [Direktorat3Controller::class, 'showDirektorat'])->name('admin3.direktorat');
+        Route::get('/admin3/direktora3/{direktorat}/map', [Direktorat3Controller::class, 'mapDirektorat'])->name('admin3.direktorat.map');
+
+        // Peserta routes
+        Route::get('/peserta', [Peserta3Controller::class, 'index'])->name('admin3.peserta3');
+        Route::put('/peserta/{id}', [Peserta3Controller::class, 'update'])->name('admin3.peserta3.update');
+        Route::get('/export-datapeserta', [Peserta3Controller::class, 'exportExcel'])->name('admin3.export-datapeserta3');
+
+         // route untuk rekap absensi
+         Route::get('/rekap-absensi', [RekapAbsensi3Controller::class, 'index'])->name('admin3.rekapitulasi-absensi3');
+         Route::get('/export-absensi', [RekapAbsensi3Controller::class, 'exportExcel'])->name('admin3.export-absensi3');
+     
+         // Rute untuk rekapitulasi laporan
+         Route::get('/rekapitulasi-laporan', [RekapLaporan3Controller::class, 'index'])->name('admin3.rekapitulasi-laporan3');
+         Route::get('/export-laporan', [RekapLaporan3Controller::class, 'exportExcel'])->name('admin3.export-laporan3');
+ 
+        // Pengumuman routes
+    Route::prefix('admin/pengumuman')->name('admin3.pengumuman3.')->group(function () {
+        Route::get('/', [Pengumuman3Controller::class, 'index'])->name('index');
+        Route::post('/', [Pengumuman3Controller::class, 'store'])->name('store');
+        Route::put('/{pengumuman}', [Pengumuman3Controller::class, 'update'])->name('update');
+        Route::delete('/{pengumuman}', [Pengumuman3Controller::class, 'destroy'])->name('destroy');
+        Route::patch('/{pengumuman}/status', [Pengumuman3Controller::class, 'updateStatus'])->name('update.status');
+
+    });
+
     });
 });
 
@@ -236,6 +376,41 @@ Route::prefix('admin4')->group(function () {
     Route::middleware(['auth:admin', 'checkRole:admin4'])->group(function () {
         Route::get('/', [Admin4Controller::class, 'index'])->name('admin4.dashboard');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin4.logout');
+
+        //pengelolaan per direktorat
+        Route::get('/admin4/direktorat4', [Direktorat4Controller::class, 'direktorat4'])->name('admin4.direktorat4');
+    
+        // Perbaikan pada route detail laporan
+        Route::get('/admin4/detail/laporan/{id}', [Direktorat4Controller::class, 'detailLaporan'])->name('admin4.detail-laporan4');
+                
+        // Perbaikan route untuk submit feedback
+        Route::post('/admin4/submit-feedback/{id}', [Direktorat4Controller::class, 'submitFeedback'])->name('admin4.submit-feedback');
+        Route::post('/admin4/laporan/{id}/update-status', [Direktorat4Controller::class, 'updateStatus'])->name('admin4.update-status');
+        Route::get('/admin4direktorat4/{id}', [Direktorat4Controller::class, 'showDirektorat'])->name('admin4.direktorat');
+        Route::get('/admin4/direktora4/{direktorat}/map', [Direktorat4Controller::class, 'mapDirektorat'])->name('admin4.direktorat.map');
+
+        // Peserta routes
+        Route::get('/peserta', [Peserta4Controller::class, 'index'])->name('admin4.peserta4');
+        Route::put('/peserta/{id}', [Peserta4Controller::class, 'update'])->name('admin4.peserta4.update');
+        Route::get('/export-datapeserta', [Peserta4Controller::class, 'exportExcel'])->name('admin4.export-datapeserta4');
+
+         // route untuk rekap absensi
+         Route::get('/rekap-absensi', [RekapAbsensi4Controller::class, 'index'])->name('admin4.rekapitulasi-absensi4');
+         Route::get('/export-absensi', [RekapAbsensi4Controller::class, 'exportExcel'])->name('admin4.export-absensi4');
+     
+         // Rute untuk rekapitulasi laporan
+         Route::get('/rekapitulasi-laporan', [RekapLaporan4Controller::class, 'index'])->name('admin4.rekapitulasi-laporan4');
+         Route::get('/export-laporan', [RekapLaporan4Controller::class, 'exportExcel'])->name('admin4.export-laporan4');
+ 
+        // Pengumuman routes
+    Route::prefix('admin/pengumuman')->name('admin4.pengumuman4.')->group(function () {
+        Route::get('/', [Pengumuman4Controller::class, 'index'])->name('index');
+        Route::post('/', [Pengumuman4Controller::class, 'store'])->name('store');
+        Route::put('/{pengumuman}', [Pengumuman4Controller::class, 'update'])->name('update');
+        Route::delete('/{pengumuman}', [Pengumuman4Controller::class, 'destroy'])->name('destroy');
+        Route::patch('/{pengumuman}/status', [Pengumuman4Controller::class, 'updateStatus'])->name('update.status');
+
+    });
     });
 });
 
@@ -246,5 +421,40 @@ Route::prefix('admin5')->group(function () {
     Route::middleware(['auth:admin', 'checkRole:admin5'])->group(function () {
         Route::get('/', [Admin5Controller::class, 'index'])->name('admin5.dashboard');
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin5.logout');
+
+        //pengelolaan per direktorat
+        Route::get('/admin5/direktorat5', [Direktorat5Controller::class, 'direktorat5'])->name('admin5.direktorat5');
+    
+        // Perbaikan pada route detail laporan
+        Route::get('/admin5/detail/laporan/{id}', [Direktorat5Controller::class, 'detailLaporan'])->name('admin5.detail-laporan5');
+                
+        // Perbaikan route untuk submit feedback
+        Route::post('/admin5/submit-feedback/{id}', [Direktorat5Controller::class, 'submitFeedback'])->name('admin5.submit-feedback');
+        Route::post('/admin5/laporan/{id}/update-status', [Direktorat5Controller::class, 'updateStatus'])->name('admin5.update-status');
+        Route::get('/admin5direktorat5/{id}', [Direktorat5Controller::class, 'showDirektorat'])->name('admin5.direktorat');
+        Route::get('/admin5/direktora5/{direktorat}/map', [Direktorat5Controller::class, 'mapDirektorat'])->name('admin5.direktorat.map');
+
+        // Peserta routes
+        Route::get('/peserta', [Peserta5Controller::class, 'index'])->name('admin5.peserta5');
+        Route::put('/peserta/{id}', [Peserta5Controller::class, 'update'])->name('admin5.peserta5.update');
+        Route::get('/export-datapeserta', [Peserta5Controller::class, 'exportExcel'])->name('admin5.export-datapeserta5');
+
+         // route untuk rekap absensi
+         Route::get('/rekap-absensi', [RekapAbsensi5Controller::class, 'index'])->name('admin5.rekapitulasi-absensi5');
+         Route::get('/export-absensi', [RekapAbsensi5Controller::class, 'exportExcel'])->name('admin5.export-absensi5');
+     
+         // Rute untuk rekapitulasi laporan
+         Route::get('/rekapitulasi-laporan', [RekapLaporan5Controller::class, 'index'])->name('admin5.rekapitulasi-laporan5');
+         Route::get('/export-laporan', [RekapLaporan5Controller::class, 'exportExcel'])->name('admin5.export-laporan5');
+ 
+        // Pengumuman routes
+    Route::prefix('admin/pengumuman')->name('admin5.pengumuman5.')->group(function () {
+        Route::get('/', [Pengumuman5Controller::class, 'index'])->name('index');
+        Route::post('/', [Pengumuman5Controller::class, 'store'])->name('store');
+        Route::put('/{pengumuman}', [Pengumuman5Controller::class, 'update'])->name('update');
+        Route::delete('/{pengumuman}', [Pengumuman5Controller::class, 'destroy'])->name('destroy');
+        Route::patch('/{pengumuman}/status', [Pengumuman5Controller::class, 'updateStatus'])->name('update.status');
+
+    });
     });
 });

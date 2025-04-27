@@ -443,27 +443,27 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <a href="{{ route('admin2.peserta2') }}" class="nav-link {{ request()->routeIs('admin2.peserta2') ? 'active' : '' }}">
                         <i class="fas fa-user"></i> Data Peserta
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <a href="{{ route('admin2.rekapitulasi-absensi2') }}" class="nav-link {{ request()->routeIs('admin2.rekapitulasi-absensi2') ? 'active' : '' }}">
                         <i class="fas fa-clipboard-list"></i> Rekapitulasi Absensi
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <a href="{{ route('admin2.rekapitulasi-laporan2') }}" class="nav-link {{ request()->routeIs('admin2.rekapitulasi-laporan2') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i> Rekapitulasi Laporan
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <a class="nav-link {{ request()->routeIs('admin2.direktorat2') ? 'active' : '' }}" href="{{ route('admin2.direktorat2')}}">
                         <i class="fas fa-building"></i> Direktorat Jenderal Perlindungan dan Jaminan Sosial
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <a href="{{ route('admin2.pengumuman2.index') }}" class="nav-link {{ request()->routeIs('admin2.pengumuman2.index') ? 'active' : '' }}">
                         <i class="fas fa-cloud-upload-alt"></i> Informasi
                     </a>
                 </li>
@@ -498,11 +498,7 @@
                                     <i class="fas fa-user me-2"></i>{{ Auth::guard('admin')->user()->nama_lengkap }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="userDropdown">
-                                    <li>
-                                        <a href="#" class="dropdown-item">
-                                            <i class="fas fa-id-card me-2"></i>Profile
-                                        </a>
-                                    </li>
+                                    
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('admin2.logout') }}" method="POST">

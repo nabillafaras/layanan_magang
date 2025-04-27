@@ -416,14 +416,15 @@
 
 <!-- Absensi Data -->
 <div class="card bounce-in" style="animation-delay: 0.2s">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5><i class="fas fa-calendar-check"></i> Data Absensi Peserta Magang</h5>
-            <div class="col-md-2 mb-2 d-flex align-items-end">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-users"></i> Data Absensi</h5>
+                <div class="col-md-2 mb-2 d-flex align-items-end">
                     <a href="{{ route('admin.export-absensi') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
                         <i class="fas fa-file-excel me-1"></i> Export Excel
                     </a>
                 </div>
+            </div>
         </div>
     </div>
     <div class="card-body">

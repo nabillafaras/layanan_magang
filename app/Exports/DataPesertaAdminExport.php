@@ -9,10 +9,15 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use Carbon\Carbon;
 
-class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithTitle, ShouldAutoSize
+class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithTitle, ShouldAutoSize, WithEvents
 {
     protected $status;
     protected $direktorat;
@@ -120,9 +125,25 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
      */
     public function styles(Worksheet $sheet)
     {
+        $sheet->getStyle('A1:' . $this->getLastColumn() . '1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '8B0000'],
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+        ]);
+
         return [
-            // Style the first row as bold text
-            1 => ['font' => ['bold' => true]],
+            1 => [
+                'font' => ['bold' => true],
+            ],
         ];
     }
 
@@ -134,5 +155,75 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
     {
         static $rowNumber = 0;
         return ++$rowNumber;
+    }
+
+    /**
+     * Register events for after sheet creation
+     * @return array
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                $lastColumn = $this->getLastColumn();
+                $lastRow = $event->sheet->getHighestRow();
+
+                // Tambahkan status highlight jika diperlukan
+                // Contoh: Highlight status 'diterima' dengan warna hijau
+                for ($row = 2; $row <= $lastRow; $row++) {
+                    $cellValue = $event->sheet->getCellByColumnAndRow(13, $row)->getValue(); // Status column
+                    $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(13);
+                    
+                    if ($cellValue == 'diterima') {
+                        $event->sheet->getStyle($columnLetter . $row)->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('28A745');
+                    } elseif ($cellValue == 'ditolak') {
+                        $event->sheet->getStyle($columnLetter . $row)->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('DC3545');
+                    } elseif ($cellValue == 'menunggu') {
+                        $event->sheet->getStyle($columnLetter . $row)->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()->setRGB('FFC107');
+                    }
+                }
+
+                // Tambahkan border untuk seluruh tabel
+                $event->sheet->getStyle('A1:' . $lastColumn . $lastRow)->applyFromArray([
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => Border::BORDER_THIN,
+                        ],
+                    ],
+                ]);
+
+                // Align center untuk kolom nomor dan status
+                $event->sheet->getStyle('A1:A' . $lastRow)->applyFromArray([
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+
+                $event->sheet->getStyle('L1:N' . $lastRow)->applyFromArray([
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+
+                // Tambahkan judul laporan
+                $event->sheet->mergeCells('A1:B1');
+                $event->sheet->setCellValue('A1', 'Data Peserta Magang');
+            },
+        ];
+    }
+
+    /**
+     * Get last column letter
+     * @return string
+     */
+    private function getLastColumn()
+    {
+        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(14); // Total kolom adalah 14
     }
 }

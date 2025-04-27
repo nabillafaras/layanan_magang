@@ -500,19 +500,33 @@
                                         <span class="text-muted">Tidak ada foto</span>
                                     @endif
                                 </td>
-                                <!-- Bukti Sakit/Izin (Kolom Baru) -->
+                               <!-- Kolom Bukti Sakit/Izin yang diperbarui -->
                                 <td>
-                                    @if($a->bukti_izin)
-                                        <button type="button" class="btn btn-sm btn-warning lihat-foto" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#photoModal" 
-                                                data-foto="{{ asset('storage/' . $a->bukti_izin) }}"
-                                                data-title="Bukti Sakit/Izin - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
-                                            <i class="fas fa-file-medical me-1"></i> Lihat Bukti
-                                        </button>
-                                    @else
-                                        <span class="text-muted">Tidak ada bukti</span>
-                                    @endif
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        @if($a->bukti_izin)
+                                            <button type="button" class="btn btn-sm btn-warning lihat-bukti" 
+                                                    data-file="{{ asset('storage/' . $a->bukti_izin) }}"
+                                                    data-jenis="izin"
+                                                    data-keterangan="{{ $a->ket_izin ?? 'Tidak ada keterangan' }}"
+                                                    data-title="Bukti Izin - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
+                                                <i class="fas fa-file-alt me-1"></i> Bukti Izin
+                                            </button>
+                                        @endif
+                                        
+                                        @if($a->bukti_sakit)
+                                            <button type="button" class="btn btn-sm btn-danger lihat-bukti" 
+                                                    data-file="{{ asset('storage/' . $a->bukti_sakit) }}"
+                                                    data-jenis="sakit"
+                                                    data-keterangan="{{ $a->ket_sakit ?? 'Tidak ada keterangan' }}"
+                                                    data-title="Bukti Sakit - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
+                                                <i class="fas fa-file-medical me-1"></i> Bukti Sakit
+                                            </button>
+                                        @endif
+                                        
+                                        @if(!$a->bukti_izin && !$a->bukti_sakit)
+                                            <span class="text-muted">Tidak ada bukti</span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <!-- Status -->
                                 <td>
@@ -545,7 +559,45 @@
         </div>
     </div>
 </div>
-
+<!-- Modal untuk menampilkan bukti izin/sakit -->
+<div class="modal fade" id="buktiModal" tabindex="-1" aria-labelledby="buktiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="buktiModalLabel">Bukti Sakit/Izin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Keterangan Izin/Sakit -->
+                <div class="alert alert-info mb-3" id="keteranganText">
+                    <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Keterangan:</h6>
+                    <p id="keterangan" class="mb-0"></p>
+                </div>
+                
+                <!-- Container untuk preview file -->
+                <div id="filePreviewContainer" class="mb-3 text-center">
+                    <h6 class="text-muted mb-3" id="fileTypeLabel">Bukti Dokumen</h6>
+                    <!-- Preview gambar -->
+                    <img id="imgPreview" src="" alt="Bukti Dokumen" class="img-fluid d-none">
+                    <!-- Preview PDF -->
+                    <iframe id="pdfPreview" src="" frameborder="0" width="100%" height="500px" class="d-none"></iframe>
+                    <!-- Pesan jika format tidak didukung -->
+                    <div id="unsupportedFormat" class="alert alert-warning d-none">
+                        Format file tidak dapat ditampilkan secara langsung. Silakan unduh file untuk melihatnya.
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a id="downloadBukti" href="" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-download me-1"></i> Unduh File
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Rekapitulasi Laporan Bulanan -->
     <div class="row">
         <div class="col-12">
@@ -636,7 +688,48 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
 
 <script>
-
+$(document).ready(function() {
+    // Event untuk tombol lihat bukti (izin atau sakit)
+    $(document).on('click', '.lihat-bukti', function() {
+        var fileUrl = $(this).data('file');
+        var title = $(this).data('title');
+        var jenis = $(this).data('jenis');
+        var keterangan = $(this).data('keterangan');
+        var fileExt = fileUrl.split('.').pop().toLowerCase();
+        
+        // Set judul modal
+        $('#buktiModalLabel').text(title);
+        
+        // Set keterangan
+        $('#keterangan').text(keterangan);
+        
+        // Set jenis bukti pada label
+        $('#fileTypeLabel').text('Bukti ' + (jenis === 'izin' ? 'Izin' : 'Sakit'));
+        
+        // Set link download
+        $('#downloadBukti').attr('href', fileUrl);
+        
+        // Reset tampilan
+        $('#imgPreview').addClass('d-none');
+        $('#pdfPreview').addClass('d-none');
+        $('#unsupportedFormat').addClass('d-none');
+        
+        // Cek ekstensi file
+        if (fileExt === 'jpg' || fileExt === 'jpeg' || fileExt === 'png' || fileExt === 'gif') {
+            // Jika file adalah gambar
+            $('#imgPreview').attr('src', fileUrl).removeClass('d-none');
+        } else if (fileExt === 'pdf') {
+            // Jika file adalah PDF
+            $('#pdfPreview').attr('src', fileUrl).removeClass('d-none');
+        } else {
+            // Jika format file tidak didukung untuk preview
+            $('#unsupportedFormat').removeClass('d-none');
+        }
+        
+        // Tampilkan modal
+        $('#buktiModal').modal('show');
+    });
+});
     document.addEventListener('DOMContentLoaded', function() {
         // Event untuk tombol lihat foto
         $(document).on('click', '.lihat-foto', function() {
