@@ -698,85 +698,82 @@
                                 <h3>Direktorat Jenderal Perlindungan dan Jaminan Sosial</h3>
                             </div>
                             <div class="direktorat-body">
-                                <p><strong>Tugas dan Tanggung Jawab:</strong> Merumuskan serta melaksanakan kebijakan dan standardisasi teknis di bidang perlindungan dan jaminan sosial. Berfokus pada kegiatan penanganan bencana, perlindungan sosial korban bencana, serta penyelenggaraan jaminan sosial keluarga.</p>
+                                <p><strong>Tugas dan Tanggung Jawab:</strong> Menyelenggarakan perumusan dan pelaksanaan kebijakan di bidang perlindungan dan jaminan sosial sesuai dengan ketentuan peraturan perundang-undangan.</p>
                                 
                                 <div class="unit-accordion">
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Perlindungan Sosial Korban Bencana Alam
+                                            Direktorat Jaminan Sosial
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan perlindungan sosial dan koordinasi penanganan korban bencana alam</li>
-                                                <li>Memberikan bantuan sosial dan perlindungan bagi masyarakat terdampak bencana alam</li>
-                                                <li>Menyusun norma, standar, prosedur, dan kriteria di bidang perlindungan sosial korban bencana alam</li>
-                                                <li>Melaksanakan bimbingan teknis di bidang perlindungan sosial korban bencana alam</li>
-                                                <li>Mengevaluasi dan melaporkan pelaksanaan kebijakan perlindungan sosial korban bencana alam</li>
-                                            </ul>
-                                            <div class="contact-info">
-                                                <p><strong>Alamat:</strong> Gedung A Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 231</p>
-                                                <p><strong>Email:</strong> perlindungan.alam@kemsos.go.id</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="unit-card">
-                                        <div class="unit-header">
-                                            Direktorat Perlindungan Sosial Korban Bencana Sosial
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="unit-body">
-                                            <h5>Tugas Pokok dan Fungsi:</h5>
-                                            <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan perlindungan sosial bagi korban bencana sosial</li>
-                                                <li>Memberikan perlindungan dan bantuan sosial bagi korban konflik sosial, pengungsi, dan kelompok rentan lainnya</li>
-                                                <li>Melaksanakan mitigasi dan pencegahan bencana sosial</li>
-                                                <li>Mengoordinasikan upaya rehabilitasi sosial korban bencana sosial</li>
-                                                <li>Melakukan pemantauan, evaluasi, dan pelaporan di bidang perlindungan sosial korban bencana sosial</li>
-                                            </ul>
-                                            <div class="contact-info">
-                                                <p><strong>Alamat:</strong> Gedung A Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 237</p>
-                                                <p><strong>Email:</strong> perlindungan.sosial@kemsos.go.id</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="unit-card">
-                                        <div class="unit-header">
-                                            Direktorat Jaminan Sosial Keluarga
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="unit-body">
-                                            <h5>Tugas Pokok dan Fungsi:</h5>
-                                            <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan di bidang jaminan sosial keluarga</li>
-                                                <li>Mengelola Program Keluarga Harapan (PKH) dan bantuan sosial non-tunai</li>
-                                                <li>Mengembangkan sistem penyaluran bantuan sosial yang terintegrasi</li>
-                                                <li>Melakukan verifikasi dan validasi data penerima bantuan sosial keluarga</li>
-                                                <li>Melaksanakan monitoring dan evaluasi program jaminan sosial keluarga</li>
+                                                <li>Melaksanakan perumusan dan pelaksanaan kebijakan, penyusunan norma, standar, prosedur, dan kriteria di bidang jaminan sosial</li>
+                                                <li>Mengelola program jaminan sosial yang terintegrasi</li>
+                                                <li>Memberikan bimbingan teknis dan supervisi di bidang jaminan sosial</li>
+                                                <li>Melakukan pemantauan, analisis, evaluasi dan pelaporan di bidang jaminan sosial</li>
                                             </ul>
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung B Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 248</p>
-                                                <p><strong>Email:</strong>Email:</strong> jaminan.keluarga@kemsos.go.id</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591</p>
+                                                <p><strong>Email:</strong> jaminan.sosial@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Direktorat Perlindungan Sosial Non Kebencanaan
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Merumuskan dan melaksanakan kebijakan perlindungan sosial nonkebencanaan</li>
+                                                <li>Menyusun norma, standar, prosedur, dan kriteria di bidang perlindungan sosial nonkebencanaan</li>
+                                                <li>Memberikan bimbingan teknis dan supervisi di bidang perlindungan sosial nonkebencanaan</li>
+                                                <li>Melaksanakan pemantauan, analisis, evaluasi, dan pelaporan di bidang perlindungan sosial nonkebencanaan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung A Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591</p>
+                                                <p><strong>Email:</strong> perlindungan.nonbencana@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Direktorat Perlindungan Sosial Korban Bencana
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Merumuskan dan melaksanakan kebijakan di bidang perlindungan sosial korban bencana</li>
+                                                <li>Menyusun norma, standar, prosedur, dan kriteria di bidang perlindungan sosial korban bencana</li>
+                                                <li>Memberikan bimbingan teknis dan supervisi di bidang perlindungan sosial korban bencana</li>
+                                                <li>Melaksanakan pemantauan, analisis, evaluasi dan pelaporan di bidang perlindungan sosial korban bencana</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung A Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591</p>
+                                                <p><strong>Email:</strong> perlindungan.bencana@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Direktorat Jenderal Rehabilitasi Sosial -->
                         <div class="direktorat-box" data-aos="fade-up" data-aos-delay="200">
                             <div class="direktorat-header">
                                 <h3>Direktorat Jenderal Rehabilitasi Sosial</h3>
                             </div>
                             <div class="direktorat-body">
-                                <p><strong>Tugas dan Tanggung Jawab:</strong> Merumuskan dan melaksanakan kebijakan di bidang rehabilitasi sosial sesuai dengan ketentuan perundang-undangan. Bertanggung jawab pada upaya pemulihan dan pengembangan kemampuan bagi individu yang mengalami disfungsi sosial agar dapat melaksanakan fungsi sosialnya secara wajar.</p>
+                                <p><strong>Tugas dan Tanggung Jawab:</strong> Menyelenggarakan perumusan dan pelaksanaan kebijakan di bidang rehabilitasi sosial sesuai dengan ketentuan peraturan perundang-undangan. Bertanggung jawab pada upaya pemulihan dan pengembangan kemampuan bagi individu yang mengalami disfungsi sosial agar dapat melaksanakan fungsi sosialnya secara wajar.</p>
                                 
                                 <div class="unit-accordion">
                                     <div class="unit-card">
@@ -825,22 +822,66 @@
                                     
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Rehabilitasi Sosial Korban Penyalahgunaan NAPZA
+                                            Direktorat Rehabilitasi Sosial Tuna Sosial dan Korban Perdagangan Orang
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan dan program rehabilitasi sosial korban penyalahgunaan NAPZA</li>
-                                                <li>Melaksanakan upaya pencegahan, penanganan, dan pemulihan bagi korban penyalahgunaan NAPZA</li>
+                                                <li>Merumuskan kebijakan di bidang rehabilitasi sosial tuna sosial dan korban perdagangan orang</li>
+                                                <li>Melaksanakan kebijakan di bidang rehabilitasi sosial tuna sosial dan korban perdagangan orang</li>
+                                                <li>Menyusun norma, standar, prosedur, dan kriteria di bidang rehabilitasi sosial tuna sosial dan korban perdagangan orang</li>
+                                                <li>Memberikan bimbingan teknis dan supervisi di bidang rehabilitasi sosial tuna sosial dan korban perdagangan orang</li>
+                                                <li>Melaksanakan pemantauan, analisis, evaluasi, dan pelaporan di bidang rehabilitasi sosial tuna sosial dan korban perdagangan orang</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung C Lt. 8, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 337</p>
+                                                <p><strong>Email:</strong> rehabilitasi.tunasosial@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Direktorat Rehabilitasi Sosial Korban Penyalahgunaan Narkotika, Psikotropika, dan Zat Adiktif Lainnya dan Orang Dengan Human Immunodeficiency Virus
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Merumuskan kebijakan dan program rehabilitasi sosial korban penyalahgunaan NAPZA dan orang dengan HIV</li>
+                                                <li>Melaksanakan upaya pencegahan, penanganan, dan pemulihan bagi korban penyalahgunaan NAPZA dan orang dengan HIV</li>
                                                 <li>Menyelenggarakan layanan rehabilitasi sosial berbasis masyarakat dan lembaga</li>
-                                                <li>Memberikan bimbingan sosial, mental, dan keterampilan bagi korban penyalahgunaan NAPZA</li>
-                                                <li>Memfasilitasi reintegrasi sosial eks-korban penyalahgunaan NAPZA ke dalam masyarakat</li>
+                                                <li>Memberikan bimbingan sosial, mental, dan keterampilan bagi korban penyalahgunaan NAPZA dan orang dengan HIV</li>
+                                                <li>Memfasilitasi reintegrasi sosial ke dalam masyarakat</li>
                                             </ul>
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung C Lt. 8, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
                                                 <p><strong>Telepon:</strong> (021) 3103591 ext. 337</p>
                                                 <p><strong>Email:</strong> rehabilitasi.napza@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Direktorat Rehabilitasi Sosial Lanjut Usia
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Merumuskan kebijakan di bidang rehabilitasi sosial lanjut usia</li>
+                                                <li>Melaksanakan kebijakan di bidang rehabilitasi sosial lanjut usia</li>
+                                                <li>Menyusun norma, standar, prosedur, dan kriteria di bidang rehabilitasi sosial lanjut usia</li>
+                                                <li>Memberikan bimbingan teknis dan supervisi di bidang rehabilitasi sosial lanjut usia</li>
+                                                <li>Melaksanakan pemantauan, analisis, evaluasi dan pelaporan di bidang rehabilitasi sosial lanjut usia</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung C Lt. 9, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 350</p>
+                                                <p><strong>Email:</strong> rehabilitasi.lansia@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
@@ -854,44 +895,43 @@
                                 <h3>Direktorat Jenderal Pemberdayaan Sosial</h3>
                             </div>
                             <div class="direktorat-body">
-                                <p><strong>Tugas dan Tanggung Jawab:</strong> Merumuskan dan melaksanakan kebijakan di bidang pemberdayaan sosial sesuai dengan ketentuan perundang-undangan. Fokus utama adalah pada pemberdayaan masyarakat, individu, keluarga, kelompok, dan komunitas dalam rangka peningkatan kesejahteraan sosial.</p>
+                                <p><strong>Tugas dan Tanggung Jawab:</strong> Menyelenggarakan perumusan dan pelaksanaan kebijakan di bidang pemberdayaan sosial sesuai dengan ketentuan peraturan perundang-undangan.</p>
                                 
                                 <div class="unit-accordion">
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Pemberdayaan Sosial Perorangan, Keluarga, dan Kelembagaan Masyarakat
+                                            Sekretariat Direktorat Jenderal
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan pemberdayaan sosial perorangan, keluarga, dan kelembagaan masyarakat</li>
-                                                <li>Mengembangkan program pemberdayaan keluarga rentan dan Potensi Sumber Kesejahteraan Sosial (PSKS)</li>
-                                                <li>Menyelenggarakan penguatan kapasitas kelembagaan sosial masyarakat</li>
-                                                <li>Memfasilitasi peningkatan partisipasi sosial masyarakat</li>
-                                                <li>Melaksanakan pendampingan sosial bagi keluarga dan individu rentan</li>
+                                                <li>Melaksanakan koordinasi pelaksanaan tugas dan pemberian dukungan administrasi Direktorat Jenderal</li>
+                                                <li>Penyiapan koordinasi dan penyusunan rencana, program, dan anggaran</li>
+                                                <li>Penyiapan koordinasi dan pengelolaan urusan keuangan</li>
+                                                <li>Penyiapan koordinasi dan pelaksanaan urusan organisasi dan tata laksana</li>
+                                                <li>Pelaksanaan urusan sumber daya manusia, rumah tangga, perlengkapan, dan tata usaha</li>
                                             </ul>
                                             <div class="contact-info">
-                                                <p><strong>Alamat:</strong> Gedung D Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 413</p>
-                                                <p><strong>Email:</strong> pemberdayaan.keluarga@kemsos.go.id</p>
+                                                <p><strong>Alamat:</strong> Gedung D Lt. 2, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 401</p>
+                                                <p><strong>Email:</strong> sekretariat.dayasos@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Pemberdayaan Komunitas Adat Terpencil
+                                            Direktorat Pemberdayaan Sosial Komunitas Adat Terpencil
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan pemberdayaan Komunitas Adat Terpencil (KAT)</li>
-                                                <li>Menyusun dan melaksanakan program pemberdayaan sosial bagi KAT</li>
-                                                <li>Melakukan pemetaan sosial dan identifikasi kebutuhan KAT</li>
-                                                <li>Menyelenggarakan program peningkatan akses pelayanan dasar bagi KAT</li>
-                                                <li>Melaksanakan advokasi sosial dan penguatan kapasitas kelembagaan adat</li>
+                                                <li>Melaksanakan perumusan dan pelaksanaan kebijakan pemberdayaan sosial komunitas adat terpencil</li>
+                                                <li>Penyiapan penyusunan norma, standar, prosedur, dan kriteria di bidang pemberdayaan sosial komunitas adat terpencil</li>
+                                                <li>Pemberian bimbingan teknis dan supervisi di bidang pemberdayaan sosial komunitas adat terpencil</li>
+                                                <li>Pelaksanaan pemantauan, analisis, evaluasi, dan pelaporan di bidang pemberdayaan sosial komunitas adat terpencil</li>
                                             </ul>
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung D Lt. 4, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
@@ -903,100 +943,202 @@
                                     
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Kepahlawanan, Keperintisan, Kesetiakawanan, dan Restorasi Sosial
+                                            Direktorat Pemberdayaan Sosial Keluarga Miskin dan Rentan
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan di bidang kepahlawanan, keperintisan, kesetiakawanan, dan restorasi sosial</li>
-                                                <li>Mengelola dan meningkatkan kesejahteraan keluarga pahlawan nasional</li>
-                                                <li>Mengembangkan nilai-nilai kepahlawanan dan kesetiakawanan sosial</li>
-                                                <li>Melaksanakan program peningkatan kesejahteraan perintis kemerdekaan</li>
-                                                <li>Menyelenggarakan restorasi sosial dan penguatan nilai-nilai sosial budaya masyarakat</li>
+                                                <li>Melaksanakan perumusan dan pelaksanaan kebijakan pemberdayaan sosial keluarga miskin dan rentan</li>
+                                                <li>Penyiapan penyusunan norma, standar, prosedur, dan kriteria di bidang pemberdayaan sosial keluarga miskin dan rentan</li>
+                                                <li>Pemberian bimbingan teknis dan supervisi di bidang pemberdayaan sosial keluarga miskin dan rentan</li>
+                                                <li>Pelaksanaan pemantauan, analisis, evaluasi, dan pelaporan di bidang pemberdayaan sosial keluarga miskin dan rentan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung D Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 413</p>
+                                                <p><strong>Email:</strong> pemberdayaan.kelmiskin@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Direktorat Pemberdayaan Sosial Masyarakat
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melaksanakan perumusan dan pelaksanaan kebijakan di bidang pemberdayaan sosial masyarakat</li>
+                                                <li>Penyiapan penyusunan norma, standar, prosedur, dan kriteria di bidang pemberdayaan sosial masyarakat</li>
+                                                <li>Pemberian bimbingan teknis di bidang pemberdayaan sosial masyarakat</li>
+                                                <li>Pelaksanaan pemantauan, analisis, evaluasi, dan pelaporan di bidang pemberdayaan sosial masyarakat</li>
                                             </ul>
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung D Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
                                                 <p><strong>Telepon:</strong> (021) 3103591 ext. 437</p>
-                                                <p><strong>Email:</strong> kepahlawanan@kemsos.go.id</p>
+                                                <p><strong>Email:</strong> pemberdayaan.masyarakat@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Direktorat Pemberdayaan Potensi dan Sumber Daya Sosial
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melaksanakan perumusan dan pelaksanaan kebijakan di bidang pemberdayaan potensi dan sumber daya sosial</li>
+                                                <li>Penyiapan penyusunan norma, standar, prosedur, dan kriteria di bidang pemberdayaan potensi dan sumber daya sosial</li>
+                                                <li>Pemberian bimbingan teknis di bidang pemberdayaan potensi dan sumber daya sosial</li>
+                                                <li>Pelaksanaan pemantauan, analisis, evaluasi, dan pelaporan di bidang pemberdayaan potensi dan sumber daya sosial</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung D Lt. 6, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 447</p>
+                                                <p><strong>Email:</strong> pemberdayaan.psds@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Direktorat Jenderal Penanganan Fakir Miskin -->
+
+                        <!-- Inspektorat Jenderal -->
                         <div class="direktorat-box" data-aos="fade-up" data-aos-delay="400">
                             <div class="direktorat-header">
-                                <h3>Direktorat Jenderal Penanganan Fakir Miskin</h3>
+                                <h3>Inspektorat Jenderal</h3>
                             </div>
                             <div class="direktorat-body">
-                                <p><strong>Tugas dan Tanggung Jawab:</strong> Merumuskan dan melaksanakan kebijakan di bidang penanganan fakir miskin sesuai dengan ketentuan perundang-undangan. Bertanggung jawab dalam upaya pengentasan kemiskinan melalui program-program perlindungan sosial dan pemberdayaan masyarakat miskin.</p>
+                                <p><strong>Tugas dan Tanggung Jawab:</strong> Menyelenggarakan pengawasan intern di Kementerian sesuai dengan ketentuan peraturan perundang-undangan.</p>
                                 
                                 <div class="unit-accordion">
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Penanganan Fakir Miskin Wilayah I
+                                            Sekretariat Inspektorat Jenderal
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan penanganan fakir miskin di wilayah Sumatera</li>
-                                                <li>Melaksanakan program penanggulangan kemiskinan berbasis pemberdayaan masyarakat</li>
-                                                <li>Mengoordinasikan program bantuan sosial dan pemberdayaan ekonomi masyarakat miskin</li>
-                                                <li>Melakukan pemantauan dan evaluasi program pengentasan kemiskinan di wilayah Sumatera</li>
-                                                <li>Mengembangkan model penanganan fakir miskin yang adaptif dengan kondisi wilayah</li>
+                                                <li>Melaksanakan koordinasi pelaksanaan tugas dan pemberian dukungan administrasi Inspektorat Jenderal</li>
+                                                <li>Penyiapan koordinasi dan penyusunan rencana, program, dan anggaran</li>
+                                                <li>Penyiapan koordinasi dan pengelolaan urusan keuangan</li>
+                                                <li>Pelaksanaan urusan sumber daya manusia, rumah tangga, perlengkapan, dan tata usaha</li>
                                             </ul>
                                             <div class="contact-info">
-                                                <p><strong>Alamat:</strong> Gedung E Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 512</p>
-                                                <p><strong>Email:</strong> penanganan.wilayah1@kemsos.go.id</p>
+                                                <p><strong>Alamat:</strong> Gedung F Lt. 2, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 612</p>
+                                                <p><strong>Email:</strong> sekretariat.irjen@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Penanganan Fakir Miskin Wilayah II
+                                            Inspektorat Bidang Perlindungan dan Jaminan Sosial
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan penanganan fakir miskin di wilayah Jawa, Bali, dan Nusa Tenggara</li>
-                                                <li>Melaksanakan program penanggulangan kemiskinan berbasis pemberdayaan masyarakat</li>
-                                                <li>Mengoordinasikan program bantuan sosial dan pemberdayaan ekonomi masyarakat miskin</li>
-                                                <li>Melakukan pemantauan dan evaluasi program pengentasan kemiskinan di wilayah Jawa, Bali, dan Nusa Tenggara</li>
-                                                <li>Mengembangkan model penanganan fakir miskin yang adaptif dengan kondisi wilayah</li>
+                                                <li>Melaksanakan penyusunan kebijakan teknis, pelaksanaan pengawasan intern, dan penyusunan laporan hasil pengawasan pada lingkup Direktorat Jenderal Perlindungan dan Jaminan Sosial</li>
+                                                <li>Penyusunan rencana dan program pengawasan intern</li>
+                                                <li>Pelaksanaan pengawasan intern terhadap kinerja dan keuangan melalui audit, reviu, dan kegiatan pengawasan lainnya</li>
+                                                <li>Penyiapan penyusunan laporan hasil pengawasan</li>
                                             </ul>
                                             <div class="contact-info">
-                                                <p><strong>Alamat:</strong> Gedung E Lt. 4, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 524</p>
-                                                <p><strong>Email:</strong> penanganan.wilayah2@kemsos.go.id</p>
+                                                <p><strong>Alamat:</strong> Gedung F Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 623</p>
+                                                <p><strong>Email:</strong> itbid.linjamsos@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div class="unit-card">
                                         <div class="unit-header">
-                                            Direktorat Penanganan Fakir Miskin Wilayah III
+                                            Inspektorat Bidang Rehabilitasi Sosial
                                             <span class="toggle-icon">+</span>
                                         </div>
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Merumuskan kebijakan penanganan fakir miskin di wilayah Kalimantan, Sulawesi, Maluku, dan Papua</li>
-                                                <li>Melaksanakan program penanggulangan kemiskinan berbasis pemberdayaan masyarakat</li>
-                                                <li>Mengoordinasikan program bantuan sosial dan pemberdayaan ekonomi masyarakat miskin</li>
-                                                <li>Melakukan pemantauan dan evaluasi program pengentasan kemiskinan di wilayah Kalimantan, Sulawesi, Maluku, dan Papua</li>
-                                                <li>Mengembangkan model penanganan fakir miskin yang adaptif dengan kondisi wilayah</li>
+                                                <li>Melaksanakan penyusunan kebijakan teknis, pelaksanaan pengawasan intern, dan penyusunan laporan hasil pengawasan pada lingkup Direktorat Jenderal Rehabilitasi Sosial</li>
+                                                <li>Penyusunan rencana dan program pengawasan intern</li>
+                                                <li>Pelaksanaan pengawasan intern terhadap kinerja dan keuangan melalui audit, reviu, dan kegiatan pengawasan lainnya</li>
+                                                <li>Penyiapan penyusunan laporan hasil pengawasan</li>
                                             </ul>
                                             <div class="contact-info">
-                                                <p><strong>Alamat:</strong> Gedung E Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
-                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 536</p>
-                                                <p><strong>Email:</strong> penanganan.wilayah3@kemsos.go.id</p>
+                                                <p><strong>Alamat:</strong> Gedung F Lt. 4, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 636</p>
+                                                <p><strong>Email:</strong> itbid.rehsos@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Inspektorat Bidang Pemberdayaan Sosial
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melaksanakan penyusunan kebijakan teknis, pelaksanaan pengawasan intern, dan penyusunan laporan hasil pengawasan pada lingkup Direktorat Jenderal Pemberdayaan Sosial</li>
+                                                <li>Penyusunan rencana dan program pengawasan intern</li>
+                                                <li>Pelaksanaan pengawasan intern terhadap kinerja dan keuangan melalui audit, reviu, dan kegiatan pengawasan lainnya</li>
+                                                <li>Penyiapan penyusunan laporan hasil pengawasan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung F Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 648</p>
+                                                <p><strong>Email:</strong> itbid.dayasos@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Inspektorat Bidang Penunjang
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melaksanakan penyusunan kebijakan teknis, pelaksanaan pengawasan intern, dan penyusunan laporan hasil pengawasan pada lingkup Sekretariat Jenderal, Inspektorat Jenderal, dan Pusat</li>
+                                                <li>Penyusunan rencana dan program pengawasan intern</li>
+                                                <li>Pelaksanaan pengawasan intern terhadap kinerja dan keuangan melalui audit, reviu, dan kegiatan pengawasan lainnya</li>
+                                                <li>Penyiapan penyusunan laporan hasil pengawasan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung F Lt. 6, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 657</p>
+                                                <p><strong>Email:</strong> itbid.penunjang@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Inspektorat Bidang Investigasi
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melaksanakan penyusunan kebijakan teknis, pelaksanaan pengawasan investigasi, dan penyusunan laporan hasil pengawasan investigasi</li>
+                                                <li>Pelaksanaan pengawasan bidang investigasi</li>
+                                                <li>Pelaksanaan audit dengan tujuan tertentu</li>
+                                                <li>Pelaksanaan penanganan dan pemantauan pengaduan dugaan pelanggaran</li>
+                                                <li>Fasilitasi pembangunan zona integritas</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung F Lt. 7, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 666</p>
+                                                <p><strong>Email:</strong> itbid.investigasi@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1021,11 +1163,13 @@
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Menyusun perencanaan program dan anggaran Kementerian Sosial</li>
-                                                <li>Melakukan koordinasi dan sinkronisasi perencanaan program antar unit kerja</li>
-                                                <li>Mengelola data dan informasi perencanaan program kerja</li>
-                                                <li>Melaksanakan pemantauan, evaluasi, dan pelaporan program kerja Kementerian</li>
-                                                <li>Menyusun dokumen perencanaan strategis dan rencana kerja tahunan</li>
+                                                <li>Menyiapkan koordinasi dan penyusunan rencana strategis</li>
+                                                <li>Menyiapkan koordinasi dan penyusunan rencana, program, dan anggaran</li>
+                                                <li>Menyiapkan koordinasi dan sinkronisasi program Kementerian</li>
+                                                <li>Menyiapkan koordinasi dan fasilitasi kerja sama</li>
+                                                <li>Memfasilitasi pelaksanaan akuntabilitas kinerja di lingkungan Kementerian</li>
+                                                <li>Memfasilitasi pelaksanaan manajemen risiko di lingkungan Kementerian</li>
+                                                <li>Menyiapkan koordinasi dan pelaksanaan pemantauan, evaluasi, dan pelaporan</li>
                                             </ul>
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung A Lt. 3, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
@@ -1043,16 +1187,108 @@
                                         <div class="unit-body">
                                             <h5>Tugas Pokok dan Fungsi:</h5>
                                             <ul class="tugas-list">
-                                                <li>Mengelola anggaran dan pelaksanaan anggaran Kementerian</li>
-                                                <li>Melaksanakan perbendaharaan dan verifikasi keuangan</li>
-                                                <li>Mengelola akuntansi dan pelaporan keuangan</li>
-                                                <li>Menyusun laporan keuangan dan pertanggungjawaban anggaran</li>
-                                                <li>Melakukan pembinaan administrasi keuangan di lingkungan Kementerian</li>
+                                                <li>Menyiapkan dan koordinasi pelaksanaan urusan tata laksana keuangan</li>
+                                                <li>Melaksanakan urusan perbendaharaan</li>
+                                                <li>Melaksanakan urusan verifikasi, akuntansi, dan pelaporan keuangan</li>
+                                                <li>Melakukan pemantauan, evaluasi, dan pelaporan</li>
                                             </ul>
                                             <div class="contact-info">
                                                 <p><strong>Alamat:</strong> Gedung A Lt. 4, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
                                                 <p><strong>Telepon:</strong> (021) 3103591 ext. 164</p>
                                                 <p><strong>Email:</strong> biro.keuangan@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Biro Organisasi dan Sumber Daya Manusia
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melakukan penataan dan evaluasi organisasi</li>
+                                                <li>Menyiapkan koordinasi dan pelaksanaan ketatalaksanaan</li>
+                                                <li>Menyiapkan koordinasi dan penyusunan rencana kebutuhan sumber daya manusia</li>
+                                                <li>Menyiapkan koordinasi dan pelaksanaan penyusunan formasi, pengadaan, distribusi, dan pembinaan sumber daya manusia</li>
+                                                <li>Melaksanakan manajemen talenta sumber daya manusia</li>
+                                                <li>Melaksanakan penilaian kompetensi</li>
+                                                <li>Melaksanakan urusan pensiun dan pemberhentian sumber daya manusia</li>
+                                                <li>Memfasilitasi pelaksanaan reformasi birokrasi</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung A Lt. 5, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 175</p>
+                                                <p><strong>Email:</strong> biro.sdm@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Biro Hukum
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Menyiapkan koordinasi dan penelaahan, penyusunan, pengharmonisasian naskah hukum, serta evaluasi peraturan perundang-undangan</li>
+                                                <li>Melaksanakan pertimbangan dan advokasi hukum</li>
+                                                <li>Melaksanakan dokumentasi, informasi, dan jaringan hukum, serta pengadministrasian peraturan perundang-undangan</li>
+                                                <li>Melakukan pemantauan, evaluasi, dan pelaporan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung A Lt. 6, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 186</p>
+                                                <p><strong>Email:</strong> biro.hukum@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Biro Umum
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Melaksanakan urusan tata usaha Kementerian</li>
+                                                <li>Melaksanakan urusan tata usaha pimpinan dan protokol Kementerian</li>
+                                                <li>Melaksanakan urusan rumah tangga</li>
+                                                <li>Melaksanakan urusan perlengkapan</li>
+                                                <li>Melaksanakan tata kelola barang milik/kekayaan negara</li>
+                                                <li>Melaksanakan layanan pengadaan barang/jasa</li>
+                                                <li>Melakukan pemantauan, evaluasi, dan pelaporan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung A Lt. 2, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 142</p>
+                                                <p><strong>Email:</strong> biro.umum@kemsos.go.id</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="unit-card">
+                                        <div class="unit-header">
+                                            Biro Hubungan Masyarakat
+                                            <span class="toggle-icon">+</span>
+                                        </div>
+                                        <div class="unit-body">
+                                            <h5>Tugas Pokok dan Fungsi:</h5>
+                                            <ul class="tugas-list">
+                                                <li>Menyiapkan koordinasi dan pengelolaan manajemen isu dan strategi komunikasi</li>
+                                                <li>Menyiapkan koordinasi dan pelaksanaan urusan publikasi dan pemberitaan</li>
+                                                <li>Menyiapkan pelaksanaan dan fasilitasi pelaksanaan urusan hubungan antarlembaga</li>
+                                                <li>Menyiapkan koordinasi dan pengelolaan layanan publik dan pengaduan masyarakat</li>
+                                                <li>Melaksanakan pengelolaan perpustakaan dan dokumentasi</li>
+                                                <li>Melakukan pemantauan, evaluasi, dan pelaporan</li>
+                                            </ul>
+                                            <div class="contact-info">
+                                                <p><strong>Alamat:</strong> Gedung B Lt. 1, Jl. Salemba Raya No. 28, Jakarta Pusat</p>
+                                                <p><strong>Telepon:</strong> (021) 3103591 ext. 196</p>
+                                                <p><strong>Email:</strong> humas@kemsos.go.id</p>
                                             </div>
                                         </div>
                                     </div>

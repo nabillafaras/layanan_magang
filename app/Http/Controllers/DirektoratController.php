@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Pendaftaran;
 use App\Models\Attendance;
 use App\Models\Laporan;
@@ -24,11 +25,11 @@ class DirektoratController extends Controller
     }
 
     public function mapDirektorat($direktorat)
-{
-    // Kode untuk menampilkan peta direktorat
-    // Contoh:
-    return view('admin.direktorat.map', compact('direktorat'));
-}
+    {
+        // Kode untuk menampilkan peta direktorat
+        // Contoh:
+        return view('admin.direktorat.map', compact('direktorat'));
+    }
 
     public function direktorat1()
     {
@@ -40,7 +41,8 @@ class DirektoratController extends Controller
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Sekretariat Jenderal')
-                              ->where('status', 'diterima');
+                        ->whereIn('status', ['diterima', 'selesai']);
+
                     })
                     ->with('pendaftaran')
                     ->orderBy('date', 'desc')
@@ -49,7 +51,8 @@ class DirektoratController extends Controller
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Sekretariat Jenderal')
-                              ->where('status', 'diterima');
+                        ->whereIn('status', ['diterima', 'selesai']);
+
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
@@ -68,7 +71,8 @@ class DirektoratController extends Controller
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
-                              ->where('status', 'diterima');
+                        ->whereIn('status', ['diterima', 'selesai']);
+
                     })
                     ->with('pendaftaran')
                     ->orderBy('date', 'desc')
@@ -77,7 +81,8 @@ class DirektoratController extends Controller
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
-                              ->where('status', 'diterima');
+                        ->whereIn('status', ['diterima', 'selesai']);
+
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
@@ -96,7 +101,7 @@ class DirektoratController extends Controller
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
-                              ->where('status', 'diterima');
+                              ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
                     ->orderBy('date', 'desc')
@@ -105,7 +110,7 @@ class DirektoratController extends Controller
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
-                              ->where('status', 'diterima');
+                              ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
@@ -124,7 +129,7 @@ class DirektoratController extends Controller
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Direktorat Jenderal Pemberdayaan Sosial')
-                              ->where('status', 'diterima');
+                              ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
                     ->orderBy('date', 'desc')
@@ -133,7 +138,7 @@ class DirektoratController extends Controller
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Direktorat Jenderal Pemberdayaan Sosial')
-                              ->where('status', 'diterima');
+                              ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
@@ -152,7 +157,7 @@ class DirektoratController extends Controller
         // Ambil data absensi dengan relasi pendaftaran
         $absensi = Attendance::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Inspektorat Jenderal')
-                              ->where('status', 'diterima');
+                              ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
                     ->orderBy('date', 'desc')
@@ -161,7 +166,7 @@ class DirektoratController extends Controller
         // Ambil data laporan dengan relasi pendaftaran
         $laporan = Laporan::whereHas('pendaftaran', function($query) {
                         $query->where('direktorat', 'Inspektorat Jenderal')
-                              ->where('status', 'diterima');
+                              ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
@@ -171,7 +176,7 @@ class DirektoratController extends Controller
     }
 
 
-        public function detailLaporan($id)
+    public function detailLaporan($id)
     {
         $laporan = Laporan::with('pendaftaran')->findOrFail($id);
         
@@ -193,6 +198,7 @@ class DirektoratController extends Controller
         }
         return redirect()->route('admin.dashboard')->with('error', 'Direktorat tidak ditemukan');
     }
+    
     public function submitFeedback(Request $request, $id)
     {
         $request->validate([
@@ -207,15 +213,56 @@ class DirektoratController extends Controller
     }
 
     public function updateStatus(Request $request, $id)
-{
-    $validated = $request->validate([
-        'status' => 'required|in:Menunggu,Acc,Ditolak'
-    ]);
-    
-    $laporan = Laporan::findOrFail($id);
-    $laporan->status = $request->status;
-    $laporan->save();
-    
-    return redirect()->back()->with('success', 'Status laporan berhasil diperbarui menjadi ' . ucfirst($request->status));
-}
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:Menunggu,Acc,Ditolak',
+            'sk_selesai' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120', // Maksimal 5MB
+            'sertifikat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120', // Maksimal 5MB
+        ]);
+        
+        $laporan = Laporan::with('pendaftaran')->findOrFail($id);
+        $oldStatus = $laporan->status;
+        $laporan->status = $request->status;
+        
+        // Jika laporan jenis "akhir" dan status diubah menjadi "Acc"
+        if ($laporan->jenis_laporan == 'akhir' && $request->status == 'Acc') {
+            // Jika status sebelumnya bukan "Acc" (baru diubah menjadi "Acc")
+            if ($oldStatus != 'Acc') {
+                // Validasi apakah kedua file sudah diupload
+                if (!$request->hasFile('sk_selesai') || !$request->hasFile('sertifikat')) {
+                    return redirect()->back()->with('error', 'Harap upload file SK Selesai dan Sertifikat untuk laporan akhir.');
+                }
+                
+                // Upload file SK Selesai
+                if ($request->hasFile('sk_selesai')) {
+                    $skFile = $request->file('sk_selesai');
+                    $skFileName = time() . '_' . $laporan->pendaftaran->nama_lengkap . '_sk_selesai.' . $skFile->getClientOriginalExtension();
+                    $skFilePath = $skFile->storeAs('sk_selesai', $skFileName, 'public');
+                    $laporan->sk_selesai = 'storage/' . $skFilePath;
+                }
+                
+                // Upload file Sertifikat
+                if ($request->hasFile('sertifikat')) {
+                    $sertifikatFile = $request->file('sertifikat');
+                    $sertifikatFileName = time() . '_' . $laporan->pendaftaran->nama_lengkap . '_sertifikat.' . $sertifikatFile->getClientOriginalExtension();
+                    $sertifikatFilePath = $sertifikatFile->storeAs('sertifikat', $sertifikatFileName, 'public');
+                    $laporan->sertifikat = 'storage/' . $sertifikatFilePath;
+                }
+                
+                // Ubah status peserta menjadi "Selesai"
+                $pendaftaran = $laporan->pendaftaran;
+                $pendaftaran->status = 'Selesai';
+                $pendaftaran->save();
+            }
+        }
+        
+        $laporan->save();
+        
+        $message = 'Status laporan berhasil diperbarui menjadi ' . ucfirst($request->status);
+        if ($laporan->jenis_laporan == 'akhir' && $request->status == 'Acc' && $oldStatus != 'Acc') {
+            $message .= ' dan status peserta telah diubah menjadi Selesai';
+        }
+        
+        return redirect()->back()->with('success', $message);
+    }
 }

@@ -379,8 +379,11 @@
                                     <tr class="table-appear">
                                         <td><strong>Status</strong></td>
                                         <td>
-                                            <span class="badge {{ $pendaftaran->status == 'Diproses' ? 'bg-warning' : 
-                                                ($pendaftaran->status == 'Diterima' ? 'bg-success' : 'bg-danger') }}">
+                                            <span class="badge 
+                                                {{ $pendaftaran->status == 'Diproses' ? 'bg-warning' : 
+                                                    ($pendaftaran->status == 'Ditolak' ? 'bg-danger' : 
+                                                    ($pendaftaran->status == 'Diterima' ? 'bg-success' : 
+                                                    ($pendaftaran->status == 'Selesai' ? 'bg-info' : 'bg-secondary'))) }}">
                                                 {{ $pendaftaran->status }}
                                             </span>
                                         </td>
@@ -416,6 +419,44 @@
                                     <a href="{{ asset('storage/'.$pendaftaran->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
                                         <i class="fas fa-file-pdf"></i> Unduh Surat Balasan
                                     </a>
+                                @endif
+                            </div>
+                            @elseif($pendaftaran->status == 'Selesai')
+                            <div class="alert alert-info" data-aos="fade-up" data-aos-delay="200">
+                                <h6 class="alert-heading"><i class="fas fa-check-double"></i> Selamat! Anda Telah Menyelesaikan Program</h6>
+                                <p>Berikut adalah dokumen penyelesaian program magang/PKL Anda:</p>
+                                
+                                @if(isset($pendaftaran->dokumen_selesai))
+                                    <div class="row mt-3">
+                                        <div class="col-md-6 mb-2">
+                                            @if($pendaftaran->dokumen_selesai->sk_selesai)
+                                                <a href="{{ url('storage/' . str_replace('storage/', '', $pendaftaran->dokumen_selesai->sk_selesai)) }}" 
+                                                target="_blank" class="btn btn-sm btn-primary w-100">
+                                                    <i class="fas fa-file-pdf"></i> Unduh SK Selesai
+                                                </a>
+                                            @else
+                                                <button disabled class="btn btn-sm btn-secondary w-100">
+                                                    <i class="fas fa-file-pdf"></i> SK Selesai Belum Tersedia
+                                                </button>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            @if($pendaftaran->dokumen_selesai->sertifikat)
+                                                <a href="{{ url('storage/' . str_replace('storage/', '', $pendaftaran->dokumen_selesai->sertifikat)) }}" 
+                                                target="_blank" class="btn btn-sm btn-success w-100">
+                                                    <i class="fas fa-certificate"></i> Unduh Sertifikat
+                                                </a>
+                                            @else
+                                                <button disabled class="btn btn-sm btn-secondary w-100">
+                                                    <i class="fas fa-certificate"></i> Sertifikat Belum Tersedia
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="alert alert-warning mt-2 mb-0">
+                                        <small><i class="fas fa-info-circle"></i> Dokumen penyelesaian program belum tersedia.</small>
+                                    </div>
                                 @endif
                             </div>
                         @endif

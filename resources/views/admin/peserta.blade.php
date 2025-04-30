@@ -584,9 +584,14 @@
                         {{ $p->created_at->format('d-m-Y') }}
                     </td>
                     <td>
-                        <span class="badge {{ $p->status == 'Diproses' ? 'bg-warning' : ($p->status == 'Diterima' ? 'bg-success' : 'bg-danger') }}">
-                            {{ $p->status }}
-                        </span>
+                    <span class="badge 
+                        {{ $p->status == 'Diproses' ? 'bg-warning' : 
+                            ($p->status == 'Ditolak' ? 'bg-danger' : 
+                            ($p->status == 'Diterima' ? 'bg-success' : 
+                            ($p->status == 'Selesai' ? 'bg-info' : 'bg-secondary'))) }}">
+                        {{ $p->status }}
+                    </span>
+
                     </td>
                     <td>
                         <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#updateModal{{ $p->id }}">
@@ -660,13 +665,18 @@
                                     <p class="mb-2"><strong><i class="fas fa-graduation-cap me-2"></i>Jurusan/Bidang Keilmuan:</strong> {{ $p->jurusan }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-graduation-cap me-2"></i>Program/Keahlian yang Diambil:</strong> {{ $p->prodi }}</p>
                                     <p class="mb-2"><strong><i class="fas fa-check-circle me-2"></i>Status:</strong> 
-                                        @if($p->status == 'Diproses')
-                                            <span class="badge bg-warning">Diproses</span>
-                                        @elseif($p->status == 'Diterima')
-                                            <span class="badge bg-success">Diterima</span>
-                                        @else
-                                            <span class="badge bg-danger">Ditolak</span>
-                                        @endif
+                                    @if($p->status == 'Diproses')
+                                        <span class="badge bg-warning">Diproses</span>
+                                    @elseif($p->status == 'Diterima')
+                                        <span class="badge bg-success">Diterima</span>
+                                    @elseif($p->status == 'Ditolak')
+                                        <span class="badge bg-danger">Ditolak</span>
+                                    @elseif($p->status == 'Selesai')
+                                        <span class="badge bg-info">Selesai</span>
+                                    @else
+                                        <span class="badge bg-secondary">{{ $p->status }}</span> {{-- fallback jika status tidak dikenal --}}
+                                    @endif
+
                                     </p>
                                     <p class="mb-2"><strong><i class="fas fa-calendar-alt me-2"></i>Tanggal Daftar:</strong> {{ $p->created_at->format('d-m-Y') }}</p>
 

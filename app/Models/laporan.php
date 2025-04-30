@@ -19,7 +19,9 @@ class Laporan extends Model
         'keterangan',
         'status',
         'feedback',
-        'periode_bulan'
+        'periode_bulan',
+        'sk_selesai',
+        'sertifikat'
     ];
 
     /**

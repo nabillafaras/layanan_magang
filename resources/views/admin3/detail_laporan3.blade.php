@@ -11,7 +11,7 @@
         @if(session('previous_direktorat'))
             <li class="breadcrumb-item"><a href="{{ route('admin3.direktorat', ['id' => session('previous_direktorat')]) }}">Direktorat {{ session('previous_direktorat') }}</a></li>
         @endif
-        <li class="breadcrumb-item active">Detail Laporan Direktorat Jenderal Rehabilitas Sosial</li>
+        <li class="breadcrumb-item active">Detail Laporan Direktorat Jenderal Rehabilitasi Sosial</li>
     </ol>
 
     <div class="card mb-4">
@@ -68,6 +68,29 @@
                     </a>
                 </div>
             </div>
+            @if($laporan->jenis_laporan == 'akhir' && $laporan->status == 'Acc')
+                @if($laporan->sk_selesai)
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">SK Selesai</div>
+                    <div class="col-md-9">
+                        <a href="{{ asset($laporan->sk_selesai) }}" class="btn btn-primary" target="_blank">
+                            <i class="fas fa-file-download me-1"></i> Download SK Selesai
+                        </a>
+                    </div>
+                </div>
+                @endif
+                
+                @if($laporan->sertifikat)
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Sertifikat</div>
+                    <div class="col-md-9">
+                        <a href="{{ asset($laporan->sertifikat) }}" class="btn btn-success" target="_blank">
+                            <i class="fas fa-file-download me-1"></i> Download Sertifikat
+                        </a>
+                    </div>
+                </div>
+                @endif
+            @endif
         </div>
     </div>
 
@@ -77,7 +100,7 @@
             Update Status Laporan
         </div>
         <div class="card-body">
-            <form action="{{ route('admin3.update-status', ['id' => $laporan->id]) }}" method="POST">
+            <form action="{{ route('admin3.update-status', ['id' => $laporan->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="status" class="form-label">Status Laporan</label>
@@ -87,6 +110,21 @@
                         <option value="Ditolak" {{ $laporan->status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
                     </select>
                 </div>
+                
+                <div id="fileUploadContainer" style="{{ ($laporan->jenis_laporan != 'akhir' || $laporan->status == 'Acc') ? 'display:none;' : '' }}">
+                    <div class="mb-3">
+                        <label for="sk_selesai" class="form-label">Upload SK Selesai</label>
+                        <input type="file" class="form-control" id="sk_selesai" name="sk_selesai" accept=".pdf,.jpg,.jpeg,.png">
+                        <small class="text-muted">Upload SK Selesai bila ini adalah laporan akhir dan status diubah menjadi Acc</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="sertifikat" class="form-label">Upload Sertifikat</label>
+                        <input type="file" class="form-control" id="sertifikat" name="sertifikat" accept=".pdf,.jpg,.jpeg,.png">
+                        <small class="text-muted">Upload sertifikat bila ini adalah laporan akhir dan status diubah menjadi Acc</small>
+                    </div>
+                </div>
+                
                 <button type="submit" class="btn btn-primary">Update Status</button>
             </form>
         </div>
@@ -117,4 +155,25 @@
         </a>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const statusSelect = document.getElementById('status');
+    const fileUploadContainer = document.getElementById('fileUploadContainer');
+    const jenisLaporan = "{{ $laporan->jenis_laporan }}";
+    
+    statusSelect.addEventListener('change', function() {
+        if (jenisLaporan === 'akhir' && this.value === 'Acc') {
+            fileUploadContainer.style.display = 'block';
+        } else {
+            fileUploadContainer.style.display = 'none';
+        }
+    });
+    
+    // Menampilkan form upload pada halaman load
+    if (jenisLaporan === 'akhir' && statusSelect.value === 'Acc' && "{{ $laporan->status }}" !== 'Acc') {
+        fileUploadContainer.style.display = 'block';
+    }
+});
+</script>
 @endsection

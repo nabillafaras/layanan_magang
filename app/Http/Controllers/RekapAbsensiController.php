@@ -37,7 +37,7 @@ class RekapAbsensiController extends Controller
         $totalDays = Carbon::createFromDate($tahun, $bulan)->daysInMonth;
 
         // Query untuk mendapatkan peserta magang dengan status diterima
-        $query = Pendaftaran::where('status', 'diterima')
+        $query = Pendaftaran::whereIn('status', ['diterima', 'selesai'])
                       ->with(['attendances' => function($query) use ($tahun, $bulan) {
                           $query->whereYear('date', $tahun)
                                 ->whereMonth('date', $bulan);

@@ -37,7 +37,7 @@ class RekapAbsensi4Controller extends Controller
 
         // Query untuk mendapatkan peserta magang dengan direktorat dan status yang diinginkan
         $query = Pendaftaran::where('direktorat', 'Direktorat Jenderal Pemberdayaan Sosial')
-                           ->where('status', 'diterima')
+                           ->whereIn('status', ['diterima', 'selesai'])
                            ->with(['attendances' => function($query) use ($tahun, $bulan) {
                                $query->whereYear('date', $tahun)
                                      ->whereMonth('date', $bulan);

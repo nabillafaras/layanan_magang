@@ -35,7 +35,7 @@ class LaporanPimpinanController extends Controller
         $bulanNama = Carbon::createFromDate($tahun, $bulan, 1)->locale('id')->isoFormat('MMMM YYYY');
 
         // Query untuk mendapatkan peserta magang dengan status diterima
-        $query = Pendaftaran::where('status', 'diterima');
+        $query = Pendaftaran::whereIn('status', ['diterima', 'selesai']);
 
         // Filter berdasarkan direktorat
         if ($request->has('direktorat') && $request->direktorat) {
