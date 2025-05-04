@@ -85,43 +85,77 @@ class admin5Controller extends Controller
 }
 
 private function getRecentActivities()
-{
-    // Gabungkan aktivitas dari absensi dan laporan (hanya dari Inspektorat Jenderal)
-    $absensiActivities = Attendance::select(
-            'attendances.date as tanggal',
-            'pendaftaran.nama_lengkap as nama',
-            'pendaftaran.direktorat as direktorat',
-            DB::raw("'Absensi' as jenis"),
-            DB::raw("CASE 
-                WHEN attendances.check_in_time IS NOT NULL THEN 'Melakukan check in' 
-                ELSE 'Mengajukan izin/sakit' 
-            END as aktivitas"),
-            'attendances.status as status'
-        )
-        ->join('pendaftaran', 'pendaftaran.id', '=', 'attendances.user_id')
-        ->where('pendaftaran.status', 'diterima')
-        ->where('pendaftaran.direktorat', 'Inspektorat Jenderal')
-        ->orderBy('attendances.date', 'desc');
+    {
+        // Aktivitas check-in
+        $checkInActivities = Attendance::select(
+                DB::raw("CONCAT(attendances.date, ' ', attendances.check_in_time) as tanggal"),
+                'pendaftaran.nama_lengkap as nama',
+                'pendaftaran.unit_kerja as unit_kerja',
+                DB::raw("'Absensi' as jenis"),
+                DB::raw("'Melakukan check in' as aktivitas"),
+                'attendances.status as status'
+            )
+            ->join('pendaftaran', 'pendaftaran.id', '=', 'attendances.user_id')
+            ->where('pendaftaran.status', 'diterima')
+            ->where('pendaftaran.direktorat', 'Inspektorat Jenderal')
+            ->whereNotNull('attendances.check_in_time')
+            ->orderBy('attendances.date', 'desc')
+            ->orderBy('attendances.check_in_time', 'desc');
         
-    $laporanActivities = Laporan::select(
-            'laporan.created_at as tanggal',
-            'pendaftaran.nama_lengkap as nama',
-            'pendaftaran.direktorat as direktorat',
-            DB::raw("'Laporan' as jenis"),
-            DB::raw("CONCAT('Mengumpulkan laporan ', laporan.jenis_laporan) as aktivitas"),
-            'laporan.status as status'
-        )
-        ->join('pendaftaran', 'pendaftaran.id', '=', 'laporan.user_id')
-        ->where('pendaftaran.status', 'diterima')
-        ->where('pendaftaran.direktorat', 'Inspektorat Jenderal')
-        ->orderBy('laporan.created_at', 'desc');
-        
-    // Gabungkan dan ambil 10 aktivitas terbaru
-    $activities = $absensiActivities->union($laporanActivities)
-        ->orderBy('tanggal', 'desc')
-        ->limit(10)
-        ->get();
-        
-    return $activities;
-}
+        // Aktivitas check-out
+        $checkOutActivities = Attendance::select(
+                DB::raw("CONCAT(attendances.date, ' ', attendances.check_out_time) as tanggal"),
+                'pendaftaran.nama_lengkap as nama',
+                'pendaftaran.unit_kerja as unit_kerja',
+                DB::raw("'Absensi' as jenis"),
+                DB::raw("'Melakukan check out' as aktivitas"),
+                'attendances.status as status'
+            )
+            ->join('pendaftaran', 'pendaftaran.id', '=', 'attendances.user_id')
+            ->where('pendaftaran.status', 'diterima')
+            ->where('pendaftaran.direktorat', 'Inspektorat Jenderal')
+            ->whereNotNull('attendances.check_out_time')
+            ->orderBy('attendances.date', 'desc')
+            ->orderBy('attendances.check_out_time', 'desc');
+            
+        // Aktivitas izin/sakit
+        $permissionActivities = Attendance::select(
+                'attendances.date as tanggal',
+                'pendaftaran.nama_lengkap as nama',
+                'pendaftaran.unit_kerja as unit_kerja',
+                DB::raw("'Absensi' as jenis"),
+                DB::raw("'Mengajukan izin/sakit' as aktivitas"),
+                'attendances.status as status'
+            )
+            ->join('pendaftaran', 'pendaftaran.id', '=', 'attendances.user_id')
+            ->where('pendaftaran.status', 'diterima')
+            ->where('pendaftaran.direktorat', 'Inspektorat Jenderal')
+            ->whereNull('attendances.check_in_time')
+            ->orderBy('attendances.date', 'desc');
+            
+        // Aktivitas laporan
+        $laporanActivities = Laporan::select(
+                'laporan.created_at as tanggal',
+                'pendaftaran.nama_lengkap as nama',
+                'pendaftaran.unit_kerja as unit_kerja',
+                DB::raw("'Laporan' as jenis"),
+                DB::raw("CONCAT('Mengumpulkan laporan ', laporan.jenis_laporan) as aktivitas"),
+                'laporan.status as status'
+            )
+            ->join('pendaftaran', 'pendaftaran.id', '=', 'laporan.user_id')
+            ->where('pendaftaran.status', 'diterima')
+            ->where('pendaftaran.direktorat', 'Inspektorat Jenderal')
+            ->orderBy('laporan.created_at', 'desc');
+            
+        // Gabungkan dan ambil 10 aktivitas terbaru
+        $activities = $checkInActivities
+            ->union($checkOutActivities)
+            ->union($permissionActivities)
+            ->union($laporanActivities)
+            ->orderBy('tanggal', 'desc')
+            ->limit(10)
+            ->get();
+            
+        return $activities;
+    }
 }

@@ -44,7 +44,8 @@ class Direktorat1Controller extends Controller
                               ->whereIn('status', ['diterima', 'selesai']);
                     })
                     ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
+                    ->latest('date') // Menambahkan latest berdasarkan tanggal
+                    ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
                     ->get();
         
         // Ambil data laporan dengan relasi pendaftaran
@@ -55,7 +56,7 @@ class Direktorat1Controller extends Controller
                     ->with('pendaftaran')
                     ->orderBy('periode_bulan', 'desc')
                     ->get();
-                    session(['previous_direktorat' => 'Sekretariat Jenderal']);
+        session(['previous_direktorat' => 'Sekretariat Jenderal']);
         return view('admin1.direktorat1', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 

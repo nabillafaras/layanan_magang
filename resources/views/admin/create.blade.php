@@ -349,6 +349,7 @@
                                     <select id="role" name="role" class="form-control @error('role') is-invalid @enderror" required>
                                         <option value="" disabled selected>-- Pilih Direktorat --</option>
                                         <option value="admin">Semua Direktorat</option>
+                                        <option value="pimpinan">Pimpinan (Monitoring)</option>
                                         <option value="admin1">Sekretariat Jenderal</option>
                                         <option value="admin2">Direktorat Jenderal Perlindungan dan Jaminan Sosial</option>
                                         <option value="admin3">Direktorat Jenderal Rehabilitasi Sosial</option>

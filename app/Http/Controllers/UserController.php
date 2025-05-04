@@ -75,9 +75,11 @@ class UserController extends Controller
             });
         
         // Gabungkan data absensi dan laporan
-        $aktivitasRiwayat = $attendanceActivities->merge($reportActivities)
-                                                ->sortByDesc('tanggal')
-                                                ->take(10);
+        $aktivitasRiwayat = $attendanceActivities->toArray();
+        foreach($reportActivities as $activity) {
+            $aktivitasRiwayat[] = $activity;
+        }
+        $aktivitasRiwayat = collect($aktivitasRiwayat)->sortByDesc('tanggal')->take(10);
         
         // Ambil data periode magang
         $periodeData = Pendaftaran::where('id', $userId)

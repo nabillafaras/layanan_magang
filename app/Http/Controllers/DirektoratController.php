@@ -45,7 +45,8 @@ class DirektoratController extends Controller
 
                     })
                     ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
+                    ->latest('date') // Menambahkan latest berdasarkan tanggal
+                    ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
                     ->get();
         
         // Ambil data laporan dengan relasi pendaftaran
@@ -75,7 +76,8 @@ class DirektoratController extends Controller
 
                     })
                     ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
+                    ->latest('date') // Menambahkan latest berdasarkan tanggal
+                    ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
                     ->get();
         
         // Ambil data laporan dengan relasi pendaftaran
@@ -91,33 +93,37 @@ class DirektoratController extends Controller
         return view('admin.direktorat.direktorat2', compact('jumlahPeserta', 'absensi', 'laporan'));
     }
 
-    public function direktorat3()
-    {
-        // Hitung jumlah peserta magang aktif di Direktorat Jenderal Rehabilitasi Sosial
-        $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
-                                    ->where('status', 'diterima')
-                                    ->count();
-        
-        // Ambil data absensi dengan relasi pendaftaran
-        $absensi = Attendance::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
-                              ->whereIn('status', ['diterima', 'selesai']);;
-                    })
-                    ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
-                    ->get();
-        
-        // Ambil data laporan dengan relasi pendaftaran
-        $laporan = Laporan::whereHas('pendaftaran', function($query) {
-                        $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
-                              ->whereIn('status', ['diterima', 'selesai']);;
-                    })
-                    ->with('pendaftaran')
-                    ->orderBy('periode_bulan', 'desc')
-                    ->get();
-                    session(['previous_direktorat' => 'Direktorat Jenderal Rehabilitasi Sosial']);
-        return view('admin.direktorat.direktorat3', compact('jumlahPeserta', 'absensi', 'laporan'));
-    }
+    // Modifikasi pada method direktorat3 (dan serupa untuk direktorat lain)
+public function direktorat3()
+{
+    // Hitung jumlah peserta magang aktif di Direktorat Jenderal Rehabilitasi Sosial
+    $jumlahPeserta = Pendaftaran::where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
+                                ->where('status', 'diterima')
+                                ->count();
+    
+    // Ambil data absensi dengan relasi pendaftaran
+    // Perubahan disini: menggunakan latest() untuk memastikan data terbaru muncul di atas
+    $absensi = Attendance::whereHas('pendaftaran', function($query) {
+                    $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
+                          ->whereIn('status', ['diterima', 'selesai']);
+                })
+                ->with('pendaftaran')
+                ->latest('date') // Menambahkan latest berdasarkan tanggal
+                ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
+                ->get();
+    
+    // Kode untuk laporan tetap sama
+    $laporan = Laporan::whereHas('pendaftaran', function($query) {
+                    $query->where('direktorat', 'Direktorat Jenderal Rehabilitasi Sosial')
+                          ->whereIn('status', ['diterima', 'selesai']);
+                })
+                ->with('pendaftaran')
+                ->orderBy('periode_bulan', 'desc')
+                ->get();
+                
+    session(['previous_direktorat' => 'Direktorat Jenderal Rehabilitasi Sosial']);
+    return view('admin.direktorat.direktorat3', compact('jumlahPeserta', 'absensi', 'laporan'));
+}
 
     public function direktorat4()
     {
@@ -132,7 +138,8 @@ class DirektoratController extends Controller
                               ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
+                    ->latest('date') // Menambahkan latest berdasarkan tanggal
+                    ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
                     ->get();
         
         // Ambil data laporan dengan relasi pendaftaran
@@ -160,7 +167,8 @@ class DirektoratController extends Controller
                               ->whereIn('status', ['diterima', 'selesai']);;
                     })
                     ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
+                    ->latest('date') // Menambahkan latest berdasarkan tanggal
+                    ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
                     ->get();
         
         // Ambil data laporan dengan relasi pendaftaran

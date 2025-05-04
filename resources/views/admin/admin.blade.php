@@ -408,39 +408,14 @@
             </div>
         </div>
     </div>
-    
-    <!-- Quick Stats and Charts Row -->
-    <div class="row">
-        <!-- Direktorat Distribution -->
-        <div class="col-lg-6 mb-4">
-            <div class="dashboard-card bounce-in" style="animation-delay: 0.2s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Distribusi Peserta per Direktorat</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="direktoratChart" height="250"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Monthly Activity -->
-        <div class="col-lg-6 mb-4">
-            <div class="dashboard-card bounce-in" style="animation-delay: 0.3s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-line"></i> Aktivitas Bulanan</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="activityChart" height="250"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 @endsection
 
 @section('additional_scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
+    
     document.addEventListener('DOMContentLoaded', function() {
         // Animate progress bars
         setTimeout(function() {
@@ -470,82 +445,6 @@
             };
             
             updateCount();
-        });
-        
-        // Sample data for charts
-        // Direktorat Distribution Chart
-        const direktoratCtx = document.getElementById('direktoratChart').getContext('2d');
-        const direktoratChart = new Chart(direktoratCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Direktorat 1', 'Direktorat 2', 'Direktorat 3', 'Direktorat 4', 'Direktorat 5'],
-                datasets: [{
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: [
-                        '#8b0000',
-                        '#c13030',
-                        '#e74c3c',
-                        '#ff7675',
-                        '#fab1a0'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    }
-                },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
-                }
-            }
-        });
-        
-        // Monthly Activity Chart
-        const activityCtx = document.getElementById('activityChart').getContext('2d');
-        const activityChart = new Chart(activityCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Absensi',
-                    data: [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 75, 80],
-                    borderColor: '#8b0000',
-                    backgroundColor: 'rgba(139, 0, 0, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: 'Laporan',
-                    data: [28, 48, 40, 19, 86, 27, 90, 85, 70, 60, 65, 75],
-                    borderColor: '#ffc107',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeOutQuart'
-                }
-            }
         });
     });
 </script>

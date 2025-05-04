@@ -44,7 +44,8 @@ class Direktorat3Controller extends Controller
                               ->whereIn('status', ['diterima', 'selesai']);
                     })
                     ->with('pendaftaran')
-                    ->orderBy('date', 'desc')
+                    ->latest('date') // Menambahkan latest berdasarkan tanggal
+                    ->latest('created_at') // Jika tanggal sama, urutkan berdasarkan created_at
                     ->get();
         
         // Ambil data laporan dengan relasi pendaftaran

@@ -343,7 +343,7 @@
                                 <tr>
                                     <th>Tanggal</th>
                                     <th>Nama</th>
-                                    <th>Direktorat</th>
+                                    <th>Unit Kerja</th>
                                     <th>Aktivitas</th>
                                     <th>Status</th>
                                 </tr>
@@ -363,7 +363,7 @@
                                             <span>{{ $activity->nama }}</span>
                                         </div>
                                     </td>
-                                    <td>{{ $activity->direktorat }}</td>
+                                    <td>{{ $activity->unit_kerja }}</td>
                                     <td>
                                         @if(strpos(strtolower($activity->aktivitas), 'absen') !== false)
                                             <i class="fas fa-clipboard-check me-2 text-success"></i>
@@ -404,33 +404,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Quick Stats and Charts Row -->
-    <div class="row">
-        <!-- Direktorat Distribution -->
-        <div class="col-lg-6 mb-4">
-            <div class="dashboard-card bounce-in" style="animation-delay: 0.2s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Distribusi Peserta per Direktorat</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="direktoratChart" height="250"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Monthly Activity -->
-        <div class="col-lg-6 mb-4">
-            <div class="dashboard-card bounce-in" style="animation-delay: 0.3s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-line"></i> Aktivitas Bulanan</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="activityChart" height="250"></canvas>
                 </div>
             </div>
         </div>
@@ -502,48 +475,6 @@
                 animation: {
                     animateScale: true,
                     animateRotate: true
-                }
-            }
-        });
-        
-        // Monthly Activity Chart
-        const activityCtx = document.getElementById('activityChart').getContext('2d');
-        const activityChart = new Chart(activityCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Absensi',
-                    data: [65, 59, 80, 81, 56, 55, 40, 45, 60, 70, 75, 80],
-                    borderColor: '#8b0000',
-                    backgroundColor: 'rgba(139, 0, 0, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: 'Laporan',
-                    data: [28, 48, 40, 19, 86, 27, 90, 85, 70, 60, 65, 75],
-                    borderColor: '#ffc107',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                animation: {
-                    duration: 2000,
-                    easing: 'easeOutQuart'
                 }
             }
         });

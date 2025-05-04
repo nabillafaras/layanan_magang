@@ -831,14 +831,17 @@
         });
         
         // Handle errors from server
-        @if($errors->any())
+        // Alternatif: tambahkan elemen hidden dengan data notifikasi
+        // di view Anda, lalu baca nilai tersebut dengan JavaScript
+        const errorData = document.getElementById('error-data');
+        if (errorData && errorData.value) {
             Swal.fire({
                 icon: 'error',
                 title: 'Terjadi Kesalahan',
-                html: `@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach`,
+                text: errorData.value,
                 confirmButtonColor: '#8b0000'
             });
-        @endif
+        }
     });
 </script>
 <!-- SweetAlert2 untuk notifikasi yang lebih menarik -->

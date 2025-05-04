@@ -454,6 +454,7 @@
                         <tr>
                             <th>Nama</th>
                             <th>Tanggal</th>
+                            <th class="d-none">Tanggal Urut</th><!-- Kolom tersembunyi untuk pengurutan -->
                             <th>Check In</th>
                             <th>Check Out</th>
                             <th>Lokasi Check In</th>
@@ -476,8 +477,11 @@
                                         <span>{{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}</span>
                                     </div>
                                 </td>
-                                <!-- Kolom lainnya tetap sama -->
+                                <!-- Kolom tanggal tampilan -->
                                 <td>{{ \Carbon\Carbon::parse($a->date)->format('d-m-Y') }}</td>
+                                <!-- Kolom tanggal tersembunyi untuk pengurutan (menggunakan format YYYY-MM-DD) -->
+                                <td class="d-none">{{ $a->date }}</td>
+                                <!-- Kolom lainnya -->
                                 <td>{{ $a->check_in_time ? \Carbon\Carbon::parse($a->check_in_time)->format('H:i:s') : '-' }}</td>
                                 <td>{{ $a->check_out_time ? \Carbon\Carbon::parse($a->check_out_time)->format('H:i:s') : '-' }}</td>
                                 <!-- Lokasi Check In -->
@@ -785,7 +789,10 @@ $(document).ready(function() {
     $(document).ready(function() {
         // Inisialisasi DataTables dengan animasi
         $('#tabelAbsensi').DataTable({
-            order: [[1, 'desc']],
+            order: [[2, 'desc']], // Urutkan berdasarkan kolom ke-2 (kolom tanggal tersembunyi dalam format YYYY-MM-DD)
+            columnDefs: [
+                { "targets": [2], "visible": false } // Kolom ke-2 (indeks 2) dibuat tidak terlihat
+            ],
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
             },

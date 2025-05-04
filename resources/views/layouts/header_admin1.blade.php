@@ -488,17 +488,17 @@
                     
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link pulse" href="#">
-                                    <i class="fas fa-bell"></i>
-                                </a>
-                            </li>
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-user me-2"></i>{{ Auth::guard('admin')->user()->nama_lengkap }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="userDropdown">
-                                    
+                                    <li>
+                                        <a href="{{ route('admin1.profile.index') }}" class="dropdown-item">
+                                            <i class="fas fa-id-card me-2"></i> Profil
+                                        </a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('admin1.logout') }}" method="POST">

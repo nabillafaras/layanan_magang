@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin1\Peserta1Controller;
 use App\Http\Controllers\Admin1\RekapAbsensi1Controller;
 use App\Http\Controllers\Admin1\RekapLaporan1Controller;
 use App\Http\Controllers\Admin1\Pengumuman1Controller;
+use App\Http\Controllers\Admin1\AdminProfile1Controller;
 
 use App\Http\Controllers\Admin2\Admin2Controller;
 use App\Http\Controllers\Admin2\Direktorat2Controller;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin2\Peserta2Controller;
 use App\Http\Controllers\Admin2\RekapAbsensi2Controller;
 use App\Http\Controllers\Admin2\RekapLaporan2Controller;
 use App\Http\Controllers\Admin2\Pengumuman2Controller;
+use App\Http\Controllers\Admin2\AdminProfile2Controller;
 
 use App\Http\Controllers\Admin3\Admin3Controller;
 use App\Http\Controllers\Admin3\Direktorat3Controller;
@@ -20,6 +22,7 @@ use App\Http\Controllers\Admin3\Peserta3Controller;
 use App\Http\Controllers\Admin3\RekapAbsensi3Controller;
 use App\Http\Controllers\Admin3\RekapLaporan3Controller;
 use App\Http\Controllers\Admin3\Pengumuman3Controller;
+use App\Http\Controllers\Admin3\AdminProfile3Controller;
 
 use App\Http\Controllers\Admin4\Admin4Controller;
 use App\Http\Controllers\Admin4\Direktorat4Controller;
@@ -27,6 +30,7 @@ use App\Http\Controllers\Admin4\Peserta4Controller;
 use App\Http\Controllers\Admin4\RekapAbsensi4Controller;
 use App\Http\Controllers\Admin4\RekapLaporan4Controller;
 use App\Http\Controllers\Admin4\Pengumuman4Controller;
+use App\Http\Controllers\Admin4\AdminProfile4Controller;
 
 use App\Http\Controllers\Admin5\Admin5Controller;
 use App\Http\Controllers\Admin5\Direktorat5Controller;
@@ -34,6 +38,7 @@ use App\Http\Controllers\Admin5\Peserta5Controller;
 use App\Http\Controllers\Admin5\RekapAbsensi5Controller;
 use App\Http\Controllers\Admin5\RekapLaporan5Controller;
 use App\Http\Controllers\Admin5\Pengumuman5Controller;
+use App\Http\Controllers\Admin5\AdminProfile5Controller;
 
 
 use App\Http\Controllers\AdminAuthController;
@@ -54,10 +59,13 @@ use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PengumumanUserController;
 use App\Http\Controllers\PersyaratanController;
 use App\Http\Controllers\PesertaController;
+
 use App\Http\Controllers\Pimpinans\AbsensiPimpinanController;
 use App\Http\Controllers\Pimpinans\LaporanPimpinanController;
 use App\Http\Controllers\Pimpinans\PesertaPimpinanController;
 use App\Http\Controllers\Pimpinans\PimpinanController;
+use App\Http\Controllers\Pimpinans\PimpinanProfileController;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RekapAbsensiController;
 use App\Http\Controllers\RekapLaporanController;
@@ -194,18 +202,23 @@ Route::prefix('admin')->group(function () {
         Route::post('/admin/laporan/{id}/update-status', [DirektoratController::class, 'updateStatus'])->name('admin.update-status');
         Route::get('/admin/direktorat/{id}', [DirektoratController::class, 'showDirektorat'])->name('admin.direktorat');
         Route::get('/admin/direktorat/{direktorat}/map', [DirektoratController::class, 'mapDirektorat'])->name('admin.direktorat.map');
-    
+        
+        //Profile
+        Route::get('/profile', [App\Http\Controllers\AdminProfileController::class, 'index'])->name('admin.profile.index');
+        Route::put('/profile/update', [App\Http\Controllers\AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
+        Route::put('/profile/update-password', [App\Http\Controllers\AdminProfileController::class, 'updatePassword'])->name('admin.profile.update-password');
+
 
       
     // Pengumuman routes
-Route::prefix('admin/pengumuman')->name('admin.pengumuman.')->group(function () {
-    Route::get('/', [PengumumanController::class, 'index'])->name('index');
-    Route::post('/', [PengumumanController::class, 'store'])->name('store');
-    Route::put('/{pengumuman}', [PengumumanController::class, 'update'])->name('update');
-    Route::delete('/{pengumuman}', [PengumumanController::class, 'destroy'])->name('destroy');
-    Route::patch('/{pengumuman}/status', [PengumumanController::class, 'updateStatus'])->name('update.status');
-});
-});
+        Route::prefix('admin/pengumuman')->name('admin.pengumuman.')->group(function () {
+            Route::get('/', [PengumumanController::class, 'index'])->name('index');
+            Route::post('/', [PengumumanController::class, 'store'])->name('store');
+            Route::put('/{pengumuman}', [PengumumanController::class, 'update'])->name('update');
+            Route::delete('/{pengumuman}', [PengumumanController::class, 'destroy'])->name('destroy');
+            Route::patch('/{pengumuman}/status', [PengumumanController::class, 'updateStatus'])->name('update.status');
+        });
+    });
 });
 
 // ====================================
@@ -223,9 +236,15 @@ Route::prefix('pimpinan')->group(function () {
         Route::get('/export-absensi', [AbsensiPimpinanController::class, 'exportExcel'])->name('export-absensi');
     
         // Rute untuk rekapitulasi laporan
-    Route::get('/rekapitulasi-laporan', [LaporanPimpinanController::class, 'index'])->name('pimpinan.laporan');
-    Route::get('/export-laporan', [LaporanPimpinanController::class, 'exportExcel'])->name('export-laporan');
-});
+        Route::get('/rekapitulasi-laporan', [LaporanPimpinanController::class, 'index'])->name('pimpinan.laporan');
+        Route::get('/export-laporan', [LaporanPimpinanController::class, 'exportExcel'])->name('export-laporan');
+    
+        //Profile
+        Route::get('/profile', [PimpinanProfileController::class, 'index'])->name('pimpinan.profile.index');
+        Route::put('/profile/update', [PimpinanProfileController::class, 'updateProfile'])->name('pimpinan.profile.update');
+        Route::put('/profile/update-password', [PimpinanProfileController::class, 'updatePassword'])->name('pimpinan.profile.update-password');
+
+    });
 });
 
 // ====================================
@@ -261,6 +280,12 @@ Route::prefix('admin1')->group(function () {
         // Rute untuk rekapitulasi laporan
         Route::get('/rekapitulasi-laporan', [RekapLaporan1Controller::class, 'index'])->name('admin1.rekapitulasi-laporan1');
         Route::get('/export-laporan', [RekapLaporan1Controller::class, 'exportExcel'])->name('admin1.export-laporan1');
+
+        //Profile
+        Route::get('/profile', [AdminProfile1Controller::class, 'index'])->name('admin1.profile.index');
+        Route::put('/profile/update', [AdminProfile1Controller::class, 'updateProfile'])->name('admin1.profile.update');
+        Route::put('/profile/update-password', [AdminProfile1Controller::class, 'updatePassword'])->name('admin1.profile.update-password');
+
 
             // Pengumuman routes
     Route::prefix('admin/pengumuman')->name('admin1.pengumuman1.')->group(function () {
@@ -308,6 +333,12 @@ Route::prefix('admin2')->group(function () {
          Route::get('/rekapitulasi-laporan', [RekapLaporan2Controller::class, 'index'])->name('admin2.rekapitulasi-laporan2');
          Route::get('/export-laporan', [RekapLaporan2Controller::class, 'exportExcel'])->name('admin2.export-laporan2');
  
+        //Profile
+        Route::get('/profile', [AdminProfile2Controller::class, 'index'])->name('admin2.profile.index');
+        Route::put('/profile/update', [AdminProfile2Controller::class, 'updateProfile'])->name('admin2.profile.update');
+        Route::put('/profile/update-password', [AdminProfile2Controller::class, 'updatePassword'])->name('admin2.profile.update-password');
+
+
         // Pengumuman routes
     Route::prefix('admin/pengumuman')->name('admin2.pengumuman2.')->group(function () {
         Route::get('/', [Pengumuman2Controller::class, 'index'])->name('index');
@@ -355,6 +386,12 @@ Route::prefix('admin3')->group(function () {
          Route::get('/rekapitulasi-laporan', [RekapLaporan3Controller::class, 'index'])->name('admin3.rekapitulasi-laporan3');
          Route::get('/export-laporan', [RekapLaporan3Controller::class, 'exportExcel'])->name('admin3.export-laporan3');
  
+        //Profile
+        Route::get('/profile', [AdminProfile3Controller::class, 'index'])->name('admin3.profile.index');
+        Route::put('/profile/update', [AdminProfile3Controller::class, 'updateProfile'])->name('admin3.profile.update');
+        Route::put('/profile/update-password', [AdminProfile3Controller::class, 'updatePassword'])->name('admin3.profile.update-password');
+
+
         // Pengumuman routes
     Route::prefix('admin/pengumuman')->name('admin3.pengumuman3.')->group(function () {
         Route::get('/', [Pengumuman3Controller::class, 'index'])->name('index');
@@ -402,6 +439,12 @@ Route::prefix('admin4')->group(function () {
          Route::get('/rekapitulasi-laporan', [RekapLaporan4Controller::class, 'index'])->name('admin4.rekapitulasi-laporan4');
          Route::get('/export-laporan', [RekapLaporan4Controller::class, 'exportExcel'])->name('admin4.export-laporan4');
  
+        //Profile
+        Route::get('/profile', [AdminProfile4Controller::class, 'index'])->name('admin4.profile.index');
+        Route::put('/profile/update', [AdminProfile4Controller::class, 'updateProfile'])->name('admin4.profile.update');
+        Route::put('/profile/update-password', [AdminProfile4Controller::class, 'updatePassword'])->name('admin4.profile.update-password');
+
+
         // Pengumuman routes
     Route::prefix('admin/pengumuman')->name('admin4.pengumuman4.')->group(function () {
         Route::get('/', [Pengumuman4Controller::class, 'index'])->name('index');
@@ -447,6 +490,12 @@ Route::prefix('admin5')->group(function () {
          Route::get('/rekapitulasi-laporan', [RekapLaporan5Controller::class, 'index'])->name('admin5.rekapitulasi-laporan5');
          Route::get('/export-laporan', [RekapLaporan5Controller::class, 'exportExcel'])->name('admin5.export-laporan5');
  
+        //Profile
+        Route::get('/profile', [AdminProfile5Controller::class, 'index'])->name('admin5.profile.index');
+        Route::put('/profile/update', [AdminProfile5Controller::class, 'updateProfile'])->name('admin5.profile.update');
+        Route::put('/profile/update-password', [AdminProfile5Controller::class, 'updatePassword'])->name('admin5.profile.update-password');
+
+
         // Pengumuman routes
     Route::prefix('admin/pengumuman')->name('admin5.pengumuman5.')->group(function () {
         Route::get('/', [Pengumuman5Controller::class, 'index'])->name('index');
