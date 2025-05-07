@@ -438,209 +438,209 @@
         </div>
     </div>
 
-
     <div class="row">
-    <div class="col-12">
-        <div class="dashboard-card slide-in-up" style="animation-delay: 0.3s">
-            <div class="card-header">
-                <h5><i class="fas fa-file-alt"></i> Data Absensi</h5>
-                <small class="text-muted scroll-indicator">
-                    <i class="fas fa-arrows-alt-h"></i> Geser untuk melihat seluruh data
-                </small>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="tabelAbsensi">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Tanggal</th>
-                            <th class="d-none">Tanggal Urut</th><!-- Kolom tersembunyi untuk pengurutan -->
-                            <th>Check In</th>
-                            <th>Check Out</th>
-                            <th>Lokasi Check In</th>
-                            <th>Lokasi Check Out</th>
-                            <th>Photo Check In</th>
-                            <th>Photo Check Out</th>
-                            <th>Bukti Sakit/Izin</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($absensi as $index => $a)
-                            <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
-                                <!-- Kolom nama -->
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-user text-primary"></i>
-                                        </div>
-                                        <span>{{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}</span>
-                                    </div>
-                                </td>
-                                <!-- Kolom tanggal tampilan -->
-                                <td>{{ \Carbon\Carbon::parse($a->date)->format('d-m-Y') }}</td>
-                                <!-- Kolom tanggal tersembunyi untuk pengurutan (menggunakan format YYYY-MM-DD) -->
-                                <td class="d-none">{{ $a->date }}</td>
-                                <!-- Kolom lainnya -->
-                                <td>{{ $a->check_in_time ? \Carbon\Carbon::parse($a->check_in_time)->format('H:i:s') : '-' }}</td>
-                                <td>{{ $a->check_out_time ? \Carbon\Carbon::parse($a->check_out_time)->format('H:i:s') : '-' }}</td>
-                                <!-- Lokasi Check In -->
-                                <td>
-                                    @if($a->check_in_latitude && $a->check_in_longitude)
-                                        <button type="button" class="btn btn-sm btn-primary lihat-peta" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#mapModal" 
-                                                data-lat="{{ $a->check_in_latitude }}" 
-                                                data-lng="{{ $a->check_in_longitude }}"
-                                                data-lokasi="Check In: {{ $a->check_in_location }}">
-                                            <i class="fas fa-map-marker-alt me-1"></i> Lihat Peta
-                                        </button>
-                                    @else
-                                        {{ $a->check_in_location ?: '-' }}
-                                    @endif
-                                </td>
-                                <!-- Lokasi Check Out -->
-                                <td>
-                                    @if($a->check_out_latitude && $a->check_out_longitude)
-                                        <button type="button" class="btn btn-sm btn-info lihat-peta" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#mapModal" 
-                                                data-lat="{{ $a->check_out_latitude }}" 
-                                                data-lng="{{ $a->check_out_longitude }}"
-                                                data-lokasi="Check Out: {{ $a->check_out_location }}">
-                                            <i class="fas fa-map-marker-alt me-1"></i> Lihat Peta
-                                        </button>
-                                    @else
-                                        {{ $a->check_out_location ?: '-' }}
-                                    @endif
-                                </td>
-                                <!-- Photo Check In -->
-                                <td>
-                                    @if($a->check_in_photo)
-                                        <button type="button" class="btn btn-sm btn-primary lihat-foto" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#photoModal" 
-                                                data-foto="{{ asset('storage/' . $a->check_in_photo) }}"
-                                                data-title="Foto Check In - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
-                                            <i class="fas fa-camera me-1"></i> Lihat Foto
-                                        </button>
-                                    @else
-                                        <span class="text-muted">Tidak ada foto</span>
-                                    @endif
-                                </td>
-                                <!-- Photo Check Out -->
-                                <td>
-                                    @if($a->check_out_photo)
-                                        <button type="button" class="btn btn-sm btn-success lihat-foto" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#photoModal" 
-                                                data-foto="{{ asset('storage/' . $a->check_out_photo) }}"
-                                                data-title="Foto Check Out - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
-                                            <i class="fas fa-camera me-1"></i> Lihat Foto
-                                        </button>
-                                    @else
-                                        <span class="text-muted">Tidak ada foto</span>
-                                    @endif
-                                </td>
-                                <!-- Kolom Bukti Sakit/Izin yang diperbarui -->
-                                <td>
-                                    <div class="d-flex gap-2 flex-wrap">
-                                        @if($a->bukti_izin)
-                                            <button type="button" class="btn btn-sm btn-warning lihat-bukti" 
-                                                    data-file="{{ asset('storage/' . $a->bukti_izin) }}"
-                                                    data-jenis="izin"
-                                                    data-keterangan="{{ $a->ket_izin ?? 'Tidak ada keterangan' }}"
-                                                    data-title="Bukti Izin - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
-                                                <i class="fas fa-file-alt me-1"></i> Bukti Izin
-                                            </button>
-                                        @endif
-                                        
-                                        @if($a->bukti_sakit)
-                                            <button type="button" class="btn btn-sm btn-danger lihat-bukti" 
-                                                    data-file="{{ asset('storage/' . $a->bukti_sakit) }}"
-                                                    data-jenis="sakit"
-                                                    data-keterangan="{{ $a->ket_sakit ?? 'Tidak ada keterangan' }}"
-                                                    data-title="Bukti Sakit - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
-                                                <i class="fas fa-file-medical me-1"></i> Bukti Sakit
-                                            </button>
-                                        @endif
-                                        
-                                        @if(!$a->bukti_izin && !$a->bukti_sakit)
-                                            <span class="text-muted">Tidak ada bukti</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <!-- Status -->
-                                <td>
-                                    <span class="badge {{ $a->status == 'hadir' ? 'bg-success' : ($a->status == 'izin' ? 'bg-warning' : 'bg-danger') }}">
-                                        {{ $a->status }}
-                                    </span>
-                                </td>
+        <div class="col-12">
+            <div class="dashboard-card slide-in-up" style="animation-delay: 0.3s">
+                <div class="card-header">
+                    <h5><i class="fas fa-file-alt"></i> Data Absensi</h5>
+                    <small class="text-muted scroll-indicator">
+                        <i class="fas fa-arrows-alt-h"></i> Geser untuk melihat seluruh data
+                    </small>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="tabelAbsensi">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Tanggal</th>
+                                <th class="d-none">Tanggal Urut</th><!-- Kolom tersembunyi untuk pengurutan -->
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Lokasi Check In</th>
+                                <th>Lokasi Check Out</th>
+                                <th>Photo Check In</th>
+                                <th>Photo Check Out</th>
+                                <th>Bukti Sakit/Izin</th>
+                                <th>Status</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-            <!-- Modal untuk menampilkan foto -->
-            <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="photoModalLabel">Foto Absensi</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <img id="modalFoto" src="/placeholder.svg" alt="Foto Absensi" class="img-fluid">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        </div>
-                    </div>
+                        </thead>
+                        <tbody>
+                            @foreach($absensi as $index => $a)
+                                <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
+                                    <!-- Kolom nama -->
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-user text-primary"></i>
+                                            </div>
+                                            <span>{{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}</span>
+                                        </div>
+                                    </td>
+                                    <!-- Kolom tanggal tampilan -->
+                                    <td>{{ \Carbon\Carbon::parse($a->date)->format('d-m-Y') }}</td>
+                                    <!-- Kolom tanggal tersembunyi untuk pengurutan (menggunakan format YYYY-MM-DD) -->
+                                    <td class="d-none">{{ $a->date }}</td>
+                                    <!-- Kolom lainnya -->
+                                    <td>{{ $a->check_in_time ? \Carbon\Carbon::parse($a->check_in_time)->format('H:i:s') : '-' }}</td>
+                                    <td>{{ $a->check_out_time ? \Carbon\Carbon::parse($a->check_out_time)->format('H:i:s') : '-' }}</td>
+                                    <!-- Lokasi Check In -->
+                                    <td>
+                                        @if($a->check_in_latitude && $a->check_in_longitude)
+                                            <button type="button" class="btn btn-sm btn-primary lihat-peta" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#mapModal" 
+                                                    data-lat="{{ $a->check_in_latitude }}" 
+                                                    data-lng="{{ $a->check_in_longitude }}"
+                                                    data-lokasi="Check In: {{ $a->check_in_location }}">
+                                                <i class="fas fa-map-marker-alt me-1"></i> Lihat Peta
+                                            </button>
+                                        @else
+                                            {{ $a->check_in_location ?: '-' }}
+                                        @endif
+                                    </td>
+                                    <!-- Lokasi Check Out -->
+                                    <td>
+                                        @if($a->check_out_latitude && $a->check_out_longitude)
+                                            <button type="button" class="btn btn-sm btn-info lihat-peta" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#mapModal" 
+                                                    data-lat="{{ $a->check_out_latitude }}" 
+                                                    data-lng="{{ $a->check_out_longitude }}"
+                                                    data-lokasi="Check Out: {{ $a->check_out_location }}">
+                                                <i class="fas fa-map-marker-alt me-1"></i> Lihat Peta
+                                            </button>
+                                        @else
+                                            {{ $a->check_out_location ?: '-' }}
+                                        @endif
+                                    </td>
+                                    <!-- Photo Check In -->
+                                    <td>
+                                        @if($a->check_in_photo)
+                                            <button type="button" class="btn btn-sm btn-primary lihat-foto" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#photoModal" 
+                                                    data-foto="{{ asset('storage/' . $a->check_in_photo) }}"
+                                                    data-title="Foto Check In - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
+                                                <i class="fas fa-camera me-1"></i> Lihat Foto
+                                            </button>
+                                        @else
+                                            <span class="text-muted">Tidak ada foto</span>
+                                        @endif
+                                    </td>
+                                    <!-- Photo Check Out -->
+                                    <td>
+                                        @if($a->check_out_photo)
+                                            <button type="button" class="btn btn-sm btn-success lihat-foto" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#photoModal" 
+                                                    data-foto="{{ asset('storage/' . $a->check_out_photo) }}"
+                                                    data-title="Foto Check Out - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
+                                                <i class="fas fa-camera me-1"></i> Lihat Foto
+                                            </button>
+                                        @else
+                                            <span class="text-muted">Tidak ada foto</span>
+                                        @endif
+                                    </td>
+                                    <!-- Kolom Bukti Sakit/Izin yang diperbarui -->
+                                    <td>
+                                        <div class="d-flex gap-2 flex-wrap">
+                                            @if($a->bukti_izin)
+                                                <button type="button" class="btn btn-sm btn-warning lihat-bukti" 
+                                                        data-file="{{ asset('storage/' . $a->bukti_izin) }}"
+                                                        data-jenis="izin"
+                                                        data-keterangan="{{ $a->ket_izin ?? 'Tidak ada keterangan' }}"
+                                                        data-title="Bukti Izin - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
+                                                    <i class="fas fa-file-alt me-1"></i> Bukti Izin
+                                                </button>
+                                            @endif
+                                            
+                                            @if($a->bukti_sakit)
+                                                <button type="button" class="btn btn-sm btn-danger lihat-bukti" 
+                                                        data-file="{{ asset('storage/' . $a->bukti_sakit) }}"
+                                                        data-jenis="sakit"
+                                                        data-keterangan="{{ $a->ket_sakit ?? 'Tidak ada keterangan' }}"
+                                                        data-title="Bukti Sakit - {{ $a->pendaftaran->nama_lengkap ?? 'Tidak diketahui' }}">
+                                                    <i class="fas fa-file-medical me-1"></i> Bukti Sakit
+                                                </button>
+                                            @endif
+                                            
+                                            @if(!$a->bukti_izin && !$a->bukti_sakit)
+                                                <span class="text-muted">Tidak ada bukti</span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <!-- Status -->
+                                    <td>
+                                        <span class="badge {{ $a->status == 'hadir' ? 'bg-success' : ($a->status == 'izin' ? 'bg-warning' : 'bg-danger') }}">
+                                            {{ $a->status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal untuk menampilkan bukti izin/sakit -->
-<div class="modal fade" id="buktiModal" tabindex="-1" aria-labelledby="buktiModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="buktiModalLabel">Bukti Sakit/Izin</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Keterangan Izin/Sakit -->
-                <div class="alert alert-info mb-3" id="keteranganText">
-                    <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Keterangan:</h6>
-                    <p id="keterangan" class="mb-0"></p>
+    <!-- Modal untuk menampilkan foto -->
+    <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photoModalLabel">Foto Absensi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
-                <!-- Container untuk preview file -->
-                <div id="filePreviewContainer" class="mb-3 text-center">
-                    <h6 class="text-muted mb-3" id="fileTypeLabel">Bukti Dokumen</h6>
-                    <!-- Preview gambar -->
-                    <img id="imgPreview" src="" alt="Bukti Dokumen" class="img-fluid d-none">
-                    <!-- Preview PDF -->
-                    <iframe id="pdfPreview" src="" frameborder="0" width="100%" height="500px" class="d-none"></iframe>
-                    <!-- Pesan jika format tidak didukung -->
-                    <div id="unsupportedFormat" class="alert alert-warning d-none">
-                        Format file tidak dapat ditampilkan secara langsung. Silakan unduh file untuk melihatnya.
-                    </div>
+                <div class="modal-body text-center">
+                    <img id="modalFoto" src="/placeholder.svg" alt="Foto Absensi" class="img-fluid">
                 </div>
-                <div class="text-center">
-                    <a id="downloadBukti" href="" class="btn btn-primary" target="_blank">
-                        <i class="fas fa-download me-1"></i> Unduh File
-                    </a>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Modal untuk menampilkan bukti izin/sakit -->
+    <div class="modal fade" id="buktiModal" tabindex="-1" aria-labelledby="buktiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buktiModalLabel">Bukti Sakit/Izin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Keterangan Izin/Sakit -->
+                    <div class="alert alert-info mb-3" id="keteranganText">
+                        <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Keterangan:</h6>
+                        <p id="keterangan" class="mb-0"></p>
+                    </div>
+                    
+                    <!-- Container untuk preview file -->
+                    <div id="filePreviewContainer" class="mb-3 text-center">
+                        <h6 class="text-muted mb-3" id="fileTypeLabel">Bukti Dokumen</h6>
+                        <!-- Preview gambar -->
+                        <img id="imgPreview" src="/placeholder.svg" alt="Bukti Dokumen" class="img-fluid d-none">
+                        <!-- Preview PDF -->
+                        <iframe id="pdfPreview" src="/placeholder.svg" frameborder="0" width="100%" height="500px" class="d-none"></iframe>
+                        <!-- Pesan jika format tidak didukung -->
+                        <div id="unsupportedFormat" class="alert alert-warning d-none">
+                            Format file tidak dapat ditampilkan secara langsung. Silakan unduh file untuk melihatnya.
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a id="downloadBukti" href="" class="btn btn-primary" target="_blank">
+                            <i class="fas fa-download me-1"></i> Unduh File
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Rekapitulasi Laporan Bulanan -->
     <div class="row">

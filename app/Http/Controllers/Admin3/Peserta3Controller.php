@@ -82,16 +82,30 @@ class Peserta3Controller extends Controller
             'status' => 'required|in:Diproses,Diterima,Ditolak',
             'catatan' => 'nullable|string|max:500',
             'surat_balasan' => 'nullable|file|mimes:pdf|max:2048',
+            'surat_ditolak' => 'nullable|file|mimes:pdf|max:2048', // Tambahkan validasi untuk surat_ditolak
         ]);
         
         $pendaftaran->status = $request->status;
         
         if ($request->status === 'Ditolak') {
             $pendaftaran->catatan = $request->catatan;
-            $pendaftaran->surat_balasan = null; // Hapus surat jika ada
+            $pendaftaran->surat_balasan = null; // Hapus surat balasan jika ada
+            
+            // Upload surat penolakan jika ada
+            if ($request->hasFile('surat_ditolak')) {
+                // Hapus file lama jika ada
+                if ($pendaftaran->surat_ditolak) {
+                    Storage::disk('public')->delete($pendaftaran->surat_ditolak);
+                }
+                
+                // Upload file baru
+                $path = $request->file('surat_ditolak')->store('surat_ditolak', 'public');
+                $pendaftaran->surat_ditolak = $path;
+            }
         } 
         elseif ($request->status === 'Diterima') {
             $pendaftaran->catatan = null; // Hapus catatan jika ada
+            $pendaftaran->surat_ditolak = null; // Hapus surat penolakan jika ada
             
             // Upload surat balasan jika ada
             if ($request->hasFile('surat_balasan')) {

@@ -35,6 +35,7 @@ class Pendaftaran extends Authenticatable
         'status',
         'catatan',
         'surat_balasan',
+        'surat_ditolak',
         'role',
         'tanggal_mulai',
         'tanggal_selesai',

@@ -265,7 +265,7 @@
             <div class="col-md-8">
                 <div class="card shadow-sm" data-aos="fade-up">
                     <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-search"></i> Cek Status Pendaftaran</h4>
+                        <h4 class="mb-0"><i class="fas fa-search"></i> Informasi Status Magang</h4>
                     </div>
                     <div class="card-body">
                         @if(session('error'))
@@ -274,8 +274,18 @@
                             </div>
                         @endif
                         
-                        <p class="mb-4" data-aos="fade-up" data-aos-delay="100">Masukkan nomor pendaftaran Anda untuk memeriksa status pendaftaran magang.</p>
-                        
+                        <div data-aos="fade-up" data-aos-delay="100">
+                        <ul class="list-disc pl-5 space-y-3">
+                            <li class="mb-2"><strong>Cek Status Pendaftaran</strong>: Cek Status pendaftaran Anda untuk melihat apakah pendaftaran magang Anda masih dalam Proses/Diterima/Ditolak.</li>
+                            <li class="mb-2"><strong>Ambil Dokumen Penyelesaian</strong>: Setelah menyelesaikan program magang, Anda dapat mengunduh:
+                            <ul class="list-circle pl-5 mt-1">
+                                <li>Surat Keterangan Penyelesaian Magang</li>
+                                <li>Sertifikat Magang</li>
+                            </ul>
+                            </li>
+                            <li class="mb-2"><strong>Cara Penggunaan</strong>: Cukup masukkan nomor pendaftaran Anda pada kolom yang tersedia dan klik tombol "Cek Status".</li>
+                        </ul>
+                        </div>
                         <form action="{{ route('status.check') }}" method="POST" id="checkStatusForm">
                             @csrf
                             <div class="form-group mb-4" data-aos="fade-up" data-aos-delay="200">

@@ -406,67 +406,38 @@
 
     /* Info Box Styling */
     .info-box {
-        display: flex;
-        align-items: flex-start;
-        background-color: #fff;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        margin-bottom: 30px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(0,0,0,0.05);
-        overflow: hidden;
-    }
-    
-    .info-box:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    }
-    
-    .info-box img {
-        width: 150px;
-        height: 150px;
-        margin-right: 25px;
-        border-radius: 10px;
-        object-fit: cover;
-        transition: all 0.5s ease;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .info-box:hover img {
-        transform: scale(1.05) rotate(2deg);
-    }
-    
-    .info-box div {
-        flex: 1;
-    }
-    
-    .info-box h3 {
-        color: var(--primary-color);
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-        position: relative;
-        padding-bottom: 10px;
-        display: inline-block;
-    }
-    
-    .info-box h3::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 50px;
-        height: 3px;
-        background: var(--secondary-color);
-        border-radius: 10px;
-    }
-    
-    .info-box p {
-        color: #555;
-        line-height: 1.7;
-        margin-bottom: 0;
-    }
+    display: flex;
+    align-items: flex-start;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.info-box:hover {
+    transform: translateY(-5px);
+}
+
+.icon-container {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-box h3 {
+    margin-top: 0;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.info-box p {
+    color: #666;
+    margin-bottom: 0;
+}
     
     .info-box p strong {
         color: var(--primary-color);
@@ -594,59 +565,58 @@
 
 @section('content')
 @include('layouts.transisi')
-    <!-- Hero Section -->
-    <section class="hero">
-        <!-- Animated Shapes -->
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        
-        <div class="hero-content" data-aos="fade-right" data-aos-delay="200">
-            <h1>Persyaratan Magang</h1>
-            <p>Temukan informasi lengkap tentang persyaratan dan tata cara pendaftaran program magang di Kementerian Sosial Republik Indonesia.</p>
-            <a href="#persyaratan" class="hero-btn">Lihat Persyaratan <i class="fas fa-arrow-right"></i></a>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="hero">
+<!-- Animated Shapes -->
+<div class="shape shape-1"></div>
+<div class="shape shape-2"></div>
+    <div class="hero-content" data-aos="fade-right" data-aos-delay="200">
+        <h1>Persyaratan Magang</h1>
+        <p>Temukan informasi lengkap tentang persyaratan dan tata cara pendaftaran program magang di Kementerian Sosial Republik Indonesia.</p>
+        <a href="#persyaratan" class="hero-btn">Lihat Persyaratan <i class="fas fa-arrow-right"></i></a>
+    </div>
+</section>
 
-    <!-- Information Section -->
-    <section id="persyaratan" class="information-section">
-        <div class="container">
-            <h2 data-aos="fade-up">Persyaratan Pendaftaran Magang di Kemensos RI</h2>
-            
-            <div class="requirements-box" data-aos="fade-up" data-aos-delay="100">
-                <h3>Berkas dan Persyaratan yang Perlu Disiapkan</h3>
-                <ul>
-                    <li>
-                        <strong>Curriculum Vitae (CV)</strong>
-                        <p>CV yang berisi informasi lengkap tentang data diri, riwayat pendidikan, pengalaman organisasi, kemampuan, dan keahlian yang dimiliki. Format CV bebas, namun disarankan maksimal 2 lembar dengan desain yang profesional.</p>
-                    </li>
-                    <li>
-                        <strong>Transkrip Nilai</strong>
-                        <p>Transkrip nilai terbaru dari institusi pendidikan dengan IPK minimal 3.00 (untuk S1) atau 2.75 (untuk D3). Transkrip harus dilegalisir oleh pihak kampus dan masih berlaku.</p>
-                    </li>
-                    <li>
-                        <strong>Surat Pengantar dari Institusi Pendidikan</strong>
-                        <p>Surat pengantar resmi dari institusi pendidikan yang menyatakan bahwa mahasiswa yang bersangkutan direkomendasikan untuk melaksanakan program magang di Kementerian Sosial RI. Surat harus ditandatangani oleh pejabat yang berwenang (Dekan/Kaprodi/Wadek).</p>
-                    </li>
-                    <li>
-                        <strong>Surat Permohonan Magang</strong>
-                        <p>Surat permohonan magang yang ditujukan kepada Kepala Biro Sumber Daya Manusia Kementerian Sosial RI. Format bisa diunduh di website resmi Kemensos.</p>
-                    </li>
-                    <li>
-                        <strong>Pas Foto Berwarna</strong>
-                        <p>Pas foto terbaru ukuran 4x6 dengan latar belakang merah (2 lembar) dan dalam bentuk digital (format .jpg atau .png).</p>
-                    </li>
-                    <li>
-                        <strong>Fotokopi KTP</strong>
-                        <p>Fotokopi KTP yang masih berlaku dan scan digital KTP.</p>
-                    </li>
-                    <li>
-                        <strong>Proposal Magang</strong>
-                        <p>Proposal singkat yang berisi rencana kegiatan selama magang (1-2 halaman) termasuk bidang yang diminati dan alasan pemilihan Kemensos sebagai tempat magang.</p>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="steps-box" data-aos="fade-up" data-aos-delay="200">
+<!-- Information Section -->
+<section id="persyaratan" class="information-section">
+    <div class="container">
+        <h2 data-aos="fade-up">Persyaratan Pendaftaran Magang di Kemensos RI</h2>
+        
+        <div class="requirements-box" data-aos="fade-up" data-aos-delay="100">
+            <h3>Berkas dan Persyaratan yang Perlu Disiapkan</h3>
+            <ul>
+                <li>
+                    <strong>Data Diri Lengkap</strong>
+                    <p>Calon peserta magang wajib menyiapkan data diri lengkap meliputi nama lengkap, tempat dan tanggal lahir, jenis kelamin, nomor handphone (10-15 digit), dan alamat email aktif.</p>
+                </li>
+                <li>
+                    <strong>Informasi Akademik</strong>
+                    <p>Calon peserta harus menyiapkan informasi asal institusi pendidikan, jurusan/bidang keilmuan, program/keahlian yang diambil, semester yang sedang ditempuh (minimal semester 1), dan IPK/nilai rata-rata.</p>
+                </li>
+                <li>
+                    <strong>Transkrip Nilai/Rata-Rata Raport</strong>
+                    <p>Dokumen transkrip nilai terbaru dari institusi pendidikan dalam format PDF, JPG, atau PNG yang menunjukkan prestasi akademik peserta.</p>
+                </li>
+                <li>
+                    <strong>Surat Pengantar Institusi Pendidikan</strong>
+                    <p>Surat pengantar resmi dari institusi pendidikan yang menyatakan bahwa mahasiswa yang bersangkutan direkomendasikan untuk melaksanakan program magang di Kementerian Sosial RI dalam format PDF, JPG, atau PNG.</p>
+                </li>
+                <li>
+                    <strong>Curriculum Vitae (CV)</strong>
+                    <p>CV yang berisi informasi lengkap tentang data diri, riwayat pendidikan, pengalaman organisasi, kemampuan, dan keahlian yang dimiliki dalam format PDF, JPG, atau PNG.</p>
+                </li>
+                <li>
+                    <strong>Pas Foto</strong>
+                    <p>Pas foto formal terbaru dengan format JPG atau PNG yang akan digunakan sebagai foto profil dalam sistem magang.</p>
+                </li>
+                <li>
+                    <strong>Informasi Periode Magang</strong>
+                    <p>Rencana periode pelaksanaan magang dengan menentukan tanggal mulai dan tanggal selesai yang spesifik.</p>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="steps-box" data-aos="fade-up" data-aos-delay="200">
                 <h3>Tata Cara Pendaftaran Magang</h3>
                 
                 <div class="step-item" data-aos="fade-up" data-aos-delay="250">
@@ -685,7 +655,7 @@
                     <div class="step-number">5</div>
                     <div class="step-content">
                         <h4>Pengumuman Hasil</h4>
-                        <p>Pengumuman hasil seleksi akan diinformasikan melalui email dan dapat dilihat di portal layanan magang Kemensos. Peserta yang lolos seleksi akan menerima Surat Penerimaan Magang secara resmi dan mendapatkan akun untuk mengakses absensi selama kegiatan magang.</p>
+                        <p>Pengumuman hasil seleksi dapat dilihat di portal layanan magang Kemensos dengam mengakses menu "Cek Status". Peserta yang lolos seleksi akan menerima Surat Penerimaan Magang secara resmi dan mendapatkan akun untuk mengakses absensi selama kegiatan magang.</p>
                     </div>
                 </div>
                 
@@ -696,47 +666,61 @@
                         <p>Setelah akun diberikan, login ke sistem menggunakan nomor pendaftaran dan password yang telah diberikan. Pastikan menggunakan browser terbaru untuk pengalaman pengguna yang optimal.</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="info-box">
-                        <img src="images/info1.jpg" alt="Informasi 1">
-                        <div>
-                            <h3>Bantuan Pendaftaran</h3>
-                            <p>
-                                Jika mengalami kesulitan dalam proses pendaftaran atau memiliki pertanyaan, silakan hubungi tim dukungan Kemensos melalui email <strong>magang@kemsos.go.id</strong> atau nomor telepon <strong>(021) 3103591</strong> pada jam kerja (Senin-Jumat, 08.00-16.00 WIB).
-                            </p>
-                        </div>
+                <div class="step-item" data-aos="fade-up" data-aos-delay="500">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h4>Selesai Magang</h4>
+                        <p>Setelah kegiatan magang selesai dan laporan akhir telah dikirimkan,  apabila akun peserta masih dapat diakses, hal ini menandakan bahwa laporan akhir tersebut belum disetujui (ACC). Setelah laporan akhir disetujui, maka peserta tidak akan lagi dapat mengakses akun tersebut. Peserta dapat mengunjungi <strong>layanan.magang.go.id</strong> dan mengakses menu 'Cek Status' untuk memperoleh Surat Keterangan Penyelesaian Kegiatan Magang dan sertifikat.</p>
                     </div>
                 </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="info-box">
-                        <img src="images/info2.jpg" alt="Informasi 2">
-                        <div>
-                            <h3>Program Magang Unggulan</h3>
-                            <p>
-                                Kementerian Sosial RI menyediakan berbagai program magang di bidang Pemberdayaan Sosial, Rehabilitasi Sosial, Perlindungan Sosial, Jaminan Sosial, dan Penanganan Fakir Miskin. Peserta magang akan mendapatkan pengalaman praktis dan pemahaman mendalam tentang kebijakan dan program sosial di Indonesia.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="info-box">
-                        <img src="images/info3.jpg" alt="Informasi 3">
-                        <div>
-                            <h3>Keuntungan Program Magang</h3>
-                            <p>
-                                Peserta magang di Kemensos RI akan mendapatkan sertifikat magang resmi, pengalaman bekerja di instansi pemerintah, jaringan profesional yang luas, dan kesempatan untuk berkontribusi langsung dalam program-program sosial nasional.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+
+                <div class="row">
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="info-box">
+            <div class="icon-container">
+                <i class="fas fa-building fa-3x" style="color: #4e73df; background: rgba(78, 115, 223, 0.1); padding: 25px; border-radius: 50%; display: inline-block;"></i>
+            </div>
+            <div>
+                <h3>Pilihan Direktorat</h3>
+                <p>
+                    Kementerian Sosial RI menyediakan berbagai pilihan direktorat untuk program magang, antara lain: Sekretariat Jenderal, Direktorat Jenderal Perlindungan dan Jaminan Sosial, Direktorat Jenderal Rehabilitasi Sosial, Direktorat Jenderal Pemberdayaan Sosial, dan Inspektorat Jenderal.
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+    
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="info-box">
+            <div class="icon-container">
+                <i class="fas fa-file-alt fa-3x" style="color: #1cc88a; background: rgba(28, 200, 138, 0.1); padding: 25px; border-radius: 50%; display: inline-block;"></i>
+            </div>
+            <div>
+                <h3>Persyaratan Dokumen</h3>
+                <p>
+                    Pastikan semua dokumen yang diunggah memenuhi persyaratan format (PDF, JPG, atau PNG) dan dapat dibaca dengan jelas. Dokumen yang tidak memenuhi persyaratan dapat menyebabkan pendaftaran ditolak atau tertunda.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="info-box">
+            <div class="icon-container">
+                <i class="fas fa-headset fa-3x" style="color: #f6c23e; background: rgba(246, 194, 62, 0.1); padding: 25px; border-radius: 50%; display: inline-block;"></i>
+            </div>
+            <div>
+                <h3>Bantuan Pendaftaran</h3>
+                <p>
+                    Jika mengalami kesulitan dalam proses pendaftaran atau memiliki pertanyaan, silakan hubungi tim dukungan Kemensos melalui email <strong>magang@kemsos.go.id</strong> atau nomor telepon <strong>(171)</strong> pada jam kerja (Senin-Jumat, 08.00-16.00 WIB).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</section>
 
     <!-- Include Side Menu -->
     @include('layouts.menu')

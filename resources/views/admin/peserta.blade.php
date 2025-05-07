@@ -710,62 +710,82 @@
                     </div>
 
                     <!-- Show rejection notes if status is 'Ditolak' -->
-                    @if($p->status == 'Ditolak' && $p->catatan)
-                    <div class="alert alert-danger mt-3 slide-in-up">
-                        <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Catatan Penolakan:</h6>
-                        <p class="mb-0">{{ $p->catatan }}</p>
-                    </div>
+                @if($p->status == 'Ditolak' && ($p->catatan || $p->surat_ditolak))
+                <div class="alert alert-danger mt-3 slide-in-up">
+                    @if($p->catatan)
+                    <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Catatan Penolakan:</h6>
+                    <p class="mb-0">{{ $p->catatan }}</p>
                     @endif
-
-                    <!-- Show acceptance letter if status is 'Diterima' -->
-                    @if($p->status == 'Diterima' && $p->surat_balasan)
-                    <div class="alert alert-success mt-3 slide-in-up">
-                        <h6 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Surat Balasan:</h6>
-                        <p class="mb-0">
-                            <a href="{{ asset('storage/'.$p->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
-                                <i class="fas fa-file-pdf me-1"></i> Lihat Surat Balasan
-                            </a>
-                        </p>
-                    </div>
+                    
+                    @if($p->surat_ditolak)
+                    <h6 class="alert-heading mt-2"><i class="fas fa-file-pdf me-2"></i>Surat Penolakan:</h6>
+                    <p class="mb-0">
+                        <a href="{{ asset('storage/'.$p->surat_ditolak) }}" target="_blank" class="btn btn-sm btn-danger">
+                            <i class="fas fa-file-pdf me-1"></i> Lihat Surat Penolakan
+                        </a>
+                    </p>
                     @endif
+                </div>
+                @endif
 
-                    <div class="card border-0 shadow-sm mt-3 bounce-in">
-                        <div class="card-body">
-                            <h6 class="card-title mb-3 text-primary"><i class="fas fa-edit me-2"></i>Update Status</h6>
-                            
-                            <!-- Status Section (Non-editable after determination) -->
-                            @if($p->status != 'Diproses')
-                            <div class="mb-3">
-                                <label for="status{{ $p->id }}" class="form-label">Status</label>
-                                <input type="text" class="form-control" id="status{{ $p->id }}" value="{{ $p->status }}" readonly>
-                            </div>
-                            @else
-                            <div class="mb-3">
-                                <label for="status{{ $p->id }}" class="form-label">Status</label>
-                                <select class="form-select" id="status{{ $p->id }}" name="status" onchange="toggleFields({{ $p->id }})" required>
-                                    <option value="Diproses" {{ $p->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                                    <option value="Diterima" {{ $p->status == 'Diterima' ? 'selected' : '' }}>Diterima</option>
-                                    <option value="Ditolak" {{ $p->status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
-                                </select>
-                            </div>
+                <!-- Show acceptance letter if status is 'Diterima' -->
+                @if($p->status == 'Diterima' && $p->surat_balasan)
+                <div class="alert alert-success mt-3 slide-in-up">
+                    <h6 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Surat Balasan:</h6>
+                    <p class="mb-0">
+                        <a href="{{ asset('storage/'.$p->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
+                            <i class="fas fa-file-pdf me-1"></i> Lihat Surat Balasan
+                        </a>
+                    </p>
+                </div>
+                @endif
+
+                <div class="card border-0 shadow-sm mt-3 bounce-in">
+                    <div class="card-body">
+                        <h6 class="card-title mb-3 text-primary"><i class="fas fa-edit me-2"></i>Update Status</h6>
+                        
+                        <!-- Status Section (Non-editable after determination) -->
+                        @if($p->status != 'Diproses')
+                        <div class="mb-3">
+                            <label for="status{{ $p->id }}" class="form-label">Status</label>
+                            <input type="text" class="form-control" id="status{{ $p->id }}" value="{{ $p->status }}" readonly>
+                        </div>
+                        @else
+                        <div class="mb-3">
+                            <label for="status{{ $p->id }}" class="form-label">Status</label>
+                            <select class="form-select" id="status{{ $p->id }}" name="status" onchange="toggleFields({{ $p->id }})" required>
+                                <option value="Diproses" {{ $p->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                <option value="Diterima" {{ $p->status == 'Diterima' ? 'selected' : '' }}>Diterima</option>
+                                <option value="Ditolak" {{ $p->status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                            </select>
+                        </div>
+                        @endif
+
+                        <!-- Rejection Note Section -->
+                        <div id="catatanDiv{{ $p->id }}" class="mb-3" style="display:none;">
+                            <label for="catatan{{ $p->id }}" class="form-label">Catatan Penolakan</label>
+                            <textarea class="form-control" id="catatan{{ $p->id }}" name="catatan" rows="3" placeholder="Berikan alasan penolakan">{{ $p->catatan }}</textarea>
+                        </div>
+                        
+                        <!-- Rejection Letter Section -->
+                        <div id="suratDitolakDiv{{ $p->id }}" class="mb-3" style="display:none;">
+                            <label for="surat_ditolak{{ $p->id }}" class="form-label">Surat Penolakan (PDF)</label>
+                            <input type="file" class="form-control" id="surat_ditolak{{ $p->id }}" name="surat_ditolak" accept=".pdf">
+                            @if($p->surat_ditolak)
+                            <div class="form-text mt-2">File saat ini: {{ basename($p->surat_ditolak) }}</div>
                             @endif
+                        </div>
 
-                            <!-- Rejection Note Section -->
-                            <div id="catatanDiv{{ $p->id }}" class="mb-3" style="display:none;">
-                                <label for="catatan{{ $p->id }}" class="form-label">Catatan Penolakan</label>
-                                <textarea class="form-control" id="catatan{{ $p->id }}" name="catatan" rows="3" placeholder="Berikan alasan penolakan">{{ $p->catatan }}</textarea>
-                            </div>
-
-                            <!-- Acceptance Letter Section -->
-                            <div id="suratDiv{{ $p->id }}" class="mb-3" style="display:none;">
-                                <label for="surat_balasan{{ $p->id }}" class="form-label">Surat Balasan (PDF)</label>
-                                <input type="file" class="form-control" id="surat_balasan{{ $p->id }}" name="surat_balasan" accept=".pdf">
-                                @if($p->surat_balasan)
-                                <div class="form-text mt-2">File saat ini: {{ basename($p->surat_balasan) }}</div>
-                                @endif
-                            </div>
+                        <!-- Acceptance Letter Section -->
+                        <div id="suratDiv{{ $p->id }}" class="mb-3" style="display:none;">
+                            <label for="surat_balasan{{ $p->id }}" class="form-label">Surat Balasan (PDF)</label>
+                            <input type="file" class="form-control" id="surat_balasan{{ $p->id }}" name="surat_balasan" accept=".pdf">
+                            @if($p->surat_balasan)
+                            <div class="form-text mt-2">File saat ini: {{ basename($p->surat_balasan) }}</div>
+                            @endif
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -825,58 +845,63 @@ $(document).ready(function() {
     function toggleFields(id) {
         var statusSelect = document.getElementById('status' + id);
         var catatanDiv = document.getElementById('catatanDiv' + id);
+        var suratDitolakDiv = document.getElementById('suratDitolakDiv' + id);
         var suratDiv = document.getElementById('suratDiv' + id);
         var periodeDiv = document.getElementById('periodeDiv' + id);
         
         if (statusSelect.value === 'Ditolak') {
             catatanDiv.style.display = 'block';
+            suratDitolakDiv.style.display = 'block';
             suratDiv.style.display = 'none';
-            periodeDiv.style.display = 'none';
+            if (periodeDiv) periodeDiv.style.display = 'none';
             // Tambahkan animasi
             catatanDiv.classList.add('slide-in-up');
+            suratDitolakDiv.classList.add('slide-in-up');
         } else if (statusSelect.value === 'Diterima') {
             catatanDiv.style.display = 'none';
+            suratDitolakDiv.style.display = 'none';
             suratDiv.style.display = 'block';
-            periodeDiv.style.display = 'block';
+            if (periodeDiv) periodeDiv.style.display = 'block';
             // Tambahkan animasi
             suratDiv.classList.add('slide-in-up');
-            periodeDiv.classList.add('slide-in-up');
+            if (periodeDiv) periodeDiv.classList.add('slide-in-up');
         } else {
             catatanDiv.style.display = 'none';
+            suratDitolakDiv.style.display = 'none';
             suratDiv.style.display = 'none';
-            periodeDiv.style.display = 'none';
+            if (periodeDiv) periodeDiv.style.display = 'none';
         }
     }
 
     
         
-        // Inisialisasi semua modal saat dibuka
-        var modals = document.querySelectorAll('.modal');
-        modals.forEach(function(modal) {
-            modal.addEventListener('shown.bs.modal', function() {
-                // Ambil ID peserta dari ID modal
-                var modalId = modal.id;
-                var pesertaId = modalId.replace('updateModal', '');
-                
-                // Cek apakah ada select status di modal ini
-                var statusSelect = document.getElementById('status' + pesertaId);
-                if (statusSelect) {
-                    // Trigger fungsi toggle untuk set tampilan awal
-                    toggleFields(pesertaId);
-                }
-            });
+    // Inisialisasi semua modal saat dibuka
+    var modals = document.querySelectorAll('.modal');
+    modals.forEach(function(modal) {
+        modal.addEventListener('shown.bs.modal', function() {
+            // Ambil ID peserta dari ID modal
+            var modalId = modal.id;
+            var pesertaId = modalId.replace('updateModal', '');
+            
+            // Cek apakah ada select status di modal ini
+            var statusSelect = document.getElementById('status' + pesertaId);
+            if (statusSelect) {
+                // Trigger fungsi toggle untuk set tampilan awal
+                toggleFields(pesertaId);
+            }
         });
-        
-        // Animate elements on page load
-        const animateElements = () => {
-            const elements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .slide-in-up, .bounce-in');
-            elements.forEach(element => {
-                element.style.opacity = '1';
-            });
-        };
-        
-        setTimeout(animateElements, 100);
+    });
     
+    // Animate elements on page load
+    const animateElements = () => {
+        const elements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .slide-in-up, .bounce-in');
+        elements.forEach(element => {
+            element.style.opacity = '1';
+        });
+    };
+    
+    setTimeout(animateElements, 100);
+
 
     // Export to Excel with animation
     function exportToExcel() {

@@ -154,14 +154,14 @@ class SakitController extends Controller
                 $attendance->bukti_sakit = 'bukti_sakit/' . $fileName;
                 
                 // Set default values for required fields
-                $attendance->check_in_location = '-';
-                $attendance->check_out_location = '-';
-                $attendance->check_in_photo = 'default.jpg';
-                $attendance->check_out_photo = 'default.jpg';
-                $attendance->check_in_latitude = 0.0;
-                $attendance->check_in_longitude = 0.0;
-                $attendance->check_out_latitude = 0.0;
-                $attendance->check_out_longitude = 0.0;
+                $attendance->check_in_location = null;
+                $attendance->check_out_location = null;
+                $attendance->check_in_photo = null;
+                $attendance->check_out_photo = null;
+                $attendance->check_in_latitude = null;
+                $attendance->check_in_longitude = null;
+                $attendance->check_out_latitude = null;
+                $attendance->check_out_longitude = null;
                 
                 // Set time fields to null like in the izin code
                 $attendance->check_in_time = null;

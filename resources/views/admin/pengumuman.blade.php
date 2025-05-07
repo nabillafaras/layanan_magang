@@ -385,10 +385,6 @@
                                                 <span class="badge bg-primary">Semua Direktorat</span>
                                             @elseif(str_starts_with($item->kategori, 'Direktorat'))
                                                 <span class="badge bg-info">{{ ucwords(str_replace('_', ' ', $item->kategori)) }}</span>
-                                            @elseif($item->kategori == 'Home')
-                                                <span class="badge bg-secondary">Home</span>
-                                            @elseif($item->kategori == 'Informasi Layanan')
-                                                <span class="badge bg-dark">Informasi Layanan</span>
                                             @else
                                                 <span class="badge bg-secondary">{{ $item->kategori }}</span>
                                             @endif
@@ -469,8 +465,7 @@
                             <option value="Direktorat Jenderal Rehabilitasi Sosial">Direktorat Jenderal Rehabilitasi Sosial</option>
                             <option value="Direktorat Jenderal Pemberdayaan Sosial">Direktorat Jenderal Pemberdayaan Sosial</option>
                             <option value="Inspektorat Jenderal">Inspektorat Jenderal</option>
-                            <option value="Home">Home</option>
-                            <option value="Informasi Layanan">Informasi Layanan</option>
+                            
                         </select>
                     </div>
                     <div class="form-group mb-3">
@@ -561,11 +556,7 @@
                                             <span class="badge bg-primary">Semua Direktorat</span>
                                         @elseif(str_starts_with($item->kategori, 'Direktorat'))
                                             <span class="badge bg-info">{{ ucwords(str_replace('_', ' ', $item->kategori)) }}</span>
-                                        @elseif($item->kategori == 'Home')
-                                            <span class="badge bg-secondary">Home</span>
-                                        @elseif($item->kategori == 'Informasi Layanan')
-                                            <span class="badge bg-dark">Informasi Layanan</span>
-                                        @else
+                                       @else
                                             <span class="badge bg-secondary">{{ $item->kategori }}</span>
                                         @endif
                                     </p>
@@ -626,8 +617,6 @@
                                 <option value="Direktorat Jenderal Rehabilitasi Sosial" {{ $item->kategori == 'Direktorat Jenderal Rehabilitasi Sosial' ? 'selected' : '' }}>Direktorat Jenderal Rehabilitasi Sosial</option>
                                 <option value="Direktorat Jenderal Pemberdayaan Sosial" {{ $item->kategori == 'Direktorat Jenderal Pemberdayaan Sosial' ? 'selected' : '' }}>Direktorat Jenderal Pemberdayaan Sosial</option>
                                 <option value="Inspektorat Jenderal" {{ $item->kategori == 'Inspektorat Jenderal' ? 'selected' : '' }}>Inspektorat Jenderal</option>
-                                <option value="Home" {{ $item->kategori == 'Home' ? 'selected' : '' }}>Home</option>
-                                <option value="Informasi Layanan" {{ $item->kategori == 'Informasi Layanan' ? 'selected' : '' }}>Informasi Layanan</option>
                             </select>
                         </div>
                         
