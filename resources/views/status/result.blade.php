@@ -402,7 +402,13 @@
                                 <h6 class="alert-heading"><i class="fas fa-times-circle"></i> Pendaftaran Anda Ditolak</h6>
                                 <p class="mb-0"><strong>Catatan:</strong></p>
                                 <p>{{ $pendaftaran->catatan ?? 'Tidak ada catatan yang diberikan.' }}</p>
-                            </div>
+                            
+                            @if($pendaftaran->surat_ditolak)
+                                    <a href="{{ asset('storage/'.$pendaftaran->surat_ditolak) }}" target="_blank" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-file-pdf"></i> Unduh Surat Balasan Ditolak
+                                    </a>
+                                @endif
+                                </div>
                         @elseif($pendaftaran->status == 'Diterima')
                             <div class="alert alert-success" data-aos="fade-up" data-aos-delay="200">
                                 <h6 class="alert-heading"><i class="fas fa-check-circle"></i> Selamat! Pendaftaran Anda Diterima</h6>
@@ -417,7 +423,7 @@
                                 </div>
                                 @if($pendaftaran->surat_balasan)
                                     <a href="{{ asset('storage/'.$pendaftaran->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
-                                        <i class="fas fa-file-pdf"></i> Unduh Surat Balasan
+                                        <i class="fas fa-file-pdf"></i> Unduh Surat Balasan Diterima
                                     </a>
                                 @endif
                             </div>

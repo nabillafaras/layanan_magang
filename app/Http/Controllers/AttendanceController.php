@@ -13,16 +13,16 @@ class AttendanceController extends Controller
     // Definisi lokasi-lokasi kantor yang diizinkan
     private const OFFICE_LOCATIONS = [
         [
-            'name' => 'Kantor Pusat',
-            'latitude' => -6.254691,
-            'longitude' => 106.870595,
-            'max_distance' => 0.1 // 100 meter (0.1 km)
+            'name' => 'Kantor Pusat Salemba',
+            'latitude' => -6.199498,
+            'longitude' => 106.851660,
+            'max_distance' => 0.19 // 100 meter (0.1 km)
         ],
         [
-            'name' => 'Kantor Cabang 1',
-            'latitude' =>  -6.383374,
-            'longitude' =>  106.820110, 
-            'max_distance' => 0.1 // 100 meter (0.1 km)
+            'name' => 'Kantor Cawang',
+            'latitude' =>  -6.254756,
+            'longitude' =>  106.870493, 
+            'max_distance' => 0.07 // 100 meter (0.1 km)
         ],
         [
             'name' => 'Kantor Cabang 2',
