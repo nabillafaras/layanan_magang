@@ -83,14 +83,9 @@
         align-items: center;
     }
     
-    .card-header h5 i, .card-header i {
+    .card-header h5 i{
         margin-right: 10px;
         color: var(--primary-color);
-    }
-    
-    .card-header.bg-primary {
-        background: linear-gradient(135deg, var(--primary-color) 0%, #6a0000 100%) !important;
-        border-bottom: none;
     }
     
     .table {
@@ -114,7 +109,7 @@
         transition: all 0.3s;
     }
     
-    .table tr:hover td {
+    .table tr:hover td:not([class*="bg-"]) {
         background-color: rgba(139, 0, 0, 0.02);
     }
     
@@ -143,7 +138,7 @@
     .btn {
         font-weight: 600;
         padding: 0.6rem 1.2rem;
-        border-radius: 50px;
+        border-radius: 8px;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         border: none;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -191,15 +186,6 @@
         background-color: rgba(255, 255, 255, 0.2);
     }
     
-    .btn-info {
-        background: linear-gradient(135deg, #17a2b8, #138496);
-        color: white;
-    }
-    
-    .btn-info::after {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    
     .list-group-item {
         border-radius: 8px;
         margin-bottom: 5px;
@@ -219,35 +205,20 @@
         font-size: 0.85rem;
     }
     
-    /* Badge Colors */
-    .bg-success, .text-bg-success {
+    .bg-success {
         background-color: #28a745 !important;
-        color: white !important;
     }
     
-    .bg-warning, .text-bg-warning {
+    .bg-warning {
         background-color: #ffc107 !important;
-        color: #212529 !important;
     }
     
-    .bg-danger, .text-bg-danger {
-        background-color: #dc3545 !important;
-        color: white !important;
-    }
-    
-    .bg-secondary, .text-bg-secondary {
-        background-color: #6c757d !important;
-        color: white !important;
-    }
-    
-    .bg-primary, .text-bg-primary {
-        background-color: var(--primary-color) !important;
-        color: white !important;
-    }
-    
-    .bg-info, .text-bg-info {
+    .bg-info {
         background-color: #17a2b8 !important;
-        color: white !important;
+    }
+    
+    .bg-danger {
+        background-color: #dc3545 !important;
     }
     
     /* Animation Classes */
@@ -343,6 +314,7 @@
         color: var(--primary-color) !important;
         border: none;
     }
+
     .filter-card {
         background-color: #f8f9fa;
         border-radius: 15px;
@@ -372,6 +344,33 @@
     .filter-card .form-select:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+    }
+
+    /* Pagination Styling */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .pagination .page-item .page-link {
+        border-radius: 8px;
+        margin: 0 5px;
+        color: #333;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #8b0000;
+        border-color: #8b0000;
+        color: white;
+    }
+    
+    .pagination .page-item .page-link:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
     /* Button Styling */
@@ -595,32 +594,7 @@
     </div>
 </div>
 
-    <!-- Statistik Laporan -->
-    <div class="row">
-        <!-- Statistik Laporan Bulanan -->
-        <div class="col-md-6">
-            <div class="dashboard-card slide-in-left" style="animation-delay: 0.4s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Statistik Laporan Bulanan</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="laporanBulananChart" width="100%" height="50"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Statistik Laporan Akhir -->
-        <div class="col-md-6">
-            <div class="dashboard-card slide-in-right" style="animation-delay: 0.4s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Statistik Laporan Akhir</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="laporanAkhirChart" width="100%" height="50"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- Keterangan -->
     <div class="row mt-4">

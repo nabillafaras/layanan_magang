@@ -64,10 +64,10 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
         }
 
         // Tambahkan rekapitulasi
-        $row[] = $pendaftaran->attendances->where('status', 'H')->count();
-        $row[] = $pendaftaran->attendances->where('status', 'S')->count();
-        $row[] = $pendaftaran->attendances->where('status', 'I')->count();
-        $row[] = $pendaftaran->attendances->where('status', 'A')->count();
+        $row[] = $pendaftaran->attendances->where('status', 'hadir')->count();
+        $row[] = $pendaftaran->attendances->where('status', 'sakit')->count();
+        $row[] = $pendaftaran->attendances->where('status', 'izin')->count();
+        $row[] = $pendaftaran->attendances->where('status', 'terlambat')->count();
 
         return $row;
     }
@@ -90,7 +90,8 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
         $headings[] = 'Hadir (H)';
         $headings[] = 'Sakit (S)';
         $headings[] = 'Izin (I)';
-        $headings[] = 'Alpha (A)';
+        $headings[] = 'Terlambat (T)'; // Menambahkan kolom Alpha yang sebelumnya hilang
+        
 
         return $headings;
     }
@@ -102,6 +103,7 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
 
     public function styles(Worksheet $sheet)
     {
+        // Style untuk header tabel
         $sheet->getStyle('A1:' . $this->getLastColumn() . '1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -117,11 +119,23 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
             ],
         ]);
 
-        return [
-            1 => [
-                'font' => ['bold' => true],
+        // Style untuk judul absensi
+        $sheet->getStyle('A1:' . $this->getLastColumn() . '1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
             ],
-        ];
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '8B0000'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ]);
+
+        return [];
     }
 
     public function registerEvents(): array
@@ -131,9 +145,19 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
                 $lastColumn = $this->getLastColumn();
                 $lastRow = $event->sheet->getHighestRow();
 
-                // Kode warna untuk status absensi
-                for ($row = 2; $row <= $lastRow; $row++) {
-                    for ($col = 4; $col <= 3 + $this->totalDays; $col++) {
+                // Tambahkan baris untuk judul absensi
+                $event->sheet->insertNewRowBefore(1, 1);
+                
+                // Gabungkan sel untuk judul absensi
+                $event->sheet->mergeCells('A1:' . $lastColumn . '1');
+                $event->sheet->setCellValue('A1', 'Rekapitulasi Absensi Peserta Magang ' . $this->bulanNama);
+                
+                // Tinggi baris judul
+                $event->sheet->getRowDimension(1)->setRowHeight(30);
+
+                // Kode warna untuk status absensi (perhatikan offset baris +1 karena ada judul di baris 1)
+                for ($row = 3; $row <= $lastRow + 1; $row++) {
+                    for ($col = 5; $col <= 4 + $this->totalDays; $col++) {
                         $cellValue = $event->sheet->getCellByColumnAndRow($col, $row)->getValue();
                         $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col);
 
@@ -152,13 +176,13 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
                         } elseif ($cellValue == 'A') {
                             $event->sheet->getStyle($columnLetter . $row)->getFill()
                                 ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                                ->getStartColor()->setRGB('DC3545');
+                                ->getStartColor()->setRGB('DC3545'); // Warna merah untuk Alpha
                         }
                     }
                 }
 
-                // Tambahkan border untuk seluruh tabel
-                $event->sheet->getStyle('A1:' . $lastColumn . $lastRow)->applyFromArray([
+                // Tambahkan border untuk seluruh tabel termasuk judul
+                $event->sheet->getStyle('A1:' . $lastColumn . ($lastRow + 1))->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -167,21 +191,17 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithTitle, Sho
                 ]);
 
                 // Align center untuk seluruh kolom tanggal dan rekapitulasi
-                $event->sheet->getStyle('D1:' . $lastColumn . $lastRow)->applyFromArray([
+                $event->sheet->getStyle('E3:' . $lastColumn . ($lastRow + 1))->applyFromArray([
                     'alignment' => [
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                     ],
                 ]);
-
-                // Tambahkan judul laporan
-                $event->sheet->mergeCells('A1:C1');
-                $event->sheet->setCellValue('A1', 'Rekapitulasi Absensi Peserta Magang ' . $this->bulanNama);
             },
         ];
     }
 
     private function getLastColumn()
     {
-        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(3 + $this->totalDays + 4); // +4 untuk kolom rekapitulasi
+        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(4 + $this->totalDays + 4); // +4 untuk kolom rekapitulasi
     }
 }

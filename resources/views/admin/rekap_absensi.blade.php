@@ -83,7 +83,7 @@
         align-items: center;
     }
     
-    .card-header h5 i, .card-header i {
+    .card-header h5 i{
         margin-right: 10px;
         color: var(--primary-color);
     }
@@ -138,7 +138,7 @@
     .btn {
         font-weight: 600;
         padding: 0.6rem 1.2rem;
-        border-radius: 50px;
+        border-radius: 8px;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         border: none;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -346,6 +346,33 @@
         box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
     }
 
+    /* Pagination Styling */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .pagination .page-item .page-link {
+        border-radius: 8px;
+        margin: 0 5px;
+        color: #333;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #8b0000;
+        border-color: #8b0000;
+        color: white;
+    }
+    
+    .pagination .page-item .page-link:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
     /* Button Styling */
     .btn-filter {
         background-color: #8b0000;
@@ -377,45 +404,45 @@
     </div>
 
     <!-- Filters -->
-<div class="card filter-card mb-4 slide-in-up" style="animation-delay: 0.1s">
-    <div class="card-header">
-        <h5><i class="fas fa-filter"></i> Filter Data</h5>
+    <div class="card filter-card mb-4 slide-in-up" style="animation-delay: 0.1s">
+        <div class="card-header">
+            <h5><i class="fas fa-filter"></i> Filter Data</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.rekapitulasi-absensi') }}" method="GET">
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <label for="bulan" class="form-label">Bulan</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                            <label for="direktorat" class="form-label">Direktorat</label>
+                            <select class="form-select" id="direktorat" name="direktorat">
+                                <option value="">Semua Direktorat</option>
+                                @foreach($direktorat ?? [] as $d)
+                                    <option value="{{ $d }}" {{ request('direktorat') == $d ? 'selected' : '' }}>{{ $d }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="search" class="form-label">Pencarian</label>
+                            <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
+                        </div>
+                        <div class="col-md-2 mb-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-filter w-100">
+                                <i class="fas fa-search me-1"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+            </form>
+        </div>
     </div>
-    <div class="card-body">
-        <form action="{{ route('admin.rekapitulasi-absensi') }}" method="GET">
-            <div class="row">
-                <div class="col-md-3 mb-2">
-                    <label for="bulan" class="form-label">Bulan</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                        <input type="month" class="form-control" id="bulan" name="bulan" value="{{ request('bulan', date('Y-m')) }}">
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                        <label for="direktorat" class="form-label">Direktorat</label>
-                        <select class="form-select" id="direktorat" name="direktorat">
-                            <option value="">Semua Direktorat</option>
-                            @foreach($direktorat ?? [] as $d)
-                                <option value="{{ $d }}" {{ request('direktorat') == $d ? 'selected' : '' }}>{{ $d }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label for="search" class="form-label">Pencarian</label>
-                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
-                    </div>
-                    <div class="col-md-2 mb-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-filter w-100">
-                            <i class="fas fa-search me-1"></i> Filter
-                        </button>
-                    </div>
-                </div>
-        </form>
-    </div>
-</div>
 
-<!-- Absensi Data -->
-<div class="card bounce-in" style="animation-delay: 0.2s">
+    <!-- Absensi Data -->
+    <div class="card bounce-in" style="animation-delay: 0.2s">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5><i class="fas fa-users"></i> Data Absensi</h5>
@@ -426,7 +453,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="absensiTable">
@@ -446,7 +473,7 @@
                         <th class="text-center">H</th>
                         <th class="text-center">S</th>
                         <th class="text-center">I</th>
-                        <th class="text-center">A</th>
+                        <th class="text-center">T</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -477,17 +504,17 @@
                                     $colorClass = 'bg-warning';
                                 } elseif ($status == 'I') {
                                     $colorClass = 'bg-info text-white';
-                                } elseif ($status == 'A') {
+                                } elseif ($status == 'T') {
                                     $colorClass = 'bg-danger text-white';
                                 }
                             @endphp
                             <td class="text-center {{ $colorClass }}">{{ $status }}</td>
                         @endfor
 
-                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'H')->count() }}</td>
-                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'S')->count() }}</td>
-                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'I')->count() }}</td>
-                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'A')->count() }}</td>
+                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'hadir')->count() }}</td>
+                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'sakit')->count() }}</td>
+                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'izin')->count() }}</td>
+                        <td class="text-center fw-bold">{{ $peserta->attendances->where('status', 'terlambat')->count() }}</td>
                     </tr>
                     @empty
                     <tr>

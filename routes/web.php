@@ -231,6 +231,8 @@ Route::prefix('pimpinan')->group(function () {
         // Route untuk data peserta
         Route::get('/pimpinan/peserta', [PesertaPimpinanController::class, 'index'])->name('pimpinan.peserta.index');
         Route::get('/pimpinan/peserta/{id}', [PesertaPimpinanController::class, 'show'])->name('pimpinan.peserta.show');
+        Route::get('/export-datapeserta', [PesertaPimpinanController::class, 'exportExcel'])->name('pimpinan.export-datapeserta');
+
         // route untuk rekap absensi
         Route::get('/rekap-absensi', [AbsensiPimpinanController::class, 'index'])->name('pimpinan.absensi');
         Route::get('/export-absensi', [AbsensiPimpinanController::class, 'exportExcel'])->name('export-absensi');

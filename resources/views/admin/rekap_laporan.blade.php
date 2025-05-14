@@ -83,7 +83,7 @@
         align-items: center;
     }
     
-    .card-header h5 i, .card-header i {
+    .card-header h5 i{
         margin-right: 10px;
         color: var(--primary-color);
     }
@@ -138,7 +138,7 @@
     .btn {
         font-weight: 600;
         padding: 0.6rem 1.2rem;
-        border-radius: 50px;
+        border-radius: 8px;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         border: none;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -344,6 +344,33 @@
     .filter-card .form-select:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+    }
+
+    /* Pagination Styling */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .pagination .page-item .page-link {
+        border-radius: 8px;
+        margin: 0 5px;
+        color: #333;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #8b0000;
+        border-color: #8b0000;
+        color: white;
+    }
+    
+    .pagination .page-item .page-link:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
     /* Button Styling */
@@ -565,33 +592,6 @@
     </div>
 </div>
 
-    <!-- Statistik Laporan -->
-    <div class="row">
-        <!-- Statistik Laporan Bulanan -->
-        <div class="col-md-6">
-            <div class="dashboard-card slide-in-left" style="animation-delay: 0.4s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Statistik Laporan Bulanan</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="laporanBulananChart" width="100%" height="50"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Statistik Laporan Akhir -->
-        <div class="col-md-6">
-            <div class="dashboard-card slide-in-right" style="animation-delay: 0.4s">
-                <div class="card-header">
-                    <h5><i class="fas fa-chart-pie"></i> Statistik Laporan Akhir</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="laporanAkhirChart" width="100%" height="50"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Keterangan -->
     <div class="row mt-4">
         <!-- Keterangan Laporan Bulanan -->
@@ -740,105 +740,7 @@
             }
         });
 
-        // Pie Chart untuk Laporan Bulanan dengan animasi
-        var ctxBulanan = document.getElementById('laporanBulananChart');
-        var bulananChart = new Chart(ctxBulanan, {
-            type: 'doughnut',
-            data: {
-                labels: ['Belum Upload', 'Menunggu', 'Acc', 'Ditolak'],
-                datasets: [{
-                    data: [
-                        {{ $totalBulananBelum ?? 0 }}, 
-                        {{ $totalBulananMenunggu ?? 0 }}, 
-                        {{ $totalBulananAcc ?? 0 }}, 
-                        {{ $totalBulananDitolak ?? 0 }}
-                    ],
-                    backgroundColor: [
-                        '#6c757d',  // Belum Upload (abu-abu)
-                        '#ffc107',  // Menunggu (kuning)
-                        '#28a745',  // Diterima (hijau)
-                        '#dc3545'   // Ditolak (merah)
-                    ],
-                    borderWidth: 0
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                var label = context.label || '';
-                                var value = context.raw || 0;
-                                var total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                var percentage = Math.round((value / total) * 100);
-                                return label + ': ' + value + ' (' + percentage + '%)';
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 2000,
-                    easing: 'easeOutQuart'
-                }
-            }
-        });
         
-        // Pie Chart untuk Laporan Akhir dengan animasi
-        var ctxAkhir = document.getElementById('laporanAkhirChart');
-        var akhirChart = new Chart(ctxAkhir, {
-            type: 'doughnut',
-            data: {
-                labels: ['Belum Upload', 'Menunggu', 'Acc', 'Ditolak'],
-                datasets: [{
-                    data: [
-                        {{ $totalAkhirBelum ?? 0 }}, 
-                        {{ $totalAkhirMenunggu ?? 0 }}, 
-                        {{ $totalAkhirAcc ?? 0 }}, 
-                        {{ $totalAkhirDitolak ?? 0 }}
-                    ],
-                    backgroundColor: [
-                        '#6c757d',  // Belum Upload (abu-abu)
-                        '#ffc107',  // Menunggu (kuning)
-                        '#28a745',  // Diterima (hijau)
-                        '#dc3545'   // Ditolak (merah)
-                    ],
-                    borderWidth: 0
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                var label = context.label || '';
-                                var value = context.raw || 0;
-                                var total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                var percentage = Math.round((value / total) * 100);
-                                return label + ': ' + value + ' (' + percentage + '%)';
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 2000,
-                    easing: 'easeOutQuart'
-                }
-            }
-        });
         
         // Tambahkan efek hover pada baris tabel
         const tableRows = document.querySelectorAll('#laporanBulananTable tbody tr, #laporanAkhirTable tbody tr');

@@ -174,6 +174,11 @@
     .table tr:last-child td {
         border-bottom: none;
     }
+    .table-dark th {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: #5a0000;
+    }
     
     /* Badge Styling */
     .badge {
@@ -470,6 +475,7 @@
         }
     }
 </style>
+
 @endsection
 
 @section('content')
@@ -537,7 +543,7 @@
         <div class="card-body">
     <div class="table-responsive">
         <table class="table table-hover" id="datatables-peserta">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th width="5%">No</th>
                     <th width="15%">No. Pendaftaran</th>
@@ -893,35 +899,6 @@ $(document).ready(function() {
     setTimeout(animateElements, 100);
 
 
-    // Export to Excel with animation
-    function exportToExcel() {
-        // Add animation to export button
-        const exportBtn = document.querySelector('.btn-success');
-        exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Exporting...';
-        
-        setTimeout(() => {
-            const table = document.getElementById('pesertaTable');
-            const wb = XLSX.utils.table_to_book(table, {sheet: "Peserta Magang"});
-            XLSX.writeFile(wb, 'data-peserta-magang.xlsx');
-            
-            // Reset button text
-            exportBtn.innerHTML = '<i class="fas fa-file-excel me-1"></i> Export Excel';
-            
-            // Show success message
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
-            alertDiv.setAttribute('role', 'alert');
-            alertDiv.innerHTML = `
-                <i class="fas fa-check-circle me-2"></i> Data berhasil diekspor ke Excel
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            document.body.appendChild(alertDiv);
-            
-            // Remove alert after 3 seconds
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 3000);
-        }, 800);
-    }
+    
 </script>
 @endsection

@@ -115,6 +115,7 @@ class LaporanBulananExport implements FromCollection, WithHeadings, WithTitle, W
     
     public function styles(Worksheet $sheet)
     {
+        // Style untuk header tabel di baris 2
         $sheet->getStyle('A1:H1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -130,21 +131,39 @@ class LaporanBulananExport implements FromCollection, WithHeadings, WithTitle, W
             ],
         ]);
 
-        return [
-            1 => [
-                'font' => ['bold' => true],
+        // Style untuk judul sheet di baris 1
+        $sheet->getStyle('A1:H1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 14,
             ],
-        ];
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ]);
+
+        return [];
     }
 
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
+                // Tambahkan baris untuk judul laporan
+                $event->sheet->insertNewRowBefore(1, 1);
+                
+                // Gabungkan sel untuk judul laporan
+                $event->sheet->mergeCells('A1:H1');
+                $event->sheet->setCellValue('A1', 'Rekapitulasi Laporan Bulanan ' . $this->bulanNama);
+                
+                // Tinggi baris judul
+                $event->sheet->getRowDimension(1)->setRowHeight(30);
+                
                 $lastRow = $event->sheet->getHighestRow();
 
-                // Kode warna untuk status laporan
-                for ($row = 2; $row <= $lastRow; $row++) {
+                // Kode warna untuk status laporan (perhatikan offset baris karena ada judul di baris 1)
+                for ($row = 3; $row <= $lastRow; $row++) {
                     $status = $event->sheet->getCell('F' . $row)->getValue();
                     if ($status == 'Acc') {
                         $event->sheet->getStyle('F' . $row)->getFill()
@@ -165,7 +184,7 @@ class LaporanBulananExport implements FromCollection, WithHeadings, WithTitle, W
                     }
                 }
 
-                // Tambahkan border untuk seluruh tabel
+                // Tambahkan border untuk seluruh tabel termasuk judul
                 $event->sheet->getStyle('A1:H' . $lastRow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
@@ -175,15 +194,11 @@ class LaporanBulananExport implements FromCollection, WithHeadings, WithTitle, W
                 ]);
 
                 // Align center untuk kolom status
-                $event->sheet->getStyle('F1:F' . $lastRow)->applyFromArray([
+                $event->sheet->getStyle('F2:F' . $lastRow)->applyFromArray([
                     'alignment' => [
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                     ],
                 ]);
-
-                // Tambahkan judul laporan
-                $event->sheet->mergeCells('A1:D1');
-                $event->sheet->setCellValue('A1', 'Rekapitulasi Laporan Bulanan ' . $this->bulanNama);
             },
         ];
     }
@@ -261,6 +276,7 @@ class LaporanAkhirExport implements FromCollection, WithHeadings, WithTitle, Wit
     
     public function styles(Worksheet $sheet)
     {
+        // Style untuk header tabel di baris 2
         $sheet->getStyle('A1:H1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -276,21 +292,39 @@ class LaporanAkhirExport implements FromCollection, WithHeadings, WithTitle, Wit
             ],
         ]);
 
-        return [
-            1 => [
-                'font' => ['bold' => true],
+        // Style untuk judul sheet di baris 1
+        $sheet->getStyle('A1:H1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'size' => 14,
             ],
-        ];
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ]);
+
+        return [];
     }
 
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
+                // Tambahkan baris untuk judul laporan
+                $event->sheet->insertNewRowBefore(1, 1);
+                
+                // Gabungkan sel untuk judul laporan
+                $event->sheet->mergeCells('A1:H1');
+                $event->sheet->setCellValue('A1', 'Rekapitulasi Laporan Akhir ' . $this->bulanNama);
+                
+                // Tinggi baris judul
+                $event->sheet->getRowDimension(1)->setRowHeight(30);
+                
                 $lastRow = $event->sheet->getHighestRow();
 
-                // Kode warna untuk status laporan
-                for ($row = 2; $row <= $lastRow; $row++) {
+                // Kode warna untuk status laporan (perhatikan offset baris karena ada judul di baris 1)
+                for ($row = 3; $row <= $lastRow; $row++) {
                     $status = $event->sheet->getCell('F' . $row)->getValue();
                     if ($status == 'Acc') {
                         $event->sheet->getStyle('F' . $row)->getFill()
@@ -311,7 +345,7 @@ class LaporanAkhirExport implements FromCollection, WithHeadings, WithTitle, Wit
                     }
                 }
 
-                // Tambahkan border untuk seluruh tabel
+                // Tambahkan border untuk seluruh tabel termasuk judul
                 $event->sheet->getStyle('A1:H' . $lastRow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
@@ -321,15 +355,11 @@ class LaporanAkhirExport implements FromCollection, WithHeadings, WithTitle, Wit
                 ]);
 
                 // Align center untuk kolom status
-                $event->sheet->getStyle('F1:F' . $lastRow)->applyFromArray([
+                $event->sheet->getStyle('F2:F' . $lastRow)->applyFromArray([
                     'alignment' => [
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                     ],
                 ]);
-
-                // Tambahkan judul laporan
-                $event->sheet->mergeCells('A1:D1');
-                $event->sheet->setCellValue('A1', 'Rekapitulasi Laporan Akhir ' . $this->bulanNama);
             },
         ];
     }

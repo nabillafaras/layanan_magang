@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DataPesertaPimpinanExport;
+use App\Exports\DataPesertaAdminExport;
 
 class PesertaPimpinanController extends Controller
 {
@@ -89,7 +90,7 @@ class PesertaPimpinanController extends Controller
 public function exportExcel(Request $request)
     {
         // Ambil parameter filter
-        $status = $request->status ?? 'diterima';
+        $status = $request->status;
         $direktorat = $request->direktorat;
         $search = $request->search;
         $tanggal = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY');
@@ -108,6 +109,6 @@ public function exportExcel(Request $request)
         $fileName .= '.xlsx';
         
         // Export ke Excel
-        return Excel::download(new DataPesertaPimpinanExport($status, $direktorat, $search), $fileName);
+        return Excel::download(new DataPesertaAdminExport($status, $direktorat, $search), $fileName);
     }
 }

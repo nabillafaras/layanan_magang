@@ -174,6 +174,11 @@
     .table tr:last-child td {
         border-bottom: none;
     }
+    .table-dark th {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: #5a0000;
+    }
     
     /* Badge Styling */
     .badge {
@@ -537,7 +542,7 @@
         <div class="card-body">
     <div class="table-responsive">
         <table class="table table-hover" id="datatables-peserta">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th width="5%">No</th>
                     <th width="15%">No. Pendaftaran</th>

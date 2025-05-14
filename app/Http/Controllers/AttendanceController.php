@@ -16,13 +16,13 @@ class AttendanceController extends Controller
             'name' => 'Kantor Pusat Salemba',
             'latitude' => -6.199498,
             'longitude' => 106.851660,
-            'max_distance' => 0.19 // 100 meter (0.1 km)
+            'max_distance' => 0.19 // 190 meter 
         ],
         [
             'name' => 'Kantor Cawang',
             'latitude' =>  -6.254756,
             'longitude' =>  106.870493, 
-            'max_distance' => 0.07 // 100 meter (0.1 km)
+            'max_distance' => 0.07 // 70 meter (0.1 km)
         ],
         [
             'name' => 'Kantor Cabang 2',

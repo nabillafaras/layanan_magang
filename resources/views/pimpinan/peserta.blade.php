@@ -59,7 +59,7 @@
         content: ">";
         color: #6c757d;
     }
-
+    
     /* Card Styling */
     .card {
         border-radius: 15px;
@@ -71,6 +71,20 @@
     }
     
     .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .dashboard-card {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        margin-bottom: 25px;
+        overflow: hidden;
+        border: none;
+    }
+    
+    .dashboard-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     }
@@ -124,73 +138,7 @@
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
     }
-
-    /* Button Styling */
-    .btn-filter {
-        background-color: #8b0000;
-        color: white;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-weight: 600;
-        transition: all 0.3s;
-        border: none;
-    }
     
-    .btn-filter:hover {
-        background-color: #6d0000;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(139, 0, 0, 0.2);
-    }
-    
-    .btn-success {
-        background-color: #28a745;
-        color: white;
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-weight: 600;
-        transition: all 0.3s;
-        border: none;
-    }
-    
-    .btn-success:hover {
-        background-color: #218838;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
-    }
-    
-    .btn-info {
-        background-color: #17a2b8;
-        color: white;
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-weight: 600;
-        transition: all 0.3s;
-        border: none;
-    }
-    
-    .btn-info:hover {
-        background-color: #138496;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(23, 162, 184, 0.2);
-    }
-    
-    .btn-outline-primary {
-        color: #007bff;
-        border-color: #007bff;
-        border-radius: 8px;
-        transition: all 0.3s;
-    }
-    
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
-    }
-
     /* Table Styling */
     .table-responsive {
         border-radius: 10px;
@@ -228,6 +176,11 @@
     .table tr:last-child td {
         border-bottom: none;
     }
+    .table-dark th {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: #5a0000;
+    }
     
     /* Badge Styling */
     .badge {
@@ -257,6 +210,79 @@
         color: white;
     }
     
+    /* Button Styling */
+    .btn {
+        font-weight: 600;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+        border: none;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), #5a0000);
+        color: white;
+    }
+    
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+    }
+    
+    .btn-success:hover {
+        background-color: #218838;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
+    }
+    
+    .btn-filter {
+        background-color: #8b0000;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+    }
+    
+    .btn-filter:hover {
+        background-color: #6d0000;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 0, 0, 0.2);
+    }
+    
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+    }
+    
     /* Modal Styling */
     .modal-content {
         border-radius: 15px;
@@ -266,23 +292,83 @@
     }
     
     .modal-header {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-bottom: 1px solid #e0e0e0;
-        padding: 15px 25px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #6a0000 100%);
+        color: white;
+        border-bottom: none;
+        padding: 1.2rem 1.5rem;
     }
     
-    .modal-header .modal-title {
+    .modal-title {
         font-weight: 600;
-        color: #333;
     }
     
     .modal-body {
-        padding: 25px;
+        padding: 1.5rem;
     }
     
     .modal-footer {
         border-top: 1px solid #e0e0e0;
-        padding: 15px 25px;
+        padding: 1.2rem 1.5rem;
+    }
+    
+    /* Form Styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+    }
+    
+    .form-select {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s;
+    }
+    
+    .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+    }
+    
+    /* Document Link Styling */
+    .document-link {
+        margin-bottom: 10px;
+    }
+    
+    .document-link a {
+        display: flex;
+        align-items: center;
+        transition: all 0.3s;
+    }
+    
+    .document-link a:hover {
+        transform: translateY(-2px);
+    }
+    
+    /* Alert Styling */
+    .alert {
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid;
+    }
+    
+    .alert-success {
+        background-color: rgba(212, 237, 218, 0.5);
+        border-color: #28a745;
+        color: #155724;
+    }
+    
+    .alert-danger {
+        background-color: rgba(248, 215, 218, 0.5);
+        border-color: #dc3545;
+        color: #721c24;
     }
     
     /* Empty State Styling */
@@ -300,21 +386,6 @@
     .empty-state p {
         font-size: 1.1rem;
         color: #6c757d;
-    }
-    
-    /* Document Link Styling */
-    .document-link {
-        margin-bottom: 10px;
-    }
-    
-    .document-link a {
-        display: flex;
-        align-items: center;
-        transition: all 0.3s;
-    }
-    
-    .document-link a:hover {
-        transform: translateY(-2px);
     }
     
     /* Animation Classes */
@@ -464,16 +535,16 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h5><i class="fas fa-users"></i> Daftar Peserta Magang</h5>
                 <div>
-                    <button class="btn btn-success" onclick="exportToExcel()">
+                    <a href="{{ route('pimpinan.export-datapeserta') }}?bulan={{ request('bulan', date('Y-m')) }}&direktorat={{ request('direktorat', '') }}" class="btn btn-success w-100">
                         <i class="fas fa-file-excel me-1"></i> Export Excel
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover" id="datatables-peserta">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th width="5%">No</th>
                             <th width="15%">No. Pendaftaran</th>
@@ -710,35 +781,6 @@
             }
         });
     });
-    // Export to Excel with animation
-    function exportToExcel() {
-        // Add animation to export button
-        const exportBtn = document.querySelector('.btn-success');
-        exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Exporting...';
-        
-        setTimeout(() => {
-            const table = document.getElementById('datatables-peserta');
-            const wb = XLSX.utils.table_to_book(table, {sheet: "Peserta Magang"});
-            XLSX.writeFile(wb, 'data-peserta-magang.xlsx');
-            
-            // Reset button text
-            exportBtn.innerHTML = '<i class="fas fa-file-excel me-1"></i> Export Excel';
-            
-            // Show success message
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
-            alertDiv.setAttribute('role', 'alert');
-            alertDiv.innerHTML = `
-                <i class="fas fa-check-circle me-2"></i> Data berhasil diekspor ke Excel
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            document.body.appendChild(alertDiv);
-            
-            // Remove alert after 3 seconds
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 3000);
-        }, 800);
-    }
+    
 </script>
 @endsection

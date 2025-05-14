@@ -70,16 +70,53 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
             'Nama Lengkap',
             'Email',
             'No. Telepon',
-            'Asal Universitas',
-            'Program Studi',
-            'Jenis Magang',
+            'Asal Institusi',
+            'Jurusan',
+            'Keahlian yang Diambil',
             'Durasi Magang',
             'Tanggal Mulai',
             'Tanggal Selesai',
             'Direktorat',
+            'Unit Kerja',
             'Status',
             'Tanggal Pendaftaran'
         ];
+    }
+
+    /**
+     * Menghitung durasi magang dalam bulan berdasarkan tanggal mulai dan selesai
+     * 
+     * @param string|null $tanggal_mulai
+     * @param string|null $tanggal_selesai
+     * @return string
+     */
+    private function hitungDurasiMagang($tanggal_mulai, $tanggal_selesai)
+    {
+        if (!$tanggal_mulai || !$tanggal_selesai) {
+            return '-';
+        }
+
+        $mulai = Carbon::parse($tanggal_mulai);
+        $selesai = Carbon::parse($tanggal_selesai);
+        
+        // Jika tanggal selesai sebelum tanggal mulai, return 0
+        if ($selesai->lt($mulai)) {
+            return '0 Bulan';
+        }
+        
+        // Hitung selisih bulan
+        $diffInMonths = $mulai->diffInMonths($selesai);
+        
+        // Hitung sisa hari setelah menambahkan bulan penuh
+        $setelahDitambahBulan = (clone $mulai)->addMonths($diffInMonths);
+        $sisaHari = $setelahDitambahBulan->diffInDays($selesai);
+        
+        // Jika ada sisa hari dan tanggal akhir >= tanggal mulai, tambahkan 1 bulan
+        if ($sisaHari > 0 && $selesai->format('d') >= $mulai->format('d')) {
+            $diffInMonths += 1;
+        }
+        
+        return $diffInMonths . ' Bulan';
     }
 
     /**
@@ -92,20 +129,27 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
         $totalAbsensi = $pendaftaran->attendances()->count();
         $hadir = $pendaftaran->attendances()->where('status', 'hadir')->count();
         $persentaseKehadiran = $totalAbsensi > 0 ? round(($hadir / $totalAbsensi) * 100) : 0;
+        
+        // Hitung durasi magang berdasarkan tanggal mulai dan selesai
+        $durasiMagang = $this->hitungDurasiMagang(
+            $pendaftaran->tanggal_mulai, 
+            $pendaftaran->tanggal_selesai
+        );
          
         return [
             static::rowNumber(),
             $pendaftaran->nomor_pendaftaran,
             $pendaftaran->nama_lengkap,
             $pendaftaran->email,
-            $pendaftaran->no_telp,
+            $pendaftaran->no_hp,
             $pendaftaran->asal_universitas,
-            $pendaftaran->program_studi,
-            $pendaftaran->jenis_magang,
-            $pendaftaran->durasi_magang . ' Bulan',
+            $pendaftaran->jurusan,
+            $pendaftaran->prodi,
+            $durasiMagang,
             $pendaftaran->tanggal_mulai ? Carbon::parse($pendaftaran->tanggal_mulai)->format('d-m-Y') : '-',
             $pendaftaran->tanggal_selesai ? Carbon::parse($pendaftaran->tanggal_selesai)->format('d-m-Y') : '-',
             $pendaftaran->direktorat,
+            $pendaftaran->unit_kerja,
             $pendaftaran->status,
             Carbon::parse($pendaftaran->created_at)->format('d-m-Y'),
         ];
@@ -125,6 +169,7 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
      */
     public function styles(Worksheet $sheet)
     {
+        // Ubah style header ke baris 2, karena baris 1 untuk judul laporan
         $sheet->getStyle('A1:' . $this->getLastColumn() . '1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -141,7 +186,19 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
         ]);
 
         return [
+            // Style untuk judul laporan di baris 1
             1 => [
+                'font' => [
+                    'bold' => true,
+                    'size' => 14
+                ],
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    'vertical' => Alignment::VERTICAL_CENTER,
+                ],
+            ],
+            // Style untuk heading kolom di baris 2
+            2 => [
                 'font' => ['bold' => true],
             ],
         ];
@@ -168,11 +225,19 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
                 $lastColumn = $this->getLastColumn();
                 $lastRow = $event->sheet->getHighestRow();
 
+                // Sisipkan baris judul di baris pertama dan geser data ke bawah
+                $event->sheet->insertNewRowBefore(1, 1);
+                
+                // Atur judul laporan di baris 1
+                $event->sheet->mergeCells('A1:' . $lastColumn . '1');
+                $event->sheet->setCellValue('A1', 'DATA PESERTA MAGANG');
+                $event->sheet->getRowDimension(1)->setRowHeight(30);
+
                 // Tambahkan status highlight jika diperlukan
-                // Contoh: Highlight status 'diterima' dengan warna hijau
-                for ($row = 2; $row <= $lastRow; $row++) {
-                    $cellValue = $event->sheet->getCellByColumnAndRow(13, $row)->getValue(); // Status column
-                    $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(13);
+                // Kolom status sekarang ada di kolom 14, karena kita menambahkan baris tambahan
+                for ($row = 3; $row <= $lastRow + 1; $row++) {
+                    $cellValue = $event->sheet->getCellByColumnAndRow(14, $row)->getValue(); // Status column
+                    $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(14);
                     
                     if ($cellValue == 'diterima') {
                         $event->sheet->getStyle($columnLetter . $row)->getFill()
@@ -189,8 +254,8 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
                     }
                 }
 
-                // Tambahkan border untuk seluruh tabel
-                $event->sheet->getStyle('A1:' . $lastColumn . $lastRow)->applyFromArray([
+                // Tambahkan border untuk seluruh tabel (mulai dari baris 2 - header)
+                $event->sheet->getStyle('A2:' . $lastColumn . ($lastRow + 1))->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => Border::BORDER_THIN,
@@ -198,22 +263,18 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
                     ],
                 ]);
 
-                // Align center untuk kolom nomor dan status
-                $event->sheet->getStyle('A1:A' . $lastRow)->applyFromArray([
+                // Align center untuk kolom nomor dan status (sekarang dimulai dari baris 3 untuk data)
+                $event->sheet->getStyle('A3:A' . ($lastRow + 1))->applyFromArray([
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER,
                     ],
                 ]);
 
-                $event->sheet->getStyle('L1:N' . $lastRow)->applyFromArray([
+                $event->sheet->getStyle('L3:N' . ($lastRow + 1))->applyFromArray([
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER,
                     ],
                 ]);
-
-                // Tambahkan judul laporan
-                $event->sheet->mergeCells('A1:B1');
-                $event->sheet->setCellValue('A1', 'Data Peserta Magang');
             },
         ];
     }
@@ -224,6 +285,6 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
      */
     private function getLastColumn()
     {
-        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(14); // Total kolom adalah 14
+        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(15); // Total kolom adalah 15
     }
 }
