@@ -488,44 +488,61 @@
     </div>
 
     <!-- Filters -->
-    <div class="card filter-card mb-4 slide-in-up" style="animation-delay: 0.1s">
-        <div class="card-header">
-            <h5><i class="fas fa-filter"></i> Filter Data</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin2.peserta2') }}" method="GET">
-                <div class="row">
-                    <div class="col-md-3 mb-2">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status">
-                            <option value="">Semua Status</option>
-                            <option value="Diterima" {{ request('status') == 'Diterima' ? 'selected' : '' }}>Diterima</option>
-                            <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                            <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label for="unit_kerja" class="form-label">Unit Kerja</label>
+    
+<div class="card filter-card mb-4 slide-in-up" style="animation-delay: 0.1s">
+    <div class="card-header">
+        <h5><i class="fas fa-filter"></i> Filter Data</h5>
+    </div>
+    <div class="card-body">
+        <form action="{{ route('admin2.peserta2') }}" method="GET">
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">Semua Status</option>
+                        <option value="Diterima" {{ request('status') == 'Diterima' ? 'selected' : '' }}>Diterima</option>
+                        <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                        <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="unit_kerja" class="form-label">Unit Kerja</label>
                         <select class="form-select" id="unit_kerja" name="unit_kerja">
                             <option value="">Semua Unit Kerja</option>
                             @foreach($unit_kerja ?? [] as $d)
                                 <option value="{{ $d }}" {{ request('unit_kerja') == $d ? 'selected' : '' }}>{{ $d }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label for="search" class="form-label">Pencarian</label>
-                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
-                    </div>
-                    <div class="col-md-2 mb-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-filter w-100">
-                            <i class="fas fa-search me-1"></i> Filter
-                        </button>
-                    </div>
                 </div>
-            </form>
-        </div>
+                <div class="col-md-2 mb-2">
+                    <label for="jenis_waktu" class="form-label">Filter Waktu</label>
+                    <select class="form-select" id="jenis_waktu" name="jenis_waktu" onchange="toggleWaktuFilter()">
+                        <option value="">Tidak Ada</option>
+                        <option value="tanggal" {{ request('jenis_waktu') == 'tanggal' ? 'selected' : '' }}>Tanggal</option>
+                        <option value="bulan" {{ request('jenis_waktu') == 'bulan' ? 'selected' : '' }}>Bulan</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2" id="filter_tanggal" style="{{ request('jenis_waktu') == 'tanggal' ? '' : 'display: none;' }}">
+                    <label for="tanggal_pendaftaran" class="form-label">Pilih Tanggal</label>
+                    <input type="date" class="form-control" id="tanggal_pendaftaran" name="tanggal_pendaftaran" value="{{ request('tanggal_pendaftaran') }}">
+                </div>
+                <div class="col-md-2 mb-2" id="filter_bulan" style="{{ request('jenis_waktu') == 'bulan' ? '' : 'display: none;' }}">
+                    <label for="bulan_pendaftaran" class="form-label">Pilih Bulan</label>
+                    <input type="month" class="form-control" id="bulan_pendaftaran" name="bulan_pendaftaran" value="{{ request('bulan_pendaftaran') }}">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label for="search" class="form-label">Pencarian</label>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari...">
+                </div>
+                <div class="col-md-2 mb-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-filter w-100">
+                        <i class="fas fa-search me-1"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
+</div>
 
     <!-- Peserta Data -->
     <div class="card bounce-in" style="animation-delay: 0.2s">
@@ -868,7 +885,31 @@ $(document).ready(function() {
         }
     }
 
+    function toggleWaktuFilter() {
+    const jenisWaktu = document.getElementById('jenis_waktu').value;
+    const filterTanggal = document.getElementById('filter_tanggal');
+    const filterBulan = document.getElementById('filter_bulan');
     
+    if (jenisWaktu === 'tanggal') {
+        filterTanggal.style.display = '';
+        filterBulan.style.display = 'none';
+        document.getElementById('bulan_pendaftaran').value = '';
+    } else if (jenisWaktu === 'bulan') { 
+        filterTanggal.style.display = 'none';
+        filterBulan.style.display = '';
+        document.getElementById('tanggal_pendaftaran').value = '';
+    } else {
+        filterTanggal.style.display = 'none';
+        filterBulan.style.display = 'none';
+        document.getElementById('tanggal_pendaftaran').value = '';
+        document.getElementById('bulan_pendaftaran').value = '';
+    }
+}
+
+// Jalankan sekali saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    toggleWaktuFilter();
+});
         
     // Inisialisasi semua modal saat dibuka
     var modals = document.querySelectorAll('.modal');

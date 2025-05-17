@@ -501,23 +501,39 @@
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status">
                             <option value="">Semua Status</option>
-                            <option value="Diterima" {{ $status == 'Diterima' ? 'selected' : '' }}>Diterima</option>
-                            <option value="Diproses" {{ $status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                            <option value="Ditolak" {{ $status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                            <option value="Diterima" {{ request('status') == 'Diterima' ? 'selected' : '' }}>Diterima</option>
+                            <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                            <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
                         </select>
                     </div>
                     <div class="col-md-3 mb-2">
                         <label for="direktorat" class="form-label">Direktorat</label>
                         <select class="form-select" id="direktorat" name="direktorat">
                             <option value="">Semua Direktorat</option>
-                            @foreach($direktorat as $d)
+                            @foreach($direktorat ?? [] as $d)
                                 <option value="{{ $d }}" {{ request('direktorat') == $d ? 'selected' : '' }}>{{ $d }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 mb-2">
+                    <div class="col-md-2 mb-2">
+                        <label for="jenis_waktu" class="form-label">Filter Waktu</label>
+                        <select class="form-select" id="jenis_waktu" name="jenis_waktu" onchange="toggleWaktuFilter()">
+                            <option value="">Tidak Ada</option>
+                            <option value="tanggal" {{ request('jenis_waktu') == 'tanggal' ? 'selected' : '' }}>Tanggal</option>
+                            <option value="bulan" {{ request('jenis_waktu') == 'bulan' ? 'selected' : '' }}>Bulan</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2" id="filter_tanggal" style="{{ request('jenis_waktu') == 'tanggal' ? '' : 'display: none;' }}">
+                        <label for="tanggal_pendaftaran" class="form-label">Pilih Tanggal</label>
+                        <input type="date" class="form-control" id="tanggal_pendaftaran" name="tanggal_pendaftaran" value="{{ request('tanggal_pendaftaran') }}">
+                    </div>
+                    <div class="col-md-2 mb-2" id="filter_bulan" style="{{ request('jenis_waktu') == 'bulan' ? '' : 'display: none;' }}">
+                        <label for="bulan_pendaftaran" class="form-label">Pilih Bulan</label>
+                        <input type="month" class="form-control" id="bulan_pendaftaran" name="bulan_pendaftaran" value="{{ request('bulan_pendaftaran') }}">
+                    </div>
+                    <div class="col-md-2 mb-2">
                         <label for="search" class="form-label">Pencarian</label>
-                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, nomor pendaftaran, universitas...">
+                        <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari...">
                     </div>
                     <div class="col-md-2 mb-2 d-flex align-items-end">
                         <button type="submit" class="btn btn-filter w-100">
@@ -755,7 +771,8 @@
 
 
 <script>
-  $(document).ready(function() {
+
+$(document).ready(function() {
         // Inisialisasi DataTable dengan animasi
         $('#datatables-peserta').DataTable({
             "scrollX": true,
@@ -781,6 +798,92 @@
             }
         });
     });
+    // Fungsi untuk toggle fields berdasarkan status yang dipilih
+    function toggleFields(id) {
+        var statusSelect = document.getElementById('status' + id);
+        var catatanDiv = document.getElementById('catatanDiv' + id);
+        var suratDitolakDiv = document.getElementById('suratDitolakDiv' + id);
+        var suratDiv = document.getElementById('suratDiv' + id);
+        var periodeDiv = document.getElementById('periodeDiv' + id);
+        
+        if (statusSelect.value === 'Ditolak') {
+            catatanDiv.style.display = 'block';
+            suratDitolakDiv.style.display = 'block';
+            suratDiv.style.display = 'none';
+            if (periodeDiv) periodeDiv.style.display = 'none';
+            // Tambahkan animasi
+            catatanDiv.classList.add('slide-in-up');
+            suratDitolakDiv.classList.add('slide-in-up');
+        } else if (statusSelect.value === 'Diterima') {
+            catatanDiv.style.display = 'none';
+            suratDitolakDiv.style.display = 'none';
+            suratDiv.style.display = 'block';
+            if (periodeDiv) periodeDiv.style.display = 'block';
+            // Tambahkan animasi
+            suratDiv.classList.add('slide-in-up');
+            if (periodeDiv) periodeDiv.classList.add('slide-in-up');
+        } else {
+            catatanDiv.style.display = 'none';
+            suratDitolakDiv.style.display = 'none';
+            suratDiv.style.display = 'none';
+            if (periodeDiv) periodeDiv.style.display = 'none';
+        }
+    }
+
+    function toggleWaktuFilter() {
+    const jenisWaktu = document.getElementById('jenis_waktu').value;
+    const filterTanggal = document.getElementById('filter_tanggal');
+    const filterBulan = document.getElementById('filter_bulan');
+    
+    if (jenisWaktu === 'tanggal') {
+        filterTanggal.style.display = '';
+        filterBulan.style.display = 'none';
+        document.getElementById('bulan_pendaftaran').value = '';
+    } else if (jenisWaktu === 'bulan') { 
+        filterTanggal.style.display = 'none';
+        filterBulan.style.display = '';
+        document.getElementById('tanggal_pendaftaran').value = '';
+    } else {
+        filterTanggal.style.display = 'none';
+        filterBulan.style.display = 'none';
+        document.getElementById('tanggal_pendaftaran').value = '';
+        document.getElementById('bulan_pendaftaran').value = '';
+    }
+}
+
+// Jalankan sekali saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    toggleWaktuFilter();
+});
+        
+    // Inisialisasi semua modal saat dibuka
+    var modals = document.querySelectorAll('.modal');
+    modals.forEach(function(modal) {
+        modal.addEventListener('shown.bs.modal', function() {
+            // Ambil ID peserta dari ID modal
+            var modalId = modal.id;
+            var pesertaId = modalId.replace('updateModal', '');
+            
+            // Cek apakah ada select status di modal ini
+            var statusSelect = document.getElementById('status' + pesertaId);
+            if (statusSelect) {
+                // Trigger fungsi toggle untuk set tampilan awal
+                toggleFields(pesertaId);
+            }
+        });
+    });
+    
+    // Animate elements on page load
+    const animateElements = () => {
+        const elements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .slide-in-up, .bounce-in');
+        elements.forEach(element => {
+            element.style.opacity = '1';
+        });
+    };
+    
+    setTimeout(animateElements, 100);
+
+
     
 </script>
 @endsection

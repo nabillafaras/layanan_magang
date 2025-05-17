@@ -22,12 +22,28 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
     protected $status;
     protected $direktorat;
     protected $search;
-
-    public function __construct($status = null, $direktorat = null, $search = null)
+    protected $jenis_waktu;
+    protected $tanggal_pendaftaran;
+    protected $bulan_pendaftaran;
+    
+    public function __construct($status = null, $direktorat = null, $search = null, $jenis_waktu = null, $tanggal_pendaftaran = null, $bulan_pendaftaran = null)
     {
         $this->status = $status;
         $this->direktorat = $direktorat;
         $this->search = $search;
+        $this->jenis_waktu = $jenis_waktu;
+        $this->tanggal_pendaftaran = $tanggal_pendaftaran;
+        $this->bulan_pendaftaran = $bulan_pendaftaran;
+        
+        // Log parameter untuk memastikan nilai diterima dengan benar
+        \Illuminate\Support\Facades\Log::info('Export Parameters in Export Class', [
+            'status' => $this->status,
+            'direktorat' => $this->direktorat,
+            'search' => $this->search,
+            'jenis_waktu' => $this->jenis_waktu,
+            'tanggal_pendaftaran' => $this->tanggal_pendaftaran,
+            'bulan_pendaftaran' => $this->bulan_pendaftaran
+        ]);
     }
 
     /**
@@ -54,6 +70,20 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
                   ->orWhere('nomor_pendaftaran', 'like', "%{$this->search}%")
                   ->orWhere('asal_universitas', 'like', "%{$this->search}%");
             });
+        }
+        
+        // Filter berdasarkan tanggal atau bulan pendaftaran
+        if ($this->jenis_waktu == 'tanggal' && $this->tanggal_pendaftaran) {
+            $query->whereDate('created_at', $this->tanggal_pendaftaran);
+        } elseif ($this->jenis_waktu == 'bulan' && $this->bulan_pendaftaran) {
+            $bulan = $this->bulan_pendaftaran; // Format: YYYY-MM
+            $tahun = substr($bulan, 0, 4);
+            $bulan_angka = substr($bulan, 5, 2);
+            $query->whereYear('created_at', $tahun)
+                ->whereMonth('created_at', $bulan_angka);
+        } elseif (!$this->jenis_waktu && $this->tanggal_pendaftaran) {
+            // Backward compatibility dengan filter lama
+            $query->whereDate('created_at', $this->tanggal_pendaftaran);
         }
         
         return $query->orderBy('created_at', 'desc')->get();
@@ -160,7 +190,18 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
      */
     public function title(): string
     {
-        return 'Data Peserta Magang';
+        // Tambahkan informasi filter ke judul worksheet
+        $title = 'Data Peserta Magang';
+        
+        if ($this->jenis_waktu == 'tanggal' && $this->tanggal_pendaftaran) {
+            $tanggal = Carbon::parse($this->tanggal_pendaftaran)->format('d-m-Y');
+            $title .= ' (' . $tanggal . ')';
+        } elseif ($this->jenis_waktu == 'bulan' && $this->bulan_pendaftaran) {
+            $bulan = Carbon::parse($this->bulan_pendaftaran . '-01')->format('F Y');
+            $title .= ' (' . $bulan . ')';
+        }
+        
+        return $title;
     }
 
     /**
@@ -230,7 +271,26 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
                 
                 // Atur judul laporan di baris 1
                 $event->sheet->mergeCells('A1:' . $lastColumn . '1');
-                $event->sheet->setCellValue('A1', 'DATA PESERTA MAGANG');
+                $judulLaporan = 'DATA PESERTA MAGANG';
+                
+                // Tambahkan informasi filter ke judul laporan
+                if ($this->status) {
+                    $judulLaporan .= ' - Status: ' . ucfirst($this->status);
+                }
+                
+                if ($this->direktorat) {
+                    $judulLaporan .= ' - Direktorat: ' . $this->direktorat;
+                }
+                
+                if ($this->jenis_waktu == 'tanggal' && $this->tanggal_pendaftaran) {
+                    $tanggal = Carbon::parse($this->tanggal_pendaftaran)->format('d-m-Y');
+                    $judulLaporan .= ' - Tanggal: ' . $tanggal;
+                } elseif ($this->jenis_waktu == 'bulan' && $this->bulan_pendaftaran) {
+                    $bulan = Carbon::parse($this->bulan_pendaftaran . '-01')->format('F Y');
+                    $judulLaporan .= ' - Bulan: ' . $bulan;
+                }
+                
+                $event->sheet->setCellValue('A1', $judulLaporan);
                 $event->sheet->getRowDimension(1)->setRowHeight(30);
 
                 // Tambahkan status highlight jika diperlukan
@@ -239,15 +299,15 @@ class DataPesertaAdminExport implements FromCollection, WithHeadings, WithMappin
                     $cellValue = $event->sheet->getCellByColumnAndRow(14, $row)->getValue(); // Status column
                     $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(14);
                     
-                    if ($cellValue == 'diterima') {
+                    if (strtolower($cellValue) == 'diterima') {
                         $event->sheet->getStyle($columnLetter . $row)->getFill()
                             ->setFillType(Fill::FILL_SOLID)
                             ->getStartColor()->setRGB('28A745');
-                    } elseif ($cellValue == 'ditolak') {
+                    } elseif (strtolower($cellValue) == 'ditolak') {
                         $event->sheet->getStyle($columnLetter . $row)->getFill()
                             ->setFillType(Fill::FILL_SOLID)
                             ->getStartColor()->setRGB('DC3545');
-                    } elseif ($cellValue == 'menunggu') {
+                    } elseif (strtolower($cellValue) == 'menunggu' || strtolower($cellValue) == 'diproses') {
                         $event->sheet->getStyle($columnLetter . $row)->getFill()
                             ->setFillType(Fill::FILL_SOLID)
                             ->getStartColor()->setRGB('FFC107');
