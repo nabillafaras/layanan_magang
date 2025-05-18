@@ -1,5 +1,8 @@
 <?php
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Laporan;
 use App\Models\Pendaftaran;
@@ -9,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
-class LaporanAkhirController extends Controller
+class LaporanBulananController extends Controller
 {
     /**
      * Constructor untuk memastikan user sudah login
@@ -27,9 +30,9 @@ class LaporanAkhirController extends Controller
         $nomorPendaftaran = auth()->id();
         return Pendaftaran::where('nomor_pendaftaran', $nomorPendaftaran)->first();
     }
-    
+
     /**
-     * Menampilkan halaman laporan akhir
+     * Menampilkan halaman laporan bulanan
      */
     public function index()
     {
@@ -41,24 +44,37 @@ class LaporanAkhirController extends Controller
         }
         
         $user = Auth::user();
-        $laporan = Laporan::where('user_id', $user->id)
-                        ->where('jenis_laporan', 'akhir')
+        $laporan = Laporan::where('user_id', $pendaftaran->id)
+                        ->where('jenis_laporan', 'bulanan')
                         ->orderBy('created_at', 'desc')
                         ->get();
-
-        // Tambahkan informasi apakah sudah bisa upload laporan akhir
-        $tanggalSekarang = Carbon::now();
-        $tanggalSelesai = Carbon::parse($pendaftaran->tanggal_selesai);
-        $bisaUpload = $tanggalSekarang->gte($tanggalSelesai);
         
-        // Cek apakah sudah pernah upload dan belum dihapus
-        $sudahUpload = $laporan->count() > 0;
+        // Hitung bulan sejak diterima
+        $tanggalDiterima = Carbon::parse($user->tanggal_mulai);
+        $bulanBerjalan = Carbon::now()->startOfMonth();
+        $bulanSejakDiterima = [];
         
-        return view('user.laporan_akhir', compact('laporan', 'pendaftaran', 'bisaUpload', 'tanggalSelesai', 'sudahUpload'));
+        $currentMonth = clone $tanggalDiterima->startOfMonth();
+        while ($currentMonth->lte($bulanBerjalan)) {
+            $bulanSejakDiterima[] = [
+                'bulan' => $currentMonth->format('Y-m'),
+                'nama_bulan' => $currentMonth->translatedFormat('F Y'),
+                'sudah_upload' => $laporan->contains('periode_bulan', $currentMonth->format('Y-m-d'))
+            ];
+            $currentMonth->addMonth();
+        }
+         // Tambahkan definisi untuk $laporanBulanIni
+        $bulanIni = Carbon::now()->format('Y-m');
+        $laporanBulanIni = Laporan::where('user_id', $user->id)
+                        ->where('jenis_laporan', 'bulanan')
+                        ->whereYear('created_at', Carbon::now()->year)
+                        ->whereMonth('created_at', Carbon::now()->month)
+                        ->first();
+        return view('user.laporan_bulanan', compact('laporan', 'bulanSejakDiterima', 'laporanBulanIni'));
     }
     
     /**
-     * Mengupload laporan akhir
+     * Mengupload laporan bulanan
      */
     public function upload(Request $request)
     {
@@ -69,64 +85,45 @@ class LaporanAkhirController extends Controller
             return abort(403, 'Anda belum terdaftar.');
         }
         
-        $user = Auth::user();
-        
-        // Cek apakah sudah melewati tanggal_selesai
-        $tanggalSekarang = Carbon::now();
+        // Validasi periode magang
+        $today = Carbon::today();
+        $tanggalMulai = Carbon::parse($pendaftaran->tanggal_mulai);
         $tanggalSelesai = Carbon::parse($pendaftaran->tanggal_selesai);
-        
-        if ($tanggalSekarang->lt($tanggalSelesai)) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false, 
-                    'message' => 'Laporan akhir hanya bisa diupload setelah tanggal selesai: ' . $tanggalSelesai->format('d-m-Y') . '.'
-                ], 400);
-            }
-            
-            return redirect()->back()->with('error', 'Laporan akhir hanya bisa diupload setelah tanggal selesai: ' . $tanggalSelesai->format('d-m-Y') . '.');
+
+        if ($today->lt($tanggalMulai)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Periode magang Anda belum dimulai. Magang akan dimulai pada ' . $tanggalMulai->format('d-m-Y') . '.'
+            ], 400);
         }
-        
-        // Cek apakah sudah pernah upload laporan akhir
-        $sudahUpload = Laporan::where('user_id', $user->id)
-                        ->where('jenis_laporan', 'akhir')
-                        ->exists();
-                        
-        if ($sudahUpload) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false, 
-                    'message' => 'Anda sudah mengupload laporan akhir. Jika ingin mengupload ulang, silakan hapus laporan sebelumnya terlebih dahulu.'
-                ], 400);
-            }
-            
-            return redirect()->back()->with('error', 'Anda sudah mengupload laporan akhir. Jika ingin mengupload ulang, silakan hapus laporan sebelumnya terlebih dahulu.');
+
+        if ($today->gt($tanggalSelesai)) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Periode magang Anda telah berakhir pada ' . $tanggalSelesai->format('d-m-Y') . '.'
+            ], 400);
         }
-        
+
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'file_laporan' => 'required|file|mimes:pdf,doc,docx|max:10240', // Maksimal 10MB
-            'keterangan' => 'nullable|string'
+            'keterangan' => 'nullable|string',
+            'periode_bulan' => 'required|date'
         ]);
         
         if ($validator->fails()) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-            
             return redirect()->back()
                         ->withErrors($validator)
                         ->withInput();
         }
         
+        $user = Auth::user();
         $file = $request->file('file_laporan');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         
-        // Format: user_id-akhir-timestamp.extension
-        $fileName = $user->id . '-akhir-' . time() . '.' . $extension;
+        // Format: user_id-bulanan-timestamp.extension
+        $fileName = $user->id . '-bulanan-' . time() . '.' . $extension;
         
         // Simpan file
         $path = $file->storeAs('laporan/' . $user->id, $fileName, 'public');
@@ -134,27 +131,19 @@ class LaporanAkhirController extends Controller
         // Simpan data ke database
         $laporan = new Laporan();
         $laporan->user_id = $user->id;
-        $laporan->jenis_laporan = 'akhir';
+        $laporan->jenis_laporan = 'bulanan';
         $laporan->judul = $request->judul;
         $laporan->file_path = $path;
         $laporan->keterangan = $request->keterangan;
+        $laporan->periode_bulan = Carbon::parse($request->periode_bulan)->format('Y-m-d');
         
         $laporan->save();
         
-        
-        if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Laporan akhir berhasil diupload!',
-                'data' => $laporan
-            ]);
-        }
-        
-        return redirect()->route('laporan.akhir')->with('success', 'Laporan akhir berhasil diupload!');
+        return redirect()->route('laporan.bulanan')->with('success', 'Laporan bulanan berhasil diupload!');
     }
     
     /**
-     * Mengunduh laporan akhir
+     * Mengunduh laporan bulanan
      */
     public function download($id)
     {
@@ -165,8 +154,9 @@ class LaporanAkhirController extends Controller
             return abort(403, 'Anda belum terdaftar.');
         }
         
+        // Perbaikan: Cari laporan berdasarkan ID laporan, bukan ID pendaftaran
         $laporan = Laporan::where('id', $id)
-                        ->where('jenis_laporan', 'akhir')
+                        ->where('jenis_laporan', 'bulanan')
                         ->firstOrFail();
         
         // Cek apakah user berwenang
@@ -182,7 +172,7 @@ class LaporanAkhirController extends Controller
     }
     
     /**
-     * Menghapus laporan akhir
+     * Menghapus laporan bulanan
      */
     public function delete($id)
     {
@@ -193,8 +183,9 @@ class LaporanAkhirController extends Controller
             return abort(403, 'Anda belum terdaftar.');
         }
         
+        // Perbaikan: Cari laporan berdasarkan ID laporan, bukan ID pendaftaran
         $laporan = Laporan::where('id', $id)
-                        ->where('jenis_laporan', 'akhir')
+                        ->where('jenis_laporan', 'bulanan')
                         ->firstOrFail();
         
         // Cek apakah user berwenang
@@ -209,14 +200,6 @@ class LaporanAkhirController extends Controller
         
         $laporan->delete();
         
-        
-        if (Auth::user()->id == $laporan->user_id && !Auth::user()->isAdmin()) {
-            // Cek apakah masih ada laporan akhir lain
-            $masihAdaLaporanAkhir = Laporan::where('user_id', Auth::user()->id)
-                                        ->where('jenis_laporan', 'akhir')
-                                        ->exists();
-        }
-        
-        return redirect()->route('laporan.akhir')->with('success', 'Laporan akhir berhasil dihapus! Anda dapat mengupload laporan akhir kembali.');
+        return redirect()->route('laporan.bulanan')->with('success', 'Laporan bulanan berhasil dihapus!');
     }
 }

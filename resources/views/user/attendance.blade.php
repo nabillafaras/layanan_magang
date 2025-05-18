@@ -1020,17 +1020,18 @@
     });
 
     // Fungsi untuk mendapatkan lokasi dan menampilkannya di iframe Google Maps
-    function getLocation(type) {
+// Toleransi dan fallback ditingkatkan untuk penggunaan dalam ruangan
+function getLocation(type) {
     if (navigator.geolocation) {
         // Tampilkan indikator loading dengan animasi
         const infoElement = document.getElementById(`location-info-${type === 'check-in' ? 'in' : 'out'}`);
-        infoElement.innerHTML = '<div class="text-center animate__animated animate__pulse animate__infinite"><i class="fas fa-spinner fa-spin me-2"></i> Mendapatkan lokasi presisi tinggi...</div>';
+        infoElement.innerHTML = '<div class="text-center animate__animated animate__pulse animate__infinite"><i class="fas fa-spinner fa-spin me-2"></i> Mendapatkan lokasi...</div>';
         
-        // Opsi geolokasi dengan akurasi tinggi dan timeout lebih lama
+        // Opsi geolokasi yang lebih toleran untuk penggunaan dalam ruangan
         const geoOptions = {
-            enableHighAccuracy: true,  // Paksa menggunakan GPS
-            maximumAge: 0,             // Jangan gunakan cache
-            timeout: 30000             // 30 detik - beri waktu lebih untuk GPS lock
+            enableHighAccuracy: false,  // Gunakan false untuk hasil lebih cepat dan lebih toleran dalam ruangan
+            maximumAge: 60000,          // Izinkan cache selama 1 menit untuk kecepatan
+            timeout: 15000              // Kurangi timeout untuk respons lebih cepat
         };
         
         // Tambahkan penanganan error yang lebih baik
@@ -1043,10 +1044,10 @@
                     pesanError += 'Izin akses lokasi ditolak. Mohon izinkan akses lokasi di browser Anda.';
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    pesanError += 'Informasi lokasi tidak tersedia. Pastikan GPS dan layanan lokasi aktif.';
+                    pesanError += 'Informasi lokasi tidak tersedia. Pastikan layanan lokasi aktif.';
                     break;
                 case error.TIMEOUT:
-                    pesanError += 'Waktu permintaan lokasi habis. Coba lagi atau pastikan berada di area dengan sinyal GPS yang baik.';
+                    pesanError += 'Waktu permintaan lokasi habis. Coba lagi atau gunakan metode alternatif.';
                     break;
                 case error.UNKNOWN_ERROR:
                     pesanError += 'Terjadi kesalahan yang tidak diketahui saat mengakses lokasi.';
@@ -1056,9 +1057,9 @@
             // Tampilkan error dengan alert yang lebih menarik
             Swal.fire({
                 icon: 'error',
-                title: 'Lokasi Tidak Akurat',
+                title: 'Masalah Deteksi Lokasi',
                 text: pesanError,
-                confirmButtonColor: '#8b0000',
+                confirmButtonColor: type === 'check-in' ? '#8b0000' : '#1a8754',
                 showClass: {
                     popup: 'animate__animated animate__fadeInDown'
                 },
@@ -1069,6 +1070,9 @@
             
             document.getElementById(`location-info-${type === 'check-in' ? 'in' : 'out'}`).innerHTML = 
                 `<div class="text-danger animate__animated animate__fadeIn"><i class="fas fa-exclamation-triangle me-2"></i> ${pesanError}</div>`;
+            
+            // TAMBAHAN: Tawarkan input manual jika gagal deteksi
+            offerManualLocation(type);
         };
         
         // Fungsi untuk memproses lokasi yang diterima
@@ -1079,8 +1083,8 @@
             
             console.log("Lokasi diterima:", lat, lng, "Akurasi:", accuracy);
             
-            // Periksa akurasi lokasi
-            if (accuracy > 100) { // Jika akurasi lebih dari 100 meter
+            // DIUBAH: Tingkatkan toleransi akurasi ke 200m
+            if (accuracy > 200) { // Jika akurasi lebih dari 200 meter (lebih toleran)
                 infoElement.innerHTML = `
                     <div class="text-warning animate__animated animate__fadeIn">
                         <i class="fas fa-exclamation-circle me-2"></i><strong>Perhatian: Lokasi kurang akurat (±${Math.round(accuracy)}m)</strong>
@@ -1089,22 +1093,22 @@
                         </button>
                     </div>`;
                 
-                // Tunjukkan peringatan
+                // Tunjukkan peringatan tapi tetap izinkan penggunaan
                 Swal.fire({
                     icon: 'warning',
                     title: 'Lokasi Kurang Akurat',
-                    text: `Akurasi lokasi saat ini adalah ±${Math.round(accuracy)}m. Ini mungkin menyebabkan lokasi tidak dikenali sebagai area kantor. Pastikan GPS aktif dan lakukan di area terbuka.`,
+                    text: `Akurasi lokasi saat ini adalah ±${Math.round(accuracy)}m.`,
                     confirmButtonText: 'Gunakan Lokasi Ini',
                     showCancelButton: true,
                     cancelButtonText: 'Coba Lagi',
-                    confirmButtonColor: '#8b0000',
+                    confirmButtonColor: type === 'check-in' ? '#8b0000' : '#1a8754',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Lanjut menggunakan lokasi meskipun kurang akurat
                         processLocation(lat, lng, accuracy, type);
                     } else {
-                        // Mencoba ulang mendapatkan lokasi
-                        getLocation(type);
+                        // Mencoba ulang mendapatkan lokasi dengan akurasi tinggi
+                        tryHighAccuracyLocation(type);
                     }
                 });
             } else {
@@ -1112,6 +1116,97 @@
                 processLocation(lat, lng, accuracy, type);
             }
         };
+        
+        // Fungsi untuk mencoba ulang dengan akurasi tinggi
+        function tryHighAccuracyLocation(type) {
+            infoElement.innerHTML = '<div class="text-center animate__animated animate__pulse animate__infinite"><i class="fas fa-spinner fa-spin me-2"></i> Mencoba dengan akurasi tinggi...</div>';
+            
+            // Coba lagi dengan akurasi tinggi
+            const highAccuracyOptions = {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 20000
+            };
+            
+            navigator.geolocation.getCurrentPosition(
+                successHandler,
+                function(error) {
+                    // Jika gagal dengan akurasi tinggi, tawarkan input manual
+                    console.error("Gagal dengan akurasi tinggi:", error);
+                    offerManualLocation(type);
+                },
+                highAccuracyOptions
+            );
+        }
+        
+        // TAMBAHAN: Fungsi untuk menawarkan input lokasi manual
+        function offerManualLocation(type) {
+            Swal.fire({
+                title: 'Masukkan Lokasi Manual',
+                html: `
+                    <p class="text-muted">Deteksi lokasi otomatis gagal. Anda dapat memasukkan koordinat lokasi manual.</p>
+                    <div class="form-group mb-3">
+                        <label for="manual-lat">Latitude:</label>
+                        <input type="number" id="manual-lat" class="form-control" step="0.000001" placeholder="Contoh: -6.123456">
+                    </div>
+                    <div class="form-group">
+                        <label for="manual-lng">Longitude:</label>
+                        <input type="number" id="manual-lng" class="form-control" step="0.000001" placeholder="Contoh: 106.123456">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Gunakan Lokasi Ini',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: type === 'check-in' ? '#8b0000' : '#1a8754',
+                preConfirm: () => {
+                    const lat = document.getElementById('manual-lat').value;
+                    const lng = document.getElementById('manual-lng').value;
+                    
+                    if (!lat || !lng) {
+                        Swal.showValidationMessage('Mohon isi kedua kolom koordinat');
+                        return false;
+                    }
+                    
+                    return {
+                        lat: parseFloat(lat),
+                        lng: parseFloat(lng)
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Proses lokasi manual
+                    processLocation(result.value.lat, result.value.lng, 50, type); // Accuracy default 50m
+                } else {
+                    // Reset info lokasi jika dibatalkan
+                    infoElement.innerHTML = `
+                        <div class="text-danger animate__animated animate__fadeIn">
+                            <i class="fas fa-exclamation-triangle me-2"></i> Lokasi belum terdeteksi
+                            <button class="btn btn-sm btn-outline-danger ms-2" onclick="getLocation('${type}')">
+                                <i class="fas fa-sync-alt me-1"></i> Coba Lagi
+                            </button>
+                        </div>
+                    `;
+                }
+            });
+        }
+        
+        // Fungsi untuk mendapatkan lokasi dengan IP sebagai fallback
+        function getLocationByIP() {
+            // Ini memerlukan layanan IP Geolocation pihak ketiga
+            // Contoh implementasi menggunakan API publik
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    // Gunakan data lokasi berdasarkan IP
+                    const lat = data.latitude;
+                    const lng = data.longitude;
+                    processLocation(lat, lng, 1000, type); // Akurasi rendah (1000m)
+                })
+                .catch(error => {
+                    console.error("Error getting IP location:", error);
+                    offerManualLocation(type);
+                });
+        }
         
         // Fungsi untuk memproses lokasi yang sudah didapatkan
         function processLocation(lat, lng, accuracy, type) {
@@ -1177,15 +1272,33 @@
             }
         }
         
-        // Mulai mendapatkan lokasi
-        navigator.geolocation.getCurrentPosition(successHandler, errorHandler, geoOptions);
+        // TAMBAHAN: Sistem pengambilan lokasi bertingkat (cascade)
+        // 1. Pertama coba tanpa high accuracy untuk kecepatan
+        navigator.geolocation.getCurrentPosition(successHandler, function(error) {
+            console.log("Lokasi standar gagal, mencoba high accuracy:", error);
+            
+            // 2. Jika gagal, coba dengan high accuracy
+            const highAccuracyOptions = {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 20000
+            };
+            
+            navigator.geolocation.getCurrentPosition(successHandler, function(error) {
+                console.log("High accuracy gagal:", error);
+                
+                // 3. Jika masih gagal, tawarkan input manual
+                offerManualLocation(type);
+            }, highAccuracyOptions);
+            
+        }, geoOptions);
     } else {
         // Browser tidak mendukung geolokasi
         Swal.fire({
             icon: 'error',
             title: 'Browser Tidak Mendukung',
             text: 'Geolocation tidak didukung oleh browser ini.',
-            confirmButtonColor: '#8b0000',
+            confirmButtonColor: type === 'check-in' ? '#8b0000' : '#1a8754',
             showClass: {
                 popup: 'animate__animated animate__fadeInDown'
             },

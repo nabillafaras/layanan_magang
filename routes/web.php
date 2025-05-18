@@ -42,23 +42,24 @@ use App\Http\Controllers\Admin5\AdminProfile5Controller;
 
 
 use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\CreateController;
-use App\Http\Controllers\DirektoratController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\User\AttendanceController;
+use App\Http\Controllers\Admin\CreateController;
+use App\Http\Controllers\Admin\DirektoratController;
 use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\Informasi_PesertaController;
-use App\Http\Controllers\IzinController;
-use App\Http\Controllers\LaporanAkhirController;
-use App\Http\Controllers\LaporanBulananController;
+use App\Http\Controllers\User\IzinController;
+use App\Http\Controllers\User\LaporanAkhirController;
+use App\Http\Controllers\User\LaporanBulananController;
 use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\Pendaftaran_SummaryController;
-use App\Http\Controllers\PengumumanController;
-use App\Http\Controllers\PengumumanUserController;
+use App\Http\Controllers\Admin\PengumumanController;
+use App\Http\Controllers\User\PengumumanUserController;
 use App\Http\Controllers\PersyaratanController;
-use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\Admin\PesertaController;
 
 use App\Http\Controllers\Pimpinans\AbsensiPimpinanController;
 use App\Http\Controllers\Pimpinans\LaporanPimpinanController;
@@ -66,13 +67,13 @@ use App\Http\Controllers\Pimpinans\PesertaPimpinanController;
 use App\Http\Controllers\Pimpinans\PimpinanController;
 use App\Http\Controllers\Pimpinans\PimpinanProfileController;
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RekapAbsensiController;
-use App\Http\Controllers\RekapLaporanController;
-use App\Http\Controllers\SakitController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\Admin\RekapAbsensiController;
+use App\Http\Controllers\Admin\RekapLaporanController;
+use App\Http\Controllers\User\SakitController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserAuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -143,13 +144,13 @@ Route::middleware(['auth:web', 'checkRole:user'])->group(function () {
     Route::get('/laporan/akhir/download/{id}', [LaporanAkhirController::class, 'download'])->name('laporan.akhir.download');
     Route::delete('/laporan/akhir/delete/{id}', [LaporanAkhirController::class, 'delete'])->name('laporan.akhir.delete');
     //profile
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
-    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/change-password', [App\Http\Controllers\ProfileController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/change-password', [ProfileController::class, 'showChangePasswordForm'])->name('password.change');
     Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update.password');
     //pengumuman
-    Route::get('/pengumuman', [App\Http\Controllers\PengumumanUserController::class, 'index'])->name('pengumuman');
-    Route::get('/pengumuman/{id}', [App\Http\Controllers\PengumumanUserController::class, 'show'])->name('pengumuman.show');
+    Route::get('/pengumuman', [PengumumanUserController::class, 'index'])->name('pengumuman');
+    Route::get('/pengumuman/{id}', [PengumumanUserController::class, 'show'])->name('pengumuman.show');
 });
 
 // ====================================
@@ -184,8 +185,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/export-absensi', [RekapAbsensiController::class, 'exportExcel'])->name('admin.export-absensi');
     
         // Rute untuk rekapitulasi laporan
-        Route::get('/admin/rekapitulasi-laporan', [App\Http\Controllers\RekapLaporanController::class, 'index'])->name('admin.rekapitulasi-laporan');
-        Route::get('/admin/export-laporan', [App\Http\Controllers\RekapLaporanController::class, 'exportExcel'])->name('admin.export-laporan');
+        Route::get('/admin/rekapitulasi-laporan', [RekapLaporanController::class, 'index'])->name('admin.rekapitulasi-laporan');
+        Route::get('/admin/export-laporan', [RekapLaporanController::class, 'exportExcel'])->name('admin.export-laporan');
 
         //pengelolaan per direktorat
         Route::get('/admin/direktorat/direktorat1', [DirektoratController::class, 'direktorat1'])->name('admin.direktorat.direktorat1');
@@ -204,9 +205,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/admin/direktorat/{direktorat}/map', [DirektoratController::class, 'mapDirektorat'])->name('admin.direktorat.map');
         
         //Profile
-        Route::get('/profile', [App\Http\Controllers\AdminProfileController::class, 'index'])->name('admin.profile.index');
-        Route::put('/profile/update', [App\Http\Controllers\AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
-        Route::put('/profile/update-password', [App\Http\Controllers\AdminProfileController::class, 'updatePassword'])->name('admin.profile.update-password');
+        Route::get('/profile', [AdminProfileController::class, 'index'])->name('admin.profile.index');
+        Route::put('/profile/update', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
+        Route::put('/profile/update-password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.update-password');
 
 
       
