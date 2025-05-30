@@ -379,6 +379,14 @@
             </div>
         </div>
     </div>
+    <form action="{{ route('admin2.logout') }}" method="POST">
+    @csrf
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-danger text-white" id="changePasswordBtn">
+                <i class="fas fa-key me-2"></i> Logout
+            </button>
+        </div>
+    </form>
 </div>
 @endsection
 

@@ -492,8 +492,10 @@
                 <img src="{{ asset('images/ic_kemensos_1.png') }}" alt="Logo" class="logo">
             </div>
             <div class="user-profile">
-            <img src="{{ asset('storage/' . auth()->user()->foto_profile) }}" alt="Profile" class="profile-image profile-pulse">
-                <h6 class="mb-0 text-white">{{ auth()->user()->nama_lengkap }}</h6>
+                <a href="{{ route('profile.index') }}" class="profile-link">
+                <img src="{{ asset('storage/' . auth()->user()->foto_profile) }}" alt="Profile" class="profile-image profile-pulse">
+                </a>    
+            <h6 class="mb-0 text-white">{{ auth()->user()->nama_lengkap }}</h6>
                 <small class="text-white-50">
                     <span class="badge-user">Peserta</span>
                 </small>

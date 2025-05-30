@@ -30,7 +30,7 @@
             overflow-x: hidden;
         }
         
-        /* Navbar Styling - Modern & Animated */
+        /* Navbar Styling - Modern & Animated with Hide on Scroll */
         .navbar {
             position: fixed;
             top: 0;
@@ -43,12 +43,23 @@
             transition: all 0.4s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             padding: 15px 0;
+            transform: translateY(0);
         }
 
         .navbar.scrolled {
             padding: 10px 0;
             background-color: rgba(255, 255, 255, 0.98);
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Hide navbar when scrolling down */
+        .navbar.navbar-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Show navbar when scrolling up */
+        .navbar.navbar-visible {
+            transform: translateY(0);
         }
 
         .navbar a {
@@ -379,15 +390,66 @@
             mirror: false
         });
         
-        // Navbar scroll effect
+        // Navbar hide/show on scroll functionality
+        let lastScrollTop = 0;
+        let scrollThreshold = 100; // Minimum scroll distance before hiding
+        let isScrolling = false;
+        
         document.addEventListener("scroll", function () {
             const navbar = document.querySelector(".navbar");
-            if (window.scrollY > 50) {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Add scrolled class for styling when scrolled down
+            if (currentScroll > 50) {
                 navbar.classList.add("scrolled");
             } else {
                 navbar.classList.remove("scrolled");
             }
+            
+            // Hide/show navbar based on scroll direction
+            // Only start hiding after scrolling past threshold
+            if (currentScroll > scrollThreshold) {
+                if (currentScroll > lastScrollTop && !isScrolling) {
+                    // Scrolling down - hide navbar
+                    navbar.classList.add("navbar-hidden");
+                    navbar.classList.remove("navbar-visible");
+                } else if (currentScroll < lastScrollTop) {
+                    // Scrolling up - show navbar
+                    navbar.classList.remove("navbar-hidden");
+                    navbar.classList.add("navbar-visible");
+                }
+            } else {
+                // Always show navbar when near top of page
+                navbar.classList.remove("navbar-hidden");
+                navbar.classList.add("navbar-visible");
+            }
+            
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
         });
+        
+        // Prevent navbar hiding when dropdown is open (for mobile)
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                isScrolling = true;
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 300);
+            });
+        });
+        
+        // Handle mobile menu toggle
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        if (navbarToggler) {
+            navbarToggler.addEventListener('click', function() {
+                isScrolling = true;
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 300);
+            });
+        }
         
         // Add hover effect to navbar items
         const navItems = document.querySelectorAll('.nav-link');

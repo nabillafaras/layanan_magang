@@ -429,7 +429,9 @@
                 <img src="{{ asset('images/ic_kemensos_1.png') }}" alt="Logo" class="logo">
             </div>
             <div class="user-profile">
+                <a href="{{ route('admin2.profile.index') }}" class="profile-link">
                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('admin')->user()->nama_lengkap) }}&background=8b0000&color=fff" alt="Admin" class="profile-img">
+                </a>
                 <h6 class="mb-0 text-white">{{ Auth::guard('admin')->user()->nama_lengkap }}</h6>
                 <small class="text-white-50">
                     <span class="badge-admin">Admin</span>

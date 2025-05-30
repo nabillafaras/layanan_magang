@@ -444,6 +444,39 @@
         font-weight: 600;
     }
 
+.section-title {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    .section-title h2 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title h2::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background-color: var(--primary-color);
+        border-radius: 10px;
+    }
+    
+    .section-title p {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 700px;
+        margin: 20px auto 0;
+    }
     /* Animations */
     @keyframes slideInLeft {
         from {
@@ -543,6 +576,9 @@
             font-size: 1rem;
         }
         
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
         .requirements-box, .steps-box {
             padding: 20px;
         }
@@ -573,14 +609,17 @@
     <div class="hero-content" data-aos="fade-right" data-aos-delay="200">
         <h1>Persyaratan Magang</h1>
         <p>Temukan informasi lengkap tentang persyaratan dan tata cara pendaftaran program magang di Kementerian Sosial Republik Indonesia.</p>
-        <a href="#persyaratan" class="hero-btn">Lihat Persyaratan <i class="fas fa-arrow-right"></i></a>
+        <a href="#informasi" class="hero-btn">Lihat Persyaratan <i class="fas fa-arrow-right"></i></a>
     </div>
 </section>
 
 <!-- Information Section -->
-<section id="persyaratan" class="information-section">
-    <div class="container">
-        <h2 data-aos="fade-up">Persyaratan Pendaftaran Magang di Kemensos RI</h2>
+    <section id="informasi" class="information-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Persyaratan Pendaftaran Magang di Kemensos RI</h2>
+                <p>Pelajari lebih lanjut tentang persyaratan magang di Kementerian Sosial RI</p>
+            </div>
         
         <div class="requirements-box" data-aos="fade-up" data-aos-delay="100">
             <h3>Berkas dan Persyaratan yang Perlu Disiapkan</h3>

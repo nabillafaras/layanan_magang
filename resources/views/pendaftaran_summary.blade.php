@@ -315,19 +315,31 @@
     }
 
     .label {
-        min-width: 180px;
-        font-weight: bold;
-        text-align: left;
-        position: relative;
-        color: var(--primary-color);
-        transition: var(--transition);
-    }
+    min-width: 250px; /* Diperbesar dari 180px untuk memberi ruang lebih */
+    font-weight: bold;
+    text-align: left;
+    position: relative;
+    color: var(--primary-color);
+    transition: var(--transition);
+    padding-right: 15px; /* Tambahan padding untuk jarak dengan tanda titik dua */
+}
 
-    .label::after {
-        content: ":";
-        position: absolute;
-        right: 50px;
-    }
+.label::after {
+    content: ":";
+    position: absolute;
+    right: 0; /* Ubah dari right: 50px ke right: 0 */
+    top: 0;
+}
+
+/* Alternatif: Khusus untuk label yang panjang */
+.label.long-label {
+    min-width: 280px;
+    padding-right: 20px;
+}
+
+.label.long-label::after {
+    right: 0;
+}
 
     .value {
         margin-left: 20px;
@@ -473,8 +485,13 @@
 
     /* Responsive Design */
     @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        
         .container {
-            padding: 0 15px;
+            padding: 0 10px;
+            margin: 20px auto;
         }
         
         .card-header {
@@ -482,11 +499,21 @@
         }
         
         .card-body {
-            padding: 25px 15px;
+            padding: 20px 15px;
         }
         
         .label {
-            min-width: 120px;
+            min-width: 160px;
+            font-size: 0.9rem;
+        }
+        
+        .label.long-label {
+            min-width: 180px;
+        }
+        
+        .value {
+            font-size: 0.9rem;
+            margin-left: 15px;
         }
         
         .registration-number {
@@ -504,40 +531,127 @@
         .card-header h2 {
             font-size: 1.8rem;
         }
+        
+        .list-group-item {
+            padding: 12px 15px;
+        }
     }
 
     @media (max-width: 576px) {
+        body {
+            padding: 5px;
+        }
+        
+        .container {
+            padding: 0 5px;
+            margin: 10px auto;
+        }
+        
+        .card-header {
+            padding: 20px 10px;
+        }
+        
+        .card-body {
+            padding: 15px 10px;
+        }
+        
+        .card-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .title-icon {
+            font-size: 1.8rem;
+        }
+        
         .list-group-item {
             flex-direction: column;
             align-items: flex-start;
-            padding: 15px;
-        }
-        
-        .label {
-            min-width: auto;
-            margin-bottom: 5px;
-            width: 100%;
-        }
-        
-        .label::after {
-            display: none;
-        }
-        
-        .value {
-            margin-left: 0;
-            width: 100%;
-            padding-left: 30px;
+            padding: 15px 10px;
+            position: relative;
         }
         
         .icon {
             position: absolute;
-            left: 15px;
-            top: 15px;
+            left: 10px;
+            top: 12px;
+            margin-right: 0;
+        }
+        
+        .label {
+            min-width: auto;
+            width: calc(100% - 35px);
+            margin-left: 30px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding-right: 0;
+        }
+        
+        .label::after {
+            content: ":";
+            position: static;
+            margin-left: 2px;
+        }
+        
+        .label.long-label {
+            min-width: auto;
+            width: calc(100% - 35px);
+        }
+        
+        .value {
+            margin-left: 30px;
+            width: calc(100% - 35px);
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: normal;
         }
         
         .btn-action {
-            font-size: 1rem;
-            padding: 12px;
+            font-size: 0.95rem;
+            padding: 12px 16px;
+            margin-top: 10px;
+        }
+        
+        .registration-number {
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+        
+        .registration-number h5 {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .card-header h2 {
+            font-size: 1.3rem;
+        }
+        
+        .title-icon {
+            font-size: 1.6rem;
+        }
+        
+        .label, .value {
+            font-size: 0.8rem;
+        }
+        
+        .list-group-item {
+            padding: 12px 8px;
+        }
+        
+        .icon {
+            left: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .label {
+            margin-left: 25px;
+            width: calc(100% - 30px);
+        }
+        
+        .value {
+            margin-left: 25px;
+            width: calc(100% - 30px);
         }
     }
 </style>

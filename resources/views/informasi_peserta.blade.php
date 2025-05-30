@@ -389,16 +389,21 @@
 
     /* Table Styling */
     .table-responsive {
-        padding: 0;
-        border-radius: 0 0 15px 15px;
-        overflow: hidden;
-    }
+    padding: 0;
+    border-radius: 0 0 15px 15px;
+    overflow-x: auto; /* Pastikan scroll horizontal aktif */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll di iOS */
+    width: 100%;
+    max-width: 100%;
+}
     
     .modern-table {
-        width: 100%;
-        border-collapse: collapse;
-        border-spacing: 0;
-        margin-bottom: 0;
+    width: 100%;
+    min-width: 800px; /* Minimum width agar bisa di-scroll */
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 0;
     }
     
     .modern-table thead tr {
