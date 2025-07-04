@@ -421,6 +421,7 @@
                                     <div class="col-md-4"><strong>Password:</strong></div>
                                     <div class="col-md-8">{{ $pendaftaran->decrypted_password ?? $pendaftaran->password }}</div>
                                 </div>
+                                <p>Setelah Anda menerima kredensial untuk login, segera ubah kata sandi Anda demi keamanan akun.</p>
                                 @if($pendaftaran->surat_balasan)
                                     <a href="{{ asset('storage/'.$pendaftaran->surat_balasan) }}" target="_blank" class="btn btn-sm btn-success">
                                         <i class="fas fa-file-pdf"></i> Unduh Surat Balasan Diterima

@@ -35,7 +35,28 @@ class LaporanPimpinanController extends Controller
         $bulanNama = Carbon::createFromDate($tahun, $bulan, 1)->locale('id')->isoFormat('MMMM YYYY');
 
         // Query untuk mendapatkan peserta magang dengan status diterima
-        $query = Pendaftaran::whereIn('status', ['diterima', 'selesai']);
+        $query = Pendaftaran::whereIn('status', ['diterima', 'selesai'])
+              // Filter tanggal mulai: sudah mulai sebelum atau pada bulan yang dipilih
+              ->where(function($q) use ($tahun, $bulan) {
+                  $q->whereYear('tanggal_mulai', '<', $tahun)
+                    ->orWhere(function($q2) use ($tahun, $bulan) {
+                        $q2->whereYear('tanggal_mulai', '=', $tahun)
+                           ->whereMonth('tanggal_mulai', '<=', $bulan);
+                    });
+              })
+              // Filter tanggal selesai: belum selesai atau selesai setelah bulan yang dipilih
+              ->where(function($q) use ($tahun, $bulan) {
+                  $q->whereNull('tanggal_selesai') // Belum ada tanggal selesai
+                    ->orWhereYear('tanggal_selesai', '>', $tahun) // Selesai di tahun setelah tahun yang dipilih
+                    ->orWhere(function($q2) use ($tahun, $bulan) {
+                        $q2->whereYear('tanggal_selesai', '=', $tahun)
+                           ->whereMonth('tanggal_selesai', '>=', $bulan); // Selesai di bulan yang sama atau setelah bulan yang dipilih
+                    });
+              })
+              ->with(['attendances' => function($query) use ($tahun, $bulan) {
+                  $query->whereYear('date', $tahun)
+                        ->whereMonth('date', $bulan);
+              }]);
 
         // Filter berdasarkan direktorat
         if ($request->has('direktorat') && $request->direktorat) {

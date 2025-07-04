@@ -76,7 +76,7 @@ class PendaftaranController extends Controller
                 'direktorat' => 'required|max:255',
                 'unit_kerja' => 'required|max:255',
                 'cv' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-                'foto_profile' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+                'foto_profile' => 'nullable|file|mimes:jpg,png|max:2048',
             ]
         ];
 

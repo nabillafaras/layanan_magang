@@ -62,11 +62,36 @@ class LaporanBulananExport implements FromCollection, WithHeadings, WithTitle, W
 
     public function collection()
     {
-        $query = Pendaftaran::where('status', 'diterima');
+        $tahun = date('Y', strtotime($this->filterDate . '-01'));
+        $bulan = date('n', strtotime($this->filterDate . '-01'));
+
+        $query = Pendaftaran::whereIn('status', ['diterima', 'selesai'])
+        // Filter tanggal mulai: sudah mulai sebelum atau pada bulan yang dipilih
+        ->where(function($q) use ($tahun, $bulan) {
+            $q->whereYear('tanggal_mulai', '<', $tahun)
+              ->orWhere(function($q2) use ($tahun, $bulan) {
+                  $q2->whereYear('tanggal_mulai', '=', $tahun)
+                     ->whereMonth('tanggal_mulai', '<=', $bulan);
+              });
+        })
+        // Filter tanggal selesai: belum selesai atau selesai setelah bulan yang dipilih
+        ->where(function($q) use ($tahun, $bulan) {
+            $q->whereNull('tanggal_selesai') // Belum ada tanggal selesai
+              ->orWhereYear('tanggal_selesai', '>', $tahun) // Selesai di tahun setelah tahun yang dipilih
+              ->orWhere(function($q2) use ($tahun, $bulan) {
+                  $q2->whereYear('tanggal_selesai', '=', $tahun)
+                     ->whereMonth('tanggal_selesai', '>=', $bulan); // Selesai di bulan yang sama atau setelah bulan yang dipilih
+              });
+        })
+        // Load relasi attendances untuk bulan yang dipilih
+        ->with(['attendances' => function($attendanceQuery) use ($tahun, $bulan) {
+            $attendanceQuery->whereYear('date', $tahun)
+                           ->whereMonth('date', $bulan);
+        }]);
 
         if ($this->direktorat) {
             $query->where('direktorat', $this->direktorat);
-        }
+        }   
 
         $peserta = $query->get();
 
@@ -224,7 +249,33 @@ class LaporanAkhirExport implements FromCollection, WithHeadings, WithTitle, Wit
 
     public function collection()
     {
-        $query = Pendaftaran::where('status', 'diterima');
+        $tahun = date('Y', strtotime($this->filterDate . '-01'));
+        $bulan = date('n', strtotime($this->filterDate . '-01'));
+
+        $query = Pendaftaran::whereIn('status', ['diterima', 'selesai'])
+        // Filter tanggal mulai: sudah mulai sebelum atau pada bulan yang dipilih
+        ->where(function($q) use ($tahun, $bulan) {
+            $q->whereYear('tanggal_mulai', '<', $tahun)
+              ->orWhere(function($q2) use ($tahun, $bulan) {
+                  $q2->whereYear('tanggal_mulai', '=', $tahun)
+                     ->whereMonth('tanggal_mulai', '<=', $bulan);
+              });
+        })
+        // Filter tanggal selesai: belum selesai atau selesai setelah bulan yang dipilih
+        ->where(function($q) use ($tahun, $bulan) {
+            $q->whereNull('tanggal_selesai') // Belum ada tanggal selesai
+              ->orWhereYear('tanggal_selesai', '>', $tahun) // Selesai di tahun setelah tahun yang dipilih
+              ->orWhere(function($q2) use ($tahun, $bulan) {
+                  $q2->whereYear('tanggal_selesai', '=', $tahun)
+                     ->whereMonth('tanggal_selesai', '>=', $bulan); // Selesai di bulan yang sama atau setelah bulan yang dipilih
+              });
+        })
+        // Load relasi attendances untuk bulan yang dipilih
+        ->with(['attendances' => function($attendanceQuery) use ($tahun, $bulan) {
+            $attendanceQuery->whereYear('date', $tahun)
+                           ->whereMonth('date', $bulan);
+        }]);
+
 
         if ($this->direktorat) {
             $query->where('direktorat', $this->direktorat);

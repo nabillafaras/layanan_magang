@@ -206,8 +206,8 @@
                             <div class="form-text">Upload surat dokter atau bukti lainnya (format: JPG, PNG, PDF, max: 2MB)</div>
                         </div>
                         
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="submit" id="submitBtn" class="btn btn-danger animate__animated animate__pulse animate__infinite">
+                        <div class="d-grid gap-2">
+                            <button type="submit" id="submitBtn" class="btn btn-danger btn-pulse">
                                 <i class="fas fa-paper-plane me-2"></i> Kirim
                             </button>
                         </div>

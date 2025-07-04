@@ -393,11 +393,7 @@
                 </div>
             @endif
             
-            <div class="mt-5 text-center">
-                <a href="{{ route('pengumuman') }}" class="btn btn-outline-primary">
-                    <i class="fas fa-arrow-left me-2"></i> Kembali ke Daftar Pengumuman
-                </a>
-            </div>
+            
         </div>
     </div>
 </div>

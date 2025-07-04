@@ -116,6 +116,11 @@
     .table tr:last-child td {
         border-bottom: none;
     }
+    .table-dark th {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: #5a0000;
+    }
     
     .btn {
         font-weight: 600;
@@ -395,6 +400,32 @@
     .table-responsive::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+    /* Pagination Styling */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .pagination .page-item .page-link {
+        border-radius: 8px;
+        margin: 0 5px;
+        color: #333;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #8b0000;
+        border-color: #8b0000;
+        color: white;
+    }
+    
+    .pagination .page-item .page-link:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
 </style>
 @endsection
 
@@ -447,10 +478,12 @@
                         <i class="fas fa-arrows-alt-h"></i> Geser untuk melihat seluruh data
                     </small>
                 </div>
+                <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="tabelAbsensi">
-                        <thead>
+                        <thead class="table-dark">
                             <tr>
+                                <th>No</th>
                                 <th>Nama</th>
                                 <th>Tanggal</th>
                                 <th class="d-none">Tanggal Urut</th><!-- Kolom tersembunyi untuk pengurutan -->
@@ -467,7 +500,7 @@
                         <tbody>
                             @foreach($absensi as $index => $a)
                                 <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
-                                    <!-- Kolom nama -->
+                                    <td class="text-center">{{ $index + 1 }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
@@ -580,6 +613,7 @@
                         </tbody>
                     </table>
                 </div>
+                </div>
             </div>
         </div>
     </div>
@@ -642,7 +676,7 @@
         </div>
     </div>
 
-    <!-- Rekapitulasi Laporan Bulanan -->
+    <!-- Rekapitulasi Laporan -->
     <div class="row">
         <div class="col-12">
             <div class="dashboard-card slide-in-up" style="animation-delay: 0.3s">
@@ -652,8 +686,9 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="tabelLaporan">
-                            <thead>
+                            <thead class="table-dark">
                                 <tr>
+                                    <th>No</th>
                                     <th>Nama</th>
                                     <th>Jenis Laporan</th>
                                     <th>Judul</th>
@@ -666,6 +701,7 @@
                             <tbody>
                                 @foreach($laporan as $index => $l)
                                     <tr class="fade-in" style="animation-delay: {{ $index * 0.05 }}s">
+                                        <td class="text-center">{{ $index + 1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar-sm me-2" style="width: 32px; height: 32px; border-radius: 50%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
@@ -788,23 +824,48 @@ $(document).ready(function() {
     $(document).ready(function() {
         // Inisialisasi DataTables dengan animasi
         $('#tabelAbsensi').DataTable({
-            order: [[2, 'desc']], // Urutkan berdasarkan kolom ke-2 (kolom tanggal tersembunyi dalam format YYYY-MM-DD)
-            columnDefs: [
-                { "targets": [2], "visible": false } // Kolom ke-2 (indeks 2) dibuat tidak terlihat
-            ],
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
+            "scrollX": true,
+            "searching": true,
+            "language": {
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data yang tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total data)",
+                
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                }
             },
+            "pageLength": 10,
+            "responsive": true,
             "drawCallback": function() {
                 $('.dataTables_paginate .paginate_button').addClass('fade-in');
             }
         });
         
         $('#tabelLaporan').DataTable({
-            order: [[3, 'desc']],
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
+            "scrollX": true,
+            "searching": true,
+            "language": {
+                "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                "zeroRecords": "Tidak ada data yang ditemukan",
+                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                "infoEmpty": "Tidak ada data yang tersedia",
+                "infoFiltered": "(difilter dari _MAX_ total data)",
+                
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
+                }
             },
+            "pageLength": 10,
+            "responsive": true,
             "drawCallback": function() {
                 $('.dataTables_paginate .paginate_button').addClass('fade-in');
             }

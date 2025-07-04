@@ -171,6 +171,7 @@ class ProfileController extends Controller
             return back()->withErrors(['current_password' => 'Password saat ini salah']);
         }
 
+        try {
         // Update password
         $user->password = Hash::make($request->input('password'));
         $user->save();
@@ -178,5 +179,11 @@ class ProfileController extends Controller
         // Kembalikan dengan pesan sukses
         return redirect()->route('profile.index')
             ->with('success', 'Password berhasil diubah');
+            } catch (\Exception $e) {
+            // Tangani error saat menyimpan
+            return redirect()->back()
+                ->with('error', 'Gagal mengubah password: ' . $e->getMessage());
+        }
+    
     }
 }

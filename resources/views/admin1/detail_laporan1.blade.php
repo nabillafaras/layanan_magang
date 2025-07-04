@@ -1,17 +1,70 @@
 @extends('layouts.header_admin1')
 
 @section('title', 'Detail Laporan - Kementerian Sosial RI')
+<style>
+    /* Dashboard Specific Styles */
+    .dashboard-header {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .dashboard-header h2 {
+        font-weight: 700;
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+    
+    .dashboard-header h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 60px;
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
+        border-radius: 2px;
+    }
 
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #c13030;
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        color: #6c757d;
+    }
+
+    
+</style>
 @section('content')
 <div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mt-4">Detail Laporan</h1>
+    <div class="dashboard-header fade-in">
+        <h2 class="mt-4">Detail Laporan</h2>
     </div>
     <ol class="breadcrumb mb-4">
         @if(session('previous_direktorat'))
-            <li class="breadcrumb-item"><a href="{{ route('admin1.direktorat', ['id' => session('previous_direktorat')]) }}">Direktorat {{ session('previous_direktorat') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.direktorat', ['id' => session('previous_direktorat')]) }}">Direktorat {{ session('previous_direktorat') }}</a></li>
         @endif
-        <li class="breadcrumb-item active">Detail Laporan Sekertariat Jenderal</li>
+        <li class="breadcrumb-item active">Detail Laporan</li>
     </ol>
 
     <div class="card mb-4">
@@ -63,28 +116,28 @@
             <div class="row mb-3">
                 <div class="col-md-3 fw-bold">File Laporan</div>
                 <div class="col-md-9">
-                    <a href="{{ asset($laporan->file_path) }}" class="btn btn-primary" target="_blank">
+                    <a href="{{ asset('storage/app/public/'.$laporan->file_path) }}" class="btn btn-primary" target="_blank">
                         <i class="fas fa-file-download me-1"></i> Download Laporan
                     </a>
                 </div>
             </div>
-            @if($laporan->jenis_laporan == 'akhir' && $laporan->status == 'Acc')
-                @if($laporan->sk_selesai)
-                <div class="row mb-3">
-                    <div class="col-md-3 fw-bold">SK Selesai</div>
-                    <div class="col-md-9">
-                        <a href="{{ asset($laporan->sk_selesai) }}" class="btn btn-primary" target="_blank">
-                            <i class="fas fa-file-download me-1"></i> Download SK Selesai
-                        </a>
-                    </div>
+           @if($laporan->jenis_laporan == 'akhir' && $laporan->status == 'Acc')
+            @if($laporan->sk_selesai)
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">SK Selesai</div>
+                <div class="col-md-9">
+                    <a href="{{ url('storage/app/public/' . str_replace('storage/', '', $laporan->sk_selesai)) }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-file-download me-1"></i> Download SK Selesai
+                    </a>
                 </div>
-                @endif
+            </div>
+            @endif
                 
                 @if($laporan->sertifikat)
                 <div class="row mb-3">
                     <div class="col-md-3 fw-bold">Sertifikat</div>
                     <div class="col-md-9">
-                        <a href="{{ asset($laporan->sertifikat) }}" class="btn btn-success" target="_blank">
+                        <a href="{{ url('storage/app/public/' . str_replace('storage/', '', $laporan->sertifikat)) }}" class="btn btn-success" target="_blank">
                             <i class="fas fa-file-download me-1"></i> Download Sertifikat
                         </a>
                     </div>

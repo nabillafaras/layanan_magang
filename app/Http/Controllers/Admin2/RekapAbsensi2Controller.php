@@ -38,10 +38,17 @@ class RekapAbsensi2Controller extends Controller
         // Query untuk mendapatkan peserta magang dengan direktorat dan status yang diinginkan
         $query = Pendaftaran::where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
                            ->whereIn('status', ['diterima', 'selesai'])
-                           ->with(['attendances' => function($query) use ($tahun, $bulan) {
-                               $query->whereYear('date', $tahun)
-                                     ->whereMonth('date', $bulan);
-                           }]);
+                            // Peserta sudah mulai magang sebelum akhir bulan yang dipilih
+                            ->where('tanggal_mulai', '<=', Carbon::createFromDate($tahun, $bulan)->endOfMonth())
+                            // Peserta belum selesai ATAU selesai setelah awal bulan yang dipilih
+                            ->where(function($q) use ($tahun, $bulan) {
+                                $q->whereNull('tanggal_selesai')
+                                    ->orWhere('tanggal_selesai', '>=', Carbon::createFromDate($tahun, $bulan)->startOfMonth());
+                            })
+                            ->with(['attendances' => function($query) use ($tahun, $bulan) {
+                                $query->whereYear('date', $tahun)
+                                        ->whereMonth('date', $bulan);
+                            }]);
 
         // Filter berdasarkan pencarian
         if ($request->has('search')) {

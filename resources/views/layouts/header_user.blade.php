@@ -581,11 +581,7 @@
                     
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link pulse" href="#">
-                                    <i class="fas fa-bell"></i>
-                                </a>
-                            </li>
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-user me-2"></i>{{ auth()->user()->nama_lengkap }}

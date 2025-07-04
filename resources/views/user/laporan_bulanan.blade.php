@@ -451,11 +451,7 @@
                                 </form>
                             @endif
                             
-                            @if($item->feedback)
-                                <button type="button" class="btn btn-sm btn-secondary mb-1" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ $item->id }}">
-                                    <i class="fas fa-comment"></i> Detail
-                                </button>
-                            @endif
+                            
                         </td>
                     </tr>
                 @empty

@@ -2,10 +2,65 @@
 
 @section('title', 'Detail Laporan - Kementerian Sosial RI')
 
+<style>
+    /* Dashboard Specific Styles */
+    .dashboard-header {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .dashboard-header h2 {
+        font-weight: 700;
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+    
+    .dashboard-header h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 60px;
+        background: linear-gradient(90deg, var(--primary-color), #c13030);
+        border-radius: 2px;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #c13030;
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        color: #6c757d;
+    }
+
+    
+</style>
+
 @section('content')
 <div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mt-4">Detail Laporan</h1>
+    <div class="dashboard-header fade-in">
+        <h2 class="mt-4">Detail Laporan</h2>
     </div>
     <ol class="breadcrumb mb-4">
         @if(session('previous_direktorat'))

@@ -36,10 +36,17 @@ class RekapLaporan2Controller extends Controller
         // Query untuk mendapatkan peserta magang dengan direktorat dan status yang diinginkan
         $query = Pendaftaran::where('direktorat', 'Direktorat Jenderal Perlindungan dan Jaminan Sosial')
                            ->whereIn('status', ['diterima', 'selesai'])
-                           ->with(['attendances' => function($query) use ($tahun, $bulan) {
-                               $query->whereYear('date', $tahun)
-                                     ->whereMonth('date', $bulan);
-                           }]);
+                   // Peserta sudah mulai magang sebelum akhir bulan yang dipilih
+                   ->where('tanggal_mulai', '<=', Carbon::createFromDate($tahun, $bulan)->endOfMonth())
+                   // Peserta belum selesai ATAU selesai setelah awal bulan yang dipilih
+                   ->where(function($q) use ($tahun, $bulan) {
+                       $q->whereNull('tanggal_selesai')
+                         ->orWhere('tanggal_selesai', '>=', Carbon::createFromDate($tahun, $bulan)->startOfMonth());
+                   })
+                   ->with(['attendances' => function($query) use ($tahun, $bulan) {
+                       $query->whereYear('date', $tahun)
+                             ->whereMonth('date', $bulan);
+                   }]);
 
         // Filter berdasarkan pencarian
         if ($request->has('search')) {
@@ -146,7 +153,7 @@ class RekapLaporan2Controller extends Controller
     {
         $filterDate = $request->bulan ?? date('Y-m');
         $direktorat = 'Direktorat Jenderal Perlindungan dan Jaminan Sosial';
-
+        $unit_kerja = $request->unit_kerja;
         list($tahun, $bulan) = explode('-', $filterDate);
         $bulanNama = Carbon::createFromDate($tahun, $bulan, 1)->locale('id')->isoFormat('MMMM YYYY');
 
@@ -154,6 +161,6 @@ class RekapLaporan2Controller extends Controller
         $fileName .= '_' . str_replace(' ', '', $direktorat);
         $fileName .= '.xlsx';
 
-        return Excel::download(new RekapLaporanExport($tahun, $bulan, $direktorat), $fileName);
+        return Excel::download(new RekapLaporanExport($tahun, $bulan, $direktorat, $unit_kerja), $fileName);
     }
 }
