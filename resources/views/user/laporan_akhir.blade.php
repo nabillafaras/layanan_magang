@@ -422,7 +422,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('laporan.akhir.download', $item->id) }}" class="btn btn-sm btn-info mb-1">
-                                            <i class="fas fa-download"></i> Download
+                                            <i class="fas fa-download"></i> Unduh
                                         </a>
                                         
                                         @if($item->status == 'Menunggu')

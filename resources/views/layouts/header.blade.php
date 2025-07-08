@@ -354,12 +354,12 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" 
-                           href="{{ route('home') }}" aria-current="page">Home</a>
+                           href="{{ route('home') }}" aria-current="page">Beranda</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="registrasiDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Registrasi
+                            Daftar Magang
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="registrasiDropdown">
                             <li><a class="dropdown-item" href="{{ route('pendaftaran') }}">Pendaftaran</a></li>
@@ -368,7 +368,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" 
-                           href="{{ route('login') }}" aria-current="page">Login</a>
+                           href="{{ route('login') }}" aria-current="page">Masuk</a>
                     </li>
                 </ul>
             </div>

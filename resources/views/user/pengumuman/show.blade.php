@@ -388,7 +388,7 @@
                         <i class="fas fa-paperclip"></i> Lampiran
                     </h5>
                     <a href="{{ asset('storage/' . $pengumuman->attachment) }}" class="attachment-btn" target="_blank">
-                        <i class="fas fa-file-download"></i> Download Lampiran
+                        <i class="fas fa-file-download"></i> Unduh Lampiran
                     </a>
                 </div>
             @endif

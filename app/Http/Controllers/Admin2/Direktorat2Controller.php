@@ -103,6 +103,7 @@ class Direktorat2Controller extends Controller
             'status' => 'required|in:Menunggu,Acc,Ditolak',
             'sk_selesai' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120', // Maksimal 5MB
             'sertifikat' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120', // Maksimal 5MB
+            'nilai_magang' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
         
         $laporan = Laporan::with('pendaftaran')->findOrFail($id);
@@ -114,7 +115,7 @@ class Direktorat2Controller extends Controller
             // Jika status sebelumnya bukan "Acc" (baru diubah menjadi "Acc")
             if ($oldStatus != 'Acc') {
                 // Validasi apakah kedua file sudah diupload
-                if (!$request->hasFile('sk_selesai') || !$request->hasFile('sertifikat')) {
+                if (!$request->hasFile('sk_selesai') || !$request->hasFile('sertifikat')|| !$request->hasFile('nilai_magang')) {
                     return redirect()->back()->with('error', 'Harap upload file SK Selesai dan Sertifikat untuk laporan akhir.');
                 }
                 
@@ -132,6 +133,14 @@ class Direktorat2Controller extends Controller
                     $sertifikatFileName = time() . '_' . $laporan->pendaftaran->nama_lengkap . '_sertifikat.' . $sertifikatFile->getClientOriginalExtension();
                     $sertifikatFilePath = $sertifikatFile->storeAs('sertifikat', $sertifikatFileName, 'public');
                     $laporan->sertifikat = 'storage/' . $sertifikatFilePath;
+                }
+
+                // Upload file nilai
+                if ($request->hasFile('nilai_magang')) {
+                    $nilaiFile = $request->file('nilai_magang');
+                    $nilaiFileName = time() . '_' . $laporan->pendaftaran->nama_lengkap . '_nilai_magang.' . $nilaiFile->getClientOriginalExtension();
+                    $nilaiFilePath = $nilaiFile->storeAs('nilai_magang', $nilaiFileName, 'public');
+                    $laporan->nilai_magang= 'storage/' . $nilaiFilePath;
                 }
                 
                 // Ubah status peserta menjadi "Selesai"

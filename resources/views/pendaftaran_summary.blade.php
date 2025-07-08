@@ -734,7 +734,7 @@
                 </div>
                 <div class="col-md-6" data-aos="fade-left" data-aos-delay="600">
                     <button onclick="downloadPDF()" class="btn-action btn-download">
-                        <i class="fas fa-download"></i> Download Bukti Pendaftaran
+                        <i class="fas fa-download"></i> Unduh Bukti Pendaftaran
                     </button>
                 </div>
             </div>

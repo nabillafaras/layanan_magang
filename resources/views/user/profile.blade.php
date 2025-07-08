@@ -671,7 +671,7 @@
                                     <div class="card-body">
                                         <h6 class="card-title"><i class="fas fa-file-alt me-2"></i>Surat Balasan</h6>
                                         <a href="{{ asset('storage/'.$user->surat_balasan) }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
-                                            <i class="fas fa-download me-1"></i> Download Surat Balasan
+                                            <i class="fas fa-download me-1"></i> Unduh Surat Balasan
                                         </a>
                                     </div>
                                 </div>

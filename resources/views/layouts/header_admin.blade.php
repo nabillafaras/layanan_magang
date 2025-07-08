@@ -441,12 +441,12 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-home"></i> Dashboard
+                        <i class="fas fa-home"></i> Beranda
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.create') }}" class="nav-link {{ request()->routeIs('admin.create') ? 'active' : '' }}">
-                        <i class="fas fa-user-plus"></i> Create Admin
+                        <i class="fas fa-user-plus"></i> Buat Admin
                     </a>
                 </li>
                 <li class="nav-item">
@@ -456,12 +456,12 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.rekapitulasi-absensi') }}" class="nav-link {{ request()->routeIs('admin.rekapitulasi-absensi') ? 'active' : '' }}">
-                        <i class="fas fa-clipboard-list"></i> Rekapitulasi Absensi
+                        <i class="fas fa-clipboard-list"></i> Rekapitulasi Kehadiran
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.rekapitulasi-laporan') }}" class="nav-link {{ request()->routeIs('admin.rekapitulasi-laporan') ? 'active' : '' }}">
-                        <i class="fas fa-file-alt"></i> Rekapitulasi Laporan
+                        <i class="fas fa-file-alt"></i> Rekapitulasi Laporan Magang
                     </a>
                 </li>
                 <li class="nav-item">
@@ -500,7 +500,7 @@
                     </div>
                     <li class="nav-item">
                         <a href="{{ route('admin.pengumuman.index') }}" class="nav-link {{ request()->routeIs('admin.pengumuman.index') ? 'active' : '' }}">
-                            <i class="fas fa-cloud-upload-alt"></i> Informasi
+                            <i class="fas fa-cloud-upload-alt"></i> Kelola Pengumuman
                         </a>
                     </li>
                 </li>
@@ -540,7 +540,7 @@
                                         <form action="{{ route('admin.logout') }}" method="POST">
                                             @csrf
                                             <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                                <i class="fas fa-sign-out-alt me-2"></i>Keluar
                                             </button>
                                         </form>
                                     </li>

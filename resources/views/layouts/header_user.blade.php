@@ -508,12 +508,12 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a href="{{ route('user') }}" class="nav-link {{ request()->routeIs('user') ? 'active' : '' }}">
-                        <i class="fas fa-home"></i> Dashboard
+                        <i class="fas fa-home"></i> Beranda
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link dropdown-toggle {{ request()->routeIs('attendance') || request()->routeIs('izin') || request()->routeIs('sakit') ? 'active' : '' }}" href="#absensiCollapse" data-bs-toggle="collapse">
-                        <i class="fas fa-clipboard-check"></i> Absensi
+                        <i class="fas fa-clipboard-check"></i> Kehadiran
                         <i class="fas fa-chevron-down ms-auto"></i>
                     </a>
                     <div class="collapse {{ request()->routeIs('attendance') || request()->routeIs('izin') || request()->routeIs('sakit') ? 'show' : '' }}" id="absensiCollapse">
@@ -538,7 +538,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link dropdown-toggle {{ request()->routeIs('laporan.bulanan') || request()->routeIs('laporan.akhir') ? 'active' : '' }}" href="#laporanCollapse" data-bs-toggle="collapse">
-                        <i class="fas fa-file-alt"></i> Laporan
+                        <i class="fas fa-file-alt"></i> Laporan Magang
                         <i class="fas fa-chevron-down ms-auto"></i>
                     </a>
                     <div class="collapse {{ request()->routeIs('laporan.bulanan') || request()->routeIs('laporan.akhir') ? 'show' : '' }}" id="laporanCollapse">
@@ -559,6 +559,11 @@
                 <li class="nav-item">
                 <a href="{{ route('pengumuman') }}" class="nav-link {{ request()->routeIs('pengumuman') || request()->routeIs('pengumuman.show') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn"></i> Pengumuman
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('berkas.selesai') }}" class="nav-link {{ request()->routeIs('berkas.selesai') ? 'active' : '' }}">
+                        <i class="fas fa-certificate"></i> Berkas Selesai
                     </a>
                 </li>
             </ul>
@@ -597,7 +602,7 @@
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                                <i class="fas fa-sign-out-alt me-2"></i> Keluar
                                             </button>
                                         </form>
                                     </li>

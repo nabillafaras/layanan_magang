@@ -19,7 +19,7 @@ class UserAuthController extends Controller
 
         // First check if the user exists with status "diterima"
         $pendaftaran = Pendaftaran::where('nomor_pendaftaran', $credentials['nomor_pendaftaran'])
-                                  ->where('status', 'diterima')
+                                  ->whereIn('status', ['diterima', 'selesai'])
                                   ->first();
 
          // If user doesn't exist with status "diterima", return error

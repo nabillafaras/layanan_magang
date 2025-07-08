@@ -119,7 +119,7 @@
                 <div class="col-md-3 fw-bold">File Laporan</div>
                 <div class="col-md-9">
                     <a href="{{ asset('storage/'.$laporan->file_path) }}" class="btn btn-primary" target="_blank">
-                        <i class="fas fa-file-download me-1"></i> Download Laporan
+                        <i class="fas fa-file-download me-1"></i> Unduh Laporan
                     </a>
                 </div>
             </div>
@@ -128,8 +128,8 @@
                 <div class="row mb-3">
                     <div class="col-md-3 fw-bold">SK Selesai</div>
                     <div class="col-md-9">
-                        <a href="{{ asset($laporan->sk_selesai) }}" class="btn btn-primary" target="_blank">
-                            <i class="fas fa-file-download me-1"></i> Download SK Selesai
+                        <a href="{{ asset($laporan->sk_selesai) }}" class="btn btn-success" target="_blank">
+                            <i class="fas fa-file-download me-1"></i> Unduh SK Selesai
                         </a>
                     </div>
                 </div>
@@ -140,7 +140,17 @@
                     <div class="col-md-3 fw-bold">Sertifikat</div>
                     <div class="col-md-9">
                         <a href="{{ asset($laporan->sertifikat) }}" class="btn btn-success" target="_blank">
-                            <i class="fas fa-file-download me-1"></i> Download Sertifikat
+                            <i class="fas fa-file-download me-1"></i> Unduh Sertifikat
+                        </a>
+                    </div>
+                </div>
+                @endif
+                @if($laporan->nilai_magang)
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Nilai Magang</div>
+                    <div class="col-md-9">
+                        <a href="{{ asset($laporan->nilai_magang) }}" class="btn btn-success" target="_blank">
+                            <i class="fas fa-file-download me-1"></i> Unduh Nilai Magang
                         </a>
                     </div>
                 </div>
@@ -177,6 +187,11 @@
                         <label for="sertifikat" class="form-label">Upload Sertifikat</label>
                         <input type="file" class="form-control" id="sertifikat" name="sertifikat" accept=".pdf,.jpg,.jpeg,.png">
                         <small class="text-muted">Upload sertifikat bila ini adalah laporan akhir dan status diubah menjadi Acc</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nilai_magang" class="form-label">Upload Nilai Magang</label>
+                        <input type="file" class="form-control" id="nilai_magang" name="nilai_magang" accept=".pdf,.jpg,.jpeg,.png">
+                        <small class="text-muted">Upload Nilai Magang bila ini adalah laporan akhir dan status diubah menjadi Acc</small>
                     </div>
                 </div>
                 

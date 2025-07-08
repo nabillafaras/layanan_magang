@@ -115,7 +115,8 @@ class SakitController extends Controller
                                    ->first();
             
             // Jika sudah ada status yang terisi, kembalikan error
-            if ($attendance && in_array($attendance->status, ['hadir', 'izin', 'sakit','terlambat'])) {
+            if ($attendance && in_array($attendance->status, 
+            ['hadir', 'izin', 'sakit','terlambat'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Anda sudah melakukan absensi hari ini'

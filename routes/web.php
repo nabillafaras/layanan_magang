@@ -58,6 +58,7 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\Pendaftaran_SummaryController;
 use App\Http\Controllers\Admin\PengumumanController;
 use App\Http\Controllers\User\PengumumanUserController;
+use App\Http\Controllers\User\BerkasSelesaiController;
 use App\Http\Controllers\PersyaratanController;
 use App\Http\Controllers\Admin\PesertaController;
 
@@ -181,6 +182,10 @@ Route::middleware(['auth:web', 'checkRole:user'])
     'index'])->name('pengumuman');
     Route::get('/pengumuman/{id}', [PengumumanUserController::class, 
     'show'])->name('pengumuman.show');
+    // Tambahkan routes ini ke dalam Route::middleware(['auth:web', 'checkRole:user'])->group
+
+// Routes untuk berkas selesai magang
+Route::get('/berkas-selesai', [BerkasSelesaiController::class, 'index'])->name('berkas.selesai');
 });
 
 // ====================================

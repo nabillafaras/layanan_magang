@@ -25,6 +25,7 @@ class Informasi_PesertaController extends Controller
         // Hitung total peserta yang diterima
         $totalPeserta = Pendaftaran::where('status', 'Diterima')->count();
         
-        return view('informasi_peserta', compact('peserta', 'statistik', 'totalPeserta'));
+        return view('informasi_peserta', compact('peserta', 'statistik', 
+        'totalPeserta'));
     }
 }

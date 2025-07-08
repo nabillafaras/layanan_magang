@@ -441,7 +441,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                 <a href="{{ route('admin5.dashboard') }}" class="nav-link {{ request()->routeIs('admin5.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-home"></i> Dashboard
+                        <i class="fas fa-home"></i> Beranda
                     </a>
                 </li>
                 <li class="nav-item">
@@ -451,12 +451,12 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin5.rekapitulasi-absensi5') }}" class="nav-link {{ request()->routeIs('admin5.rekapitulasi-absensi5') ? 'active' : '' }}">
-                        <i class="fas fa-clipboard-list"></i> Rekapitulasi Absensi
+                        <i class="fas fa-clipboard-list"></i> Rekapitulasi Kehadiran
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin5.rekapitulasi-laporan5') }}" class="nav-link {{ request()->routeIs('admin5.rekapitulasi-laporan5') ? 'active' : '' }}">
-                        <i class="fas fa-file-alt"></i> Rekapitulasi Laporan
+                        <i class="fas fa-file-alt"></i> Rekapitulasi Laporan Magang
                     </a>
                 </li>
                 <li class="nav-item">
@@ -466,7 +466,7 @@
                 </li>
                 <li class="nav-item">
                 <a href="{{ route('admin5.pengumuman5.index') }}" class="nav-link {{ request()->routeIs('admin5.pengumuman5.index') ? 'active' : '' }}">
-                        <i class="fas fa-cloud-upload-alt"></i> Informasi
+                        <i class="fas fa-cloud-upload-alt"></i> Kelola Pengumuman
                     </a>
                 </li>
             </li>
@@ -506,7 +506,7 @@
                                         <form action="{{ route('admin5.logout') }}" method="POST">
                                             @csrf
                                             <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                                <i class="fas fa-sign-out-alt me-2"></i>Keluar
                                             </button>
                                         </form>
                                     </li>
