@@ -296,6 +296,63 @@
 .float-animation {
     animation: float 3s ease-in-out infinite;
 }
+/* Template Download Section Styles */
+.template-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.1);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    transition: all var(--transition-speed);
+    z-index: -1;
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(139, 0, 0, 0.2);
+}
+
+.btn-outline-primary:hover::before {
+    left: 0;
+}
+
+/* Animasi khusus untuk template card */
+@keyframes template-glow {
+    0% { box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    50% { box-shadow: 0 8px 25px rgba(139, 0, 0, 0.1); }
+    100% { box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+}
+
+.dashboard-card:first-of-type {
+    animation: template-glow 3s ease-in-out infinite;
+}
 </style>
 @endsection
 
@@ -305,7 +362,39 @@
         <h2 class="mb-4">Laporan Akhir</h2>
         <p class="text-muted">Silahkan upload laporan akhir magang Anda di sini. Laporan akhir wajib diupload sebelum masa magang Anda berakhir sebagai syarat penyelesaian program magang.</p>
     </div>
-
+<!-- Tambahkan section ini setelah dashboard-header dan sebelum dashboard-card -->
+<div class="dashboard-card animate__animated animate__fadeInUp mb-4" style="animation-delay: 0.05s">
+    <div class="card-header">
+        <h5><i class="fas fa-download me-2"></i>Template Laporan Akhir</h5>
+    </div>
+    <div class="card-body p-4">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center">
+                    <div class="template-icon me-3">
+                        <i class="fas fa-file-word text-primary" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Template Laporan Akhir Magang</h6>
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Download template ini untuk memudahkan Anda dalam membuat laporan akhir magang yang sesuai dengan format yang diperlukan.
+                        </p>
+                        <small class="text-muted">
+                            <i class="fas fa-file-alt me-1"></i>Format: Microsoft Word (.docx)
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{{ route('laporan.akhir.template.download') }}" 
+                   class="btn btn-outline-primary btn-lg animate__animated animate__pulse animate__infinite">
+                    <i class="fas fa-download me-2"></i>Unduh Template
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="dashboard-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
         <div class="card-header">
             <h5><i class="fas fa-file-alt"></i> Laporan Akhir</h5>

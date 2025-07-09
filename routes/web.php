@@ -151,8 +151,7 @@ Route::middleware(['auth:web', 'checkRole:user'])
     Route::post('/sakit/store', [SakitController::class, 
     'store'])->name('sakit.store');
     // Laporan Bulanan
-    Route::get('/laporan/bulanan', [LaporanBulananController::class, '
-    index'])->name('laporan.bulanan');
+    Route::get('/laporan/bulanan', [LaporanBulananController::class, 'index'])->name('laporan.bulanan');
     Route::post('/laporan/bulanan/upload', [LaporanBulananController::class, 
     'upload'])->name('laporan.bulanan.upload');
     Route::get('/laporan/bulanan/download/{id}', [LaporanBulananController::class, 
@@ -187,7 +186,10 @@ Route::middleware(['auth:web', 'checkRole:user'])
 // Routes untuk berkas selesai magang
 Route::get('/berkas-selesai', [BerkasSelesaiController::class, 'index'])->name('berkas.selesai');
 });
-
+Route::get('/laporan/akhir/template/download', [LaporanAkhirController::class, 
+'downloadTemplate'])->name('laporan.akhir.template.download');
+Route::get('/laporan/bulanan/template/download', [LaporanBulananController::class, 
+'downloadTemplate'])->name('laporan.bulanan.template.download');
 // ====================================
 // ROUTE ADMIN SUPER
 // ====================================

@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DataPesertaAdminExport;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\StatusDiterimaNotification;
+use App\Mail\StatusDitolakNotification;
+use Illuminate\Support\Facades\Log;
 
 class Peserta1Controller extends Controller
 {
@@ -151,6 +155,28 @@ class Peserta1Controller extends Controller
         }
         
         $pendaftaran->save();
+        // Kirim email notifikasi berdasarkan status
+    try {
+        if ($request->status === 'Diterima') {
+            Mail::to($pendaftaran->email)->send(new StatusDiterimaNotification($pendaftaran));
+            Log::info('Email notifikasi status diterima berhasil dikirim', [
+                'email' => $pendaftaran->email,
+                'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran
+            ]);
+        } elseif ($request->status === 'Ditolak') {
+            Mail::to($pendaftaran->email)->send(new StatusDitolakNotification($pendaftaran));
+            Log::info('Email notifikasi status ditolak berhasil dikirim', [
+                'email' => $pendaftaran->email,
+                'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran
+            ]);
+        }
+    } catch (\Exception $e) {
+        Log::error('Gagal mengirim email notifikasi: ' . $e->getMessage(), [
+            'email' => $pendaftaran->email,
+            'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran,
+            'status' => $request->status
+        ]);
+    }
         
         return redirect()->route('admin1.peserta1')->with('success', 'Status peserta berhasil diperbarui');
     }

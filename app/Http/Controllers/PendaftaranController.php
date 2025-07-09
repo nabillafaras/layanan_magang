@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\StatusDiprosesNotification;
 
 class PendaftaranController extends Controller
 {
@@ -251,6 +253,19 @@ class PendaftaranController extends Controller
                 }
                 
                 $pendaftaran->save();
+
+                try {
+                    Mail::to($pendaftaran->email)->send(new StatusDiprosesNotification($pendaftaran));
+                    Log::info('Email notifikasi status diproses berhasil dikirim', [
+                        'email' => $pendaftaran->email,
+                        'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Gagal mengirim email notifikasi status diproses: ' . $e->getMessage(), [
+                        'email' => $pendaftaran->email,
+                        'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran
+                    ]);
+                }
 
                 Log::info('Pendaftaran berhasil diselesaikan', [
                     'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran,

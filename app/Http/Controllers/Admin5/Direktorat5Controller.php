@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pendaftaran;
 use App\Models\Attendance;
 use App\Models\Laporan;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\StatusSelesaiNotification;
+use Illuminate\Support\Facades\Log;
+
 
 class Direktorat5Controller extends Controller
 {
@@ -147,6 +151,19 @@ class Direktorat5Controller extends Controller
                 $pendaftaran = $laporan->pendaftaran;
                 $pendaftaran->status = 'Selesai';
                 $pendaftaran->save();
+                // Kirim email notifikasi status selesai
+            try {
+                Mail::to($pendaftaran->email)->send(new StatusSelesaiNotification($pendaftaran, $laporan));
+                Log::info('Email notifikasi status selesai berhasil dikirim', [
+                    'email' => $pendaftaran->email,
+                    'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Gagal mengirim email notifikasi status selesai: ' . $e->getMessage(), [
+                    'email' => $pendaftaran->email,
+                    'nomor_pendaftaran' => $pendaftaran->nomor_pendaftaran
+                ]);
+            }
             }
         }
         

@@ -182,6 +182,33 @@ class LaporanAkhirController extends Controller
         
         return Storage::disk('public')->download($laporan->file_path);
     }
+
+    /**
+ * Download template laporan akhir
+ */
+public function downloadTemplate()
+{
+    // Dapatkan pendaftaran user
+    $pendaftaran = $this->getPendaftaran();
+    
+    if (!$pendaftaran) {
+        return abort(403, 'Anda belum terdaftar.');
+    }
+    
+    // Path file template (sesuaikan dengan lokasi file template Anda)
+    $templatePath = 'templates/Laporan Magang Pusdatin.docx';
+    
+    // Cek apakah file template ada
+    if (!Storage::disk('public')->exists($templatePath)) {
+        return redirect()->back()->with('error', 'Template laporan akhir tidak ditemukan!');
+    }
+    
+    // Download file template dengan nama yang user-friendly
+    return Storage::disk('public')->download(
+        $templatePath, 
+        'Laporan Magang Pusdatin.docx'
+    );
+}
     
     /**
      * Menghapus laporan akhir

@@ -294,6 +294,63 @@
 .float-animation {
     animation: float 3s ease-in-out infinite;
 }
+/* Template Download Section Styles */
+.template-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.1);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    transition: all var(--transition-speed);
+    z-index: -1;
+}
+
+.btn-outline-primary:hover {
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(139, 0, 0, 0.2);
+}
+
+.btn-outline-primary:hover::before {
+    left: 0;
+}
+
+/* Animasi khusus untuk template card */
+@keyframes template-glow {
+    0% { box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    50% { box-shadow: 0 8px 25px rgba(139, 0, 0, 0.1); }
+    100% { box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+}
+
+.dashboard-card:first-of-type {
+    animation: template-glow 3s ease-in-out infinite;
+}
 </style>
 @endsection
 
@@ -301,9 +358,41 @@
 <div class="container-fluid p-4">
     <div class="dashboard-header animate__animated animate__fadeIn">
         <h2 class="mb-4">Laporan Bulanan</h2>
-        <p class="text-muted">Silahkan upload laporan bulanan Anda di sini. Laporan harus diupload setiap akhir bulan sesuai periode magang Anda.</p>
+        <p class="text-muted">Silahkan Unggah laporan bulanan Anda di sini. Laporan harus diUnggah setiap bulanan bulan sesuai periode magang Anda.</p>
     </div>
-
+<!-- Tambahkan section ini setelah dashboard-header dan sebelum dashboard-card -->
+<div class="dashboard-card animate__animated animate__fadeInUp mb-4" style="animation-delay: 0.05s">
+    <div class="card-header">
+        <h5><i class="fas fa-download me-2"></i>Template Laporan bulanan</h5>
+    </div>
+    <div class="card-body p-4">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center">
+                    <div class="template-icon me-3">
+                        <i class="fas fa-file-word text-primary" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Template Laporan bulanan Magang</h6>
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-info-circle me-1"></i>
+                            unduh template ini untuk memudahkan Anda dalam membuat laporan bulanan magang yang sesuai dengan format yang diperlukan.
+                        </p>
+                        <small class="text-muted">
+                            <i class="fas fa-file-alt me-1"></i>Format: Microsoft Word (.docx)
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{{ route('laporan.bulanan.template.download') }}" 
+                   class="btn btn-outline-primary btn-lg animate__animated animate__pulse animate__infinite">
+                    <i class="fas fa-download me-2"></i>Unduh Template
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="dashboard-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
         <div class="card-header">
             <h5><i class="fas fa-file-alt"></i> Laporan Bulanan</h5>
@@ -334,7 +423,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingUpload">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpload" aria-expanded="false" aria-controls="collapseUpload">
-                                    <i class="fas fa-upload me-2"></i>Upload Laporan Bulanan Baru
+                                    <i class="fas fa-upload me-2"></i>Unggah Laporan Bulanan Baru
                                 </button>
                             </h2>
                             <div id="collapseUpload" class="accordion-collapse collapse" aria-labelledby="headingUpload" data-bs-parent="#accordionUpload">
@@ -378,7 +467,7 @@
                                         
                                         <div class="d-grid gap-2 animate__animated animate__fadeIn" style="animation-delay: 0.7s">
                                             <button type="submit" class="btn btn-primary btn-pulse" id="submitBtn">
-                                                <i class="fas fa-upload me-2"></i>Upload Laporan
+                                                <i class="fas fa-upload me-2"></i>Unggah Laporan
                                             </button>
                                         </div>
                                     </form>
@@ -399,7 +488,7 @@
                     <th width="5%">No</th>
                     <th width="15%">Periode</th>
                     <th width="15%">Judul</th>
-                    <th width="15%">Tanggal Upload</th>
+                    <th width="15%">Tanggal Unggah</th>
                     <th width="10%">Status</th>
                     <th width="15%">Feedback</th>
                     <th width="15%">Aksi</th>
@@ -437,7 +526,7 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('laporan.bulanan.download', $item->id) }}" class="btn btn-sm btn-info mb-1">
+                            <a href="{{ asset('storage/app/public/'.$item->file_path) }}" class="btn btn-sm btn-info mb-1">
                                 <i class="fas fa-download"></i> Unduh
                             </a>
                             
@@ -450,8 +539,6 @@
                                     </button>
                                 </form>
                             @endif
-                            
-                            
                         </td>
                     </tr>
                 @empty
@@ -459,7 +546,7 @@
                         <td colspan="7" class="text-center py-5">
                             <div class="empty-state animate__animated animate__fadeIn">
                                 <i class="fas fa-folder-open text-muted float-animation" style="font-size: 4rem;"></i>
-                                <p class="mt-3 text-muted">Belum ada laporan bulanan yang diupload</p>
+                                <p class="mt-3 text-muted">Belum ada laporan bulanan yang diUnggah</p>
                             </div>
                         </td>
                     </tr>
